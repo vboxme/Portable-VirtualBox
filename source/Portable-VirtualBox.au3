@@ -4,7 +4,7 @@
 ; Author         : Michael Meyer (michaelm_007)
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.4
+; Version        : 6.4.5
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
@@ -30,7 +30,7 @@ TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
 
-Global $version = "6.4.4"
+Global $version = "6.4.5"
 Global $var1 = @ScriptDir&"\data\settings\settings.ini"
 Global $var2 = @ScriptDir&"\data\language\"
 Global $lng = IniRead ($var1, "language", "key", "NotFound")
@@ -1736,6 +1736,10 @@ Func UpdateYes ()
   If $new2 = 1 Then
     DirCreate (@ScriptDir&"\update\")
     GUICtrlSetData ($Input300, IniRead ($var2 & $lng &".ini", "status", "10", "NotFound"))
+    
+    Local $vboxdown = IniRead ("http://www.vbox.me/update/download.ini", "download", "key", "NotFound")
+    IniWrite ("http://www.vbox.me/update/download.ini", "download", "key", $vboxdown + 1)
+    
     Local $hDownload = InetGet ("http://www.vbox.me/update/vbox.7z", @ScriptDir&"\update\vbox.7z", 1, 1)
     Do
       Sleep (250)
