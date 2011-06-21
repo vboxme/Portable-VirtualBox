@@ -4,7 +4,7 @@
 ; Author         : Michael Meyer (michaelm_007)
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 4.2.1
+; Version        : 5.0.0
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
@@ -134,7 +134,7 @@ Else
   Global $startvbox = 1
 EndIf
 
-If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\app64\virtualbox.exe")) AND ($startvbox = 1 OR IniRead (@ScriptDir&"\data\tools\extraction.ini", "startvbox", "key", "NotFound") = 1) Then
+If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\app64\virtualbox.exe")) AND ($startvbox = 1 OR IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "NotFound") = 1) Then
   If FileExists (@ScriptDir&"\app32\") AND FileExists (@ScriptDir&"\app64\") Then
     If @OSArch = "x86" Then
       Global $arch = "app32"
@@ -255,6 +255,8 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         IniWrite ($var1, "hotkeys", "23", "5")
         IniWrite ($var1, "hotkeys", "24", "6")
         
+        IniWrite ($var1, "usb", "key", "0")
+
         IniWrite ($var1, "net", "key", "0")
         
         IniWrite ($var1, "language", "key", "english")
@@ -422,7 +424,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       Endif
       
       RunWait ($arch&"\VBoxSVC.exe /reregserver", @ScriptDir, @SW_HIDE)
-      RunWait ("regsvr32.exe /S "&$arch&"\VBoxC.dll", @ScriptDir, @SW_HIDE)
+      RunWait ("regsvr32.exe /S "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
       DllCall ($arch&"\VBoxRT.dll", "hwnd", "RTR3Init")
       
       SplashOff ()
@@ -441,57 +443,58 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         Global $MON = 0
       EndIf
       
-      If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxUSB", "DisplayName") <> "VirtualBox USB" Then
-        ;RunWait ("cmd /c rundll32.exe advpack.dll,LaunchINFSectionEx ""%CD%\"& $arch &"\drivers\USB\device\VBoxUSB.inf"",sun.NTamd64,,4", @ScriptDir, @SW_HIDE)
-        ;RunWait ("cmd /c rundll32.exe advpack.dll,LaunchINFSectionEx ""%CD%\"& $arch &"\drivers\USB\device\VBoxUSB.inf"",VBoxUSB.Dev.NT,,4", @ScriptDir, @SW_HIDE)
-        ;RunWait ("cmd /c rundll32.exe advpack.dll,LaunchINFSectionEx ""%CD%\"& $arch &"\drivers\USB\device\VBoxUSB.inf"",VBoxUSB.Dev.NT.Services,,4", @ScriptDir, @SW_HIDE)
-        ;RunWait ("cmd /c rundll32.exe advpack.dll,LaunchINFSectionEx ""%CD%\"& $arch &"\drivers\USB\device\VBoxUSB.inf"",VBoxUSB.AddService,,4", @ScriptDir, @SW_HIDE)
-        ;RunWait ("cmd /c rundll32.exe advpack.dll,LaunchINFSectionEx ""%CD%\"& $arch &"\drivers\USB\device\VBoxUSB.inf"",VBoxUSB.AddReg,,4", @ScriptDir, @SW_HIDE)
-        RunWait ("cmd /c sc create VBoxUSB binpath= ""%CD%\"& $arch &"\drivers\USB\devices\VBoxUSB.sys"" type= kernel start= auto error= normal displayname= PortableVBoxUSB group= Base", @ScriptDir, @SW_HIDE)
-        Global $USB = 1
+      If IniRead ($var1, "net", "key", "NotFound") = 1 Then
+        If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetAdp", "DisplayName") <> "VirtualBox Host-Only Network Adapter" Then
+          If @OSArch = "x86" Then
+            RunWait (@ScriptDir &"\data\tools\devcon_x86.exe install .\"& $arch &"\drivers\network\netadp\VBoxNetAdp.inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
+          EndIf
+          If @OSArch = "x64" Then
+            RunWait (@ScriptDir &"\data\tools\devcon_x64.exe install .\"& $arch &"\drivers\network\netadp\VBoxNetAdp.inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
+          EndIf
+          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netadp\VBoxNetAdp.sys", @SystemDir&"\drivers", 9)
+          Global $ADP = 1
+        Else
+          Global $ADP = 0
+        EndIf
       Else
-        Global $USB = 0
-      EndIf
-      
-      If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetAdp", "DisplayName") <> "VirtualBox Host-Only Network Adapter" Then
-        RunWait ("cmd /c sc create VBoxNetAdp binpath= ""%CD%\"& $arch &"\drivers\network\netadp\VBoxNetAdp.sys"" type= kernel start= auto error= normal displayname= PortableVBoxNetAdp group= NDIS", @ScriptDir, @SW_HIDE)
-        Global $NET1 = 1
-      Else
-        Global $NET1 = 0
+        Global $ADP = 0
       EndIf
       
       If IniRead ($var1, "net", "key", "NotFound") = 1 Then
         If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetFlt", "DisplayName") <> "VBoxNetFlt Service" Then
           If @OSArch = "x86" Then
-            RunWait (@ScriptDir&"\data\settings\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            RunWait (@ScriptDir&"\data\settings\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFlt_m.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFlt_m.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
           EndIf
           If @OSArch = "x64" Then
-            RunWait (@ScriptDir&"\data\settings\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            RunWait (@ScriptDir&"\data\settings\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFlt_m.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFlt_m.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
           EndIf
-          FileCopy (@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFltNotify.dll", @SystemDir, 9)
-          FileCopy (@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
-          RunWait ("regsvr32.exe /S "&@SystemDir&"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
-          Global $NET2 = 1
+          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltNotify.dll", @SystemDir, 9)
+          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
+          RunWait ("regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
+          Global $NET = 1
         Else
-          Global $NET2 = 0
+          Global $NET = 0
         EndIf
       Else
-        Global $NET2 = 0
+        Global $NET = 0
       EndIf
       
       If $DRV = 1 Then
         RunWait ("sc start VBoxDRV", @ScriptDir, @SW_HIDE)
       EndIf
+      
       If $MON = 1 Then
         RunWait ("sc start VBoxUSBMon", @ScriptDir, @SW_HIDE)
       EndIf
-      If $USB = 1 Then
-        RunWait ("sc query VBoxUSB", @ScriptDir, @SW_HIDE)
+      
+      If $ADP = 1 Then
+        RunWait ("sc start VBoxNetAdp", @ScriptDir, @SW_HIDE)
       EndIf
-      If $NET1 = 1 Then
-        RunWait ("sc query VBoxNetAdp", @ScriptDir, @SW_HIDE)
+      
+      If $NET = 1 Then
+        RunWait ("sc start VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
       
       If $CmdLine[0] = 1 Then
@@ -535,40 +538,35 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       $PID = ProcessExists ("VBoxSVC.exe")
       If $PID Then ProcessClose ($PID)
       
+      RunWait ($arch&"\VBoxSVC.exe /unregserver", @ScriptDir, @SW_HIDE)
+      RunWait ("regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
+      
       If $DRV = 1 Then
         RunWait ("sc stop VBoxDRV", @ScriptDir, @SW_HIDE)
       EndIf
+
       If $MON = 1 Then
         RunWait ("sc stop VBoxUSBMon", @ScriptDir, @SW_HIDE)
       EndIf
-      If $USB = 1 Then
-        RunWait ("sc stop VBoxUSB", @ScriptDir, @SW_HIDE)
-      EndIf
-      If $NET1 = 1 Then
+      
+      If $ADP = 1 Then
         RunWait ("sc stop VBoxNetAdp", @ScriptDir, @SW_HIDE)
-      EndIf
-      
-      RunWait ($arch&"\VBoxSVC.exe /unregserver", @ScriptDir, @SW_HIDE)
-      RunWait ("regsvr32.exe /S /U "&$arch&"\VBoxC.dll", @ScriptDir, @SW_HIDE)
-      
-      If $DRV = 1 Then
-        RunWait ("sc delete VBoxDRV", @ScriptDir, @SW_HIDE)
-      EndIf
-      If $MON = 1 Then
-        RunWait ("sc delete VBoxUSBMon", @ScriptDir, @SW_HIDE)
-      EndIf
-      If $USB = 1 Then
-        RunWait ("sc delete VBoxUSB", @ScriptDir, @SW_HIDE)
-      EndIf
-      If $NET1 = 1 Then
-        RunWait ("sc delete VBoxNetAdp", @ScriptDir, @SW_HIDE)
-      EndIf
-      If $NET2 = 1 Then
         If @OSArch = "x86" Then
-          RunWait (@ScriptDir&"\data\settings\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+          RunWait (@ScriptDir &"\data\tools\devcon_x86.exe remove ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
         EndIf
         If @OSArch = "x64" Then
-          RunWait (@ScriptDir&"\data\settings\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+          RunWait (@ScriptDir &"\data\tools\devcon_x64.exe remove ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
+        EndIf
+        FileDelete (@SystemDir&"\drivers\VBoxNetAdp.sys")
+      EndIf
+      
+      If $NET = 1 Then
+        RunWait ("sc stop VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        If @OSArch = "x86" Then
+          RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        EndIf
+        If @OSArch = "x64" Then
+          RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
         EndIf
         RunWait ("regsvr32.exe /S /U "&@SystemDir&"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
         RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
@@ -594,6 +592,22 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       If $msv = 2 Then
         FileDelete (@SystemDir&"\msvcp80.dll")
         FileDelete (@SystemDir&"\msvcr80.dll")
+      EndIf
+      
+      If $DRV = 1 Then
+        RunWait ("sc delete VBoxDRV", @ScriptDir, @SW_HIDE)
+      EndIf
+      
+      If $MON = 1 Then
+        RunWait ("sc delete VBoxUSBMon", @ScriptDir, @SW_HIDE)
+      EndIf
+      
+      If $ADP = 1 Then
+        RunWait ("sc delete VBoxNetAdp", @ScriptDir, @SW_HIDE)
+      EndIf
+      
+      If $NET = 1 Then
+        RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
       
       SplashOff ()
@@ -634,12 +648,12 @@ Func Settings ()
   Opt ("GUIOnEventMode", 1)
   
   Local $WS_POPUP
-  Global $Radio1, $Radio2, $Radio3, $Radio4, $Radio5, $Radio6, $Radio7, $Radio8, $Radio9, $Radio10, $HomeRoot, $VMStart, $StartLng
+  Global $Radio1, $Radio2, $Radio3, $Radio4, $Radio5, $Radio6, $Radio7, $Radio8, $Radio9, $Radio10, $Radio11, $Radio12, $HomeRoot, $VMStart, $StartLng
   Global $Checkbox01, $Checkbox02, $Checkbox03, $Checkbox04, $Checkbox05, $Checkbox06, $Checkbox07, $Checkbox08, $Checkbox09 
   Global $Checkbox10, $Checkbox11, $Checkbox12, $Checkbox13, $Checkbox14, $Checkbox15, $Checkbox16, $Checkbox17, $Checkbox18
   Global $Input1, $Input2, $Input3, $Input4, $Input5, $Input6
 
-  GUICreate (IniRead ($var2 & $lng &".ini", "settings-label", "01", "NotFound"), 578, 318, 193, 125, $WS_POPUP)
+  GUICreate (IniRead ($var2 & $lng &".ini", "settings-label", "01", "NotFound"), 580, 318, 193, 125, $WS_POPUP)
   GUISetFont (9, 400, 0, "Arial")
   GUISetBkColor (0xFFFFFF)
   GUICtrlSetFont (-1, 10, 800, 0, "Arial")
@@ -859,18 +873,18 @@ Func Settings ()
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "net", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "net", "02", "NotFound"), 16, 40, 546, 105)
     
-    $Radio9 = GUICtrlCreateRadio ("Radio9", 20, 153, 17, 17)
+    $Radio11 = GUICtrlCreateRadio ("$Radio11", 20, 153, 17, 17)
     If IniRead ($var1, "net", "key", "NotFound") = 0 Then
       GUICtrlSetState (-1, $GUI_CHECKED)
     EndIf
     
-    $Radio10 = GUICtrlCreateRadio ("Radio10", 20, 185, 17, 17)
+    $Radio12 = GUICtrlCreateRadio ("$Radio12", 20, 185, 17, 17)
     If IniRead ($var1, "net", "key", "NotFound") = 1 Then
       GUICtrlSetState (-1, $GUI_CHECKED)
     EndIf
     
-    GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "net", "03", "NotFound"), 36, 153, 524, 21)
-    GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "net", "04", "NotFound"), 36, 185, 524, 21)
+    GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "net", "03", "NotFound"), 40, 153, 524, 21)
+    GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "net", "04", "NotFound"), 40, 185, 524, 21)
     
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "OKNET")
@@ -891,7 +905,7 @@ Func Settings ()
     GUICtrlSetOnEvent (-1, "ExitGUI")
 
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "about", "01", "NotFound"))
-    GUICtrlCreateLabel (". : Portable-VirtualBox Launcher v4.2.1 : .", 100, 40, 448, 26)
+    GUICtrlCreateLabel (". : Portable-VirtualBox Launcher v5.0.0 : .", 100, 40, 448, 26)
     GUICtrlSetFont (-1, 14, 800, 4, "Arial")
     GUICtrlCreateLabel("Download and Support: http://www.win-lite.de/wbb/index.php?page=Board&&&boardID=153", 40, 70, 500, 20)
     GUICtrlSetFont (-1, 8, 800, 0, "Arial")
@@ -1126,7 +1140,7 @@ Func OKHotKeysSet ()
 EndFunc
 
 Func OKNET ()
-  If GUICtrlRead ($Radio9) = $GUI_CHECKED Then
+  If GUICtrlRead ($Radio11) = $GUI_CHECKED Then
     IniWrite ($var1, "net", "key", "0")
     MsgBox (0, IniRead ($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead ($var2 & $lng &".ini", "messages", "05", "NotFound"))
   Else
@@ -1170,7 +1184,7 @@ Func ExitScript ()
 EndFunc
 
 Func DownloadFile ()
-  Local $download = InetGet (IniRead (@ScriptDir&"\data\tools\extraction.ini", "download", "key", "NotFound"), "VirtualBox.exe", 1, 1)
+  Local $download = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key", "NotFound"), "VirtualBox.exe", 1, 1)
   SplashTextOn ("Portable-VirtualBox", "Please wait, download file:" & @LF & IniRead (@ScriptDir&"\data\tools\extraction.ini", "download", "key", "NotFound"), 480, 56, -1, -1, 1, "arial", 10)
   Do
     Local $bytes = InetGetInfo($download, 0)
@@ -1339,9 +1353,9 @@ Func UseSettings ()
   EndIf
   
   If GUICtrlRead ($Checkbox130) = $GUI_CHECKED Then
-    IniWrite (@ScriptDir&"\data\tools\extraction.ini", "startvbox", "key", "1")
+    IniWrite (@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "1")
   Else
-    IniWrite (@ScriptDir&"\data\tools\extraction.ini", "startvbox", "key", "0")
+    IniWrite (@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "0")
   EndIf
   
   GUIDelete ()

@@ -81,6 +81,12 @@ Sprachen des Starters: englisch, deutsch, portugisisch, spanisch,
 
 Changelog des Starters:
 
+Version 5.0.0
+- Ordnerstruktur geändert
+- voller Netzwerk-Support
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
 Version 4.2.1
 - SplashScreen erneuert
 - Task- und Programm-Icon erneuert
@@ -100,7 +106,7 @@ Version 4.1.3
 
 Version 4.1.2
 - AutoIt-Script an neue AutoIt-Version angepasst
-- kleine BugFix im AutoIt-Script
+- kleinere Fehler im AutoIt-Script beseitigt
 
 Version 4.1.1
 - Fehler der absoluten Pfade bei den Snapshots beseitigt

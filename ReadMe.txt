@@ -75,9 +75,15 @@ Languages of Launcher: english, german, portuguese, spanish, french,
 
 Changelog of Starter:
 
+Version 5.0.0
+- File structure changed
+- full network support
+- cleanup AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
+
 Version 4.2.1
 - SplashScreen renews
-- Task- and program-icon renew
+- renew task- and program-icon
 - AutoIt-Script to Oracle adapted
 
 Version 4.2.0
@@ -94,7 +100,7 @@ Version 4.1.3
 
 Version 4.1.2
 - AutoIt-Script adapted to new AutoIt-Version
-- small BugFixes in AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
 
 Version 4.1.1
 - Errors of the absolute paths with the Snapshots eliminates
@@ -102,7 +108,7 @@ Version 4.1.1
 Version 4.1.0
 - smaller changes with the files which can be compressed
 - removes old components (everything before VirtualBox v3.0.0)
-- small BugFix in AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
 
 Version 4.0.0
 - SplashScreen, which is not it an official version of SUN
