@@ -81,6 +81,24 @@ Sprachen des Starters: englisch, deutsch, portugisisch, spanisch,
 
 Changelog des Starters:
 
+Version 6.4.2
+- BugFix der automatischen Ersetzung von absoluten Pfaden in
+  relativen Pfaden, in der VirtualBox.xml
+- Fehler im UpDate-System beseitigt
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.4.1
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.4.0
+- Spracheauswahl jetzt beim erstem Start
+- Sprachdateien angepasst
+- UpDate-Dialog jetzt in mehreren Sprachen
+- Fehler im UpDate-System beseitigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
 Version 6.3.1
 - Fehler beim manuellen Entpacken beseitigt
 

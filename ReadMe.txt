@@ -75,6 +75,24 @@ Languages of Launcher: english, german, portuguese, spanish, french,
 
 Changelog of Starter:
 
+Version 6.4.2
+- Bug fixed of the automatic replacement of absolute paths in
+  relative paths, in the VirtualBox.xml
+- Bug fixed in the update system
+- cleanup AutoIt-Script
+- Fixed minor bugs in the AutoIt-Script
+
+Version 6.4.1
+- cleanup AutoIt-Script
+- Fixed minor bugs in the AutoIt-Script
+
+Version 6.4.0
+- Language selection is now in first start
+- Language files adapted
+- Update dialogue in several languages now
+- Bug fixed in the update system
+- Fixed minor bugs in the AutoIt-Script
+
 Version 6.3.1
 - BugFix when manually extracting
 
