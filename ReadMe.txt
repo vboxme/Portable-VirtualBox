@@ -75,6 +75,9 @@ Languages of Launcher: english, german, portuguese, spanish, french,
 
 Changelog of Starter:
 
+Version 6.4.5
+- Fixed minor bugs on compress
+
 Version 6.4.4
 - Added russian - thanks @SnakeSel
 - Fixed minor bugs in the AutoIt-Script

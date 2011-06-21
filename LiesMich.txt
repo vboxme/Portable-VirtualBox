@@ -81,6 +81,9 @@ Sprachen des Starters: englisch, deutsch, portugisisch, spanisch,
 
 Changelog des Starters:
 
+Version 6.4.5
+- kleine Fehler beim komprimieren beseitigt
+
 Version 6.4.4
 - Russisch hinzugefügt - Danke an @SnakeSel
 - kleinere Fehler im AutoIt-Script beseitigt
