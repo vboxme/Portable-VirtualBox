@@ -4,7 +4,7 @@
 ; Author         : Michael Meyer (michaelm_007)
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.5
+; Version        : 6.4.6
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
@@ -30,10 +30,11 @@ TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
 
-Global $version = "6.4.5"
+Global $version = "6.4.6"
 Global $var1 = @ScriptDir&"\data\settings\settings.ini"
 Global $var2 = @ScriptDir&"\data\language\"
 Global $lng = IniRead ($var1, "language", "key", "NotFound")
+Global $pwd = @ScriptDir
 
 Global $new1 = 0, $new2 = 0
 
@@ -1492,7 +1493,7 @@ Func ExitScript ()
 EndFunc
 
 Func DownloadFile ()
-  Local $download1 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound"), "VirtualBox.exe", 1, 1)
+  Local $download1 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound"), $pwd&"\VirtualBox.exe", 1, 1)
   Local $download2 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound")
   Do
     Sleep (250)
@@ -1501,7 +1502,7 @@ Func DownloadFile ()
     GUICtrlSetData ($Input200, IniRead ($var2 & $lng &".ini", "status", "01", "NotFound") &" "& @LF & $download2 & @LF & "Bytes = " & $bytes)
   Until InetGetInfo ($download1, 2)
   InetClose ($download1)
-  Local $download3 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound"), "Extension", 1, 1)
+  Local $download3 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound"), $pwd&"\Extension", 1, 1)
   Local $download4 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound")
   Do
     Sleep (250)
