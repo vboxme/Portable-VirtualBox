@@ -75,6 +75,76 @@ Languages of Launcher: english, german, portuguese, spanish, french,
 
 Changelog of Starter:
 
+Version 6.3.1
+- BugFix when manually extracting
+
+Version 6.3.0
+- references when starting renews
+- UpDate-Dialogue adapted
+- cleanup AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.2.9
+- references when starting renews
+- "7z.exe" and "upx.exe" updated
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.2.8
+- cleanup AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.2.7
+- errors in the UpDate-System eliminates
+
+Version 6.2.6
+- Online-Updates over menu capable of being turned off
+- Language files adapted
+- Reference for restart, with first use, for path mechanism
+- cleanup AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.2.5
+- BugFix of HotKeys
+- Errors in the AutoIt Script eliminates
+
+Version 6.2.4
+- Language files adapted
+- Tray-Menu now without CheckBox
+
+Version 6.2.3
+- UpDate-Dialogue adapted
+- Errors in the AutoIt Script eliminates
+
+Version 6.2.2
+- errors in the AutoIt-Script eliminates
+
+Version 6.2.1
+- internet Update-System inserted
+- "settings.ini" adapted
+- "vboxinstall.ini" adapted
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.2.0
+- Update-System inserted
+- "settings.ini" adapted
+- "vboxinstall.ini" adapted
+- "7z.exe" to the tools added
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.1.0
+- remove SplashScreen 
+- remove Download-Info 
+- added Status-Info 
+- smaller errors in the AutoIt-Script eliminates
+
+Version 6.0.0
+- File structure changed
+- "ExtensionPacks" are loaded and unpacked
+- TEST USB-support
+- AutoIt-Script adapted to new version
+- cleanup AutoIt-Script
+- smaller errors in the AutoIt-Script eliminates
+
 Version 5.0.0
 - File structure changed
 - full network support
@@ -87,13 +157,13 @@ Version 4.2.1
 - AutoIt-Script to Oracle adapted
 
 Version 4.2.0
-- AutoIt-Script adapted to new EXE
+- AutoIt-Script adapted to new version
 
 Version 4.1.5
 - Errors with compress eliminated
 
 Version 4.1.4
-- files which can be compressed updates
+- files which can be compressed updated
 
 Version 4.1.3 
 - Snapshot errors eliminates

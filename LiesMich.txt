@@ -81,6 +81,76 @@ Sprachen des Starters: englisch, deutsch, portugisisch, spanisch,
 
 Changelog des Starters:
 
+Version 6.3.1
+- Fehler beim manuellen Entpacken beseitigt
+
+Version 6.3.0
+- Hinweise beim Starten erneuert
+- UpDate-Dialog angepasst
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.2.9
+- Hinweise beim Starten erneuert
+- "7z.exe" und "upx.exe" aktualisiert
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.2.8
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.2.7
+- Fehler im UpDate-System beseitigt
+
+Version 6.2.6
+- Online-UpDate über Menü abstellbar
+- Sprachdateien angepasst
+- Hinweis für Neustart, bei Erstbenutzung, zwecks Pfadeinrichtung
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.2.5
+- BugFix in HotKey-Einstellungen
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.2.4
+- Sprachdateien angepasst
+- Tray-Menu jetzt ohne CheckBox
+
+Version 6.2.3
+- UpDate-Dialog angepasst
+- Fehler im AutoIt-Script beseitigt
+
+Version 6.2.2
+- Fehler im AutoIt-Script beseitigt
+
+Version 6.2.1
+- Internet UpDate-System eingebaut
+- "settings.ini" angepasst
+- "vboxinstall.ini" angepasst
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.2.0
+- UpDate-System eingebaut
+- "settings.ini" angepasst
+- "vboxinstall.ini" angepasst
+- "7z.exe" zu den Tools hinzugefügt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.1.0
+- SplashScreen entfernt
+- Download-Info entfernt
+- Status-Info hinzugefügt
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 6.0.0
+- Ordnerstruktur geändert
+- "ExtensionPacks" werden geladen und entpackt
+- TEST USB-Support
+- AutoIt-Script an neue Version angepasst
+- AutoIt-Script bereinigt
+- kleinere Fehler im AutoIt-Script beseitigt
+
 Version 5.0.0
 - Ordnerstruktur geändert
 - voller Netzwerk-Support
@@ -93,7 +163,7 @@ Version 4.2.1
 - AutoIt-Script an Oracle angepasst
 
 Version 4.2.0
-- AutoIt-Script an neue EXE angepasst
+- AutoIt-Script an neue Version angepasst
 
 Version 4.1.5
 - Fehler beim komprimieren beseitigt
