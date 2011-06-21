@@ -1,0 +1,354 @@
+. : Portble-VirtualBox : .
+
+Beschreibung: Es braucht nur die Portable-VirtualBox.exe ausgeführt
+              werden und alle Einstellungen werden automatisch
+              vorgenommen. Es muss also nichts von Hand editiert
+              werden.
+
+Features des Starters:
+
+- Downloader und Entpacker für die Installationsdatei enthalten
+- SplashScreen beim Start und Ende (ob etwas passiert)
+- HotKeys (STRG+1 bis STRG+6) für mehr Komfort
+- HotKeys sind selber definierbar
+- Tray-Menü, über rechtsklick mit der Maus (multilanguage)
+- Einstellungen und Sprachen werden in *.ini-Dateien gespeichert
+- verstecken der VM und des Managers in den Tray
+- Ändern des Heimverzeichnisses, Start-VM, HotKeys und Sprache per
+  Mausklick (multilanguage)
+- Überprüfung, ob VirtaulBox-Dateien existieren, sonst erfolgt
+  Fehlermeldung und der Startabruch
+- starten des VirtualBox-Managers mit Parameter 
+  (Portable-VirtualBox.exe "VM-Name")
+- alle absoluten Pfade in der VirtualBox.xml werden automatisch
+  durch relative Pfade ersetzt
+- u.v.m.
+
+Hinweis: VirtualBox benötigt mindestens Hauptbenutzer-Rechte, da 4
+         Dienste(VBoxDRV, VBoxUSBMon und wenn nicht schon
+         installiert VBoxUSB, des weitern VBoxNetFLT und 
+         sun_VboxNetFLT) eingerichtet werden müssen und VirtualBox
+         im "Ring-3"-Modus initiiert wird. Die Treiber
+         des Netzwerkes werden mit snetcfg.exe (aus dem MS DDK 2003)
+         eingebunden. Damit sie geladen werden, muss in den
+         Einstellungen von Portable-VirtualBox, unter dem Reiter
+         "NET", dies ausgewählt werden. Zur Sicherheit, was
+         installiert wird, muss der Installation zugestimmt werden.
+         Nach dem Beenden von Portable-VirtualBox werden die Treiber
+         und Dateien wieder entfernt!
+         
+         Damit das NAT-Netzwerk funktioniert und somit die Shared-
+         Folder, müssen die Gästeerweiterungen installiert sein.
+         
+         Wer noch etwas mehr Platz sparen will, kann alle
+         Sprachdateien außer den die ihr benötigt und die
+         Dokumentation löschen. Spart noch einmal ca. 9MB. Die
+         Sprachdateien sind im Ordner: app..\nls und die
+         Dokumentation im Ordner: app..\doc
+
+         Wenn die VM läuft muss die "HOST-Taste" (rechte STRG-Taste)
+         betätigt werden, um die Hotkeys verwenden zu können. Da der
+         Focus dann auf der VM liegt!
+
+Netzwerk-Support: 1. Download von Portable-VirtualBox
+                  2. entpacken von Portable-VirtualBox
+                  3. starten von Portable-VirtualBox
+                  4. Einstellungen öffnen (Tray --> Einstellungen,
+                     STRG+5)--> Reiter Network (Tab)
+                     --> VirtualBox mit Netzwerkunterstützung
+                     starten --> Speichern (save)
+                  5. beenden von Portable-VirtualBox
+                  6. starten von Portable-VirtualBox
+                  7. Treiberinstallation zustimmen
+                  8. warten
+                  9. Auswahl einer VM und die Netzwerkkarte auf 
+                     Host-Interface einstellen
+                  10. Einstellungen vornehmen
+                  11. FERTIG
+         
+Wichtig: Es wurden keine Dateien von VirtualBox 
+         (http://www.virtualbox.org) modifiziert oder anderweitig
+         verändert. Die Dateien wurden lediglich entpackt und mit UPX
+         (http://upx.sourceforge.net) oder MPRESS  
+         (http://www.matcode.com/mpress.htm) gepackt, um
+         Speicherplat zu sparen!
+
+Download und Support:
+http://www.german-winlite.de/wbb/index.php?page=Board&boardID=153
+
+Sprachen des Starters: englisch, deutsch, portugisisch, spanisch,
+                       französisch, italienisch
+
+Changelog des Starters:
+
+Version 4.2.1
+- SplashScreen erneuert
+- Task- und Programm-Icon erneuert
+- AutoIt-Script an Oracle angepasst
+
+Version 4.2.0
+- AutoIt-Script an neue EXE angepasst
+
+Version 4.1.5
+- Fehler beim komprimieren beseitigt
+
+Version 4.1.4
+- zu komprimierende Dateien aktualisiert
+
+Version 4.1.3
+- Snapshot-Fehler beseitigt
+
+Version 4.1.2
+- AutoIt-Script an neue AutoIt-Version angepasst
+- kleine BugFix im AutoIt-Script
+
+Version 4.1.1
+- Fehler der absoluten Pfade bei den Snapshots beseitigt
+
+Version 4.1.0
+- kleinere Änderungen bei den zu packenden Dateien
+- alte Bestandteile entfernt (alles vor VirtualBox v3.0.0)
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 4.0.0
+- SplashScreen, das es keine offizielle Version von SUN ist
+- Öffnen der Lizenzbedingungen von VirtualBox, über einen Lizenz-Button
+- Auswahl, welche Version entpackt werden soll
+- Auswahl, ob die Dateien komprimiert werden sollen
+- Auswahl, ob die Installationsdatei von Portable-VirtualBox heruntergeladen werden soll
+- selbstständiges Anlegen der Ordner "app32" und/oder "app64", je nach Auswahl
+- GUI des Entpackers in deutsch und englisch
+- der Starter kann für alle Win-Systeme verwendet werden (32Bit, 64Bit oder 32Bit/64Bit-Autoswitch)
+- kleinere Fehler im AutoIt-Script beseitigt
+
+Version 3.1.0
+- BugFix beim Aufrufen der Netzwerkunterstützung
+
+Version 3.0.9
+- BugFix der OS-Architektur-Erkennung 
+
+Version 3.0.8
+- BugFix der HotKeys
+
+Version 3.0.7
+- kleiner BugFix im AutoIt-Script
+- Sprachen aktualisiert
+- AutoIt-Script angepasst
+
+Version 3.0.6
+- BugFix wenn Leerzeichen im Pfad sind und die Netzwerk-Treiber
+  installiert werden sollen
+- Sprachen aktualisiert
+
+Version 3.0.5
+- BugFix beim Erstellen des Home-Verzeichnisses
+
+Version 3.0.4
+- BugFix im AutoIt-Script
+- Sprachen aktualisiert (russisch entfernt)
+
+Version 3.0.3
+- BugFix beim Aufrufen der x64-Netzwerkunterstützung
+- kleiner BugFix im AutoIt-Script
+
+Version 3.0.2
+- BugFix des SplashScreen, damit Treiber installiert werden können
+
+Version 3.0.1
+- BugFix der automatischen Ersetzung von absoluten Pfaden in
+  relativen Pfaden, in der VirtualBox.xml
+- BugFix beim Aufrufen der Netzwerkunterstützung, ist jetzt auch
+  x86-kompatibel (snetcfg_x86.exe und snetcfg_x64.exe im 
+  "data\settings"-Ordner)
+
+Version 3.0.0
+- volle Netzwerkunterstützung integriert (dies kann in den Ein-
+  stellungen von Portable-VirtualBox, unter NET ausgewählt werden)
+  !!! Die Installation muss bestätigt werden. Nach dem Beenden werden
+  die Treiber, Dienste und alle dazugehörigen Dateien gelöscht !!!
+- Sprachen aktualisiert
+- BugFix im AutoIt-Scirpt
+
+Version 2.4.1
+- überprüfen des vorhanden sein der gebundenen Medien, sonst werden
+  die Daten gelöscht
+
+Version 2.4.0
+- BugFixes im AutoIt-Script
+
+Version 2.3.9
+- Aufruf der Dienste geändert
+- BugFix im AutoIt-Script
+
+Version 2.3.8
+- BugFix der SnapShot-Pfade, damit alle absoluten Pfade der 
+  Snapshots automatisch durch relative Pfade ersetzt
+- kompatibilität zu älteren Versionen von VirtualBox und AutoIt 
+  erhalten
+
+Version 2.3.7
+- AutoIt-Script angepasst, damit alle absoluten Pfade in der 
+  VirtualBox.xml automatisch durch relative Pfade ersetzt
+- BugFix das die VirtualBox.xml richtig vom Starter verarbeitet wird
+- Einstellung der StartVM an neue Version von VirtualBox angepasst
+- BugFix im AutoIt-Script
+
+Version 2.3.6
+- AutoIt-Script an neue AutoIt-Version angepasst
+- kleine BugFix im AutoIt-Script
+
+Version 2.3.5
+- AutoIt-Script angepasst, damit alle absoluten Pfade in der 
+  VirtualBox.xml automatisch durch relative Pfade ersetzt
+
+Version 2.3.4
+- überprüfen und kopieren des vorhanden sein der Dateien, die für das
+  Ausführen im System-Ordner liegen müssen
+- BugFix beim kopieren der Dateien in der AutoSwitch-Version
+
+Version 2.3.3
+- BugFix im VirtualBox-Manager, wenn Leerzeichen im Namen der VM
+
+Version 2.3.2
+- BugFix in HotKey-Einstellungen
+
+Version 2.3.1
+- BugFix im AutoIt-Script zu den Einstellungen
+
+Version 2.3.0
+- BugFix und Cleaning im AutoIt-Script
+- nur noch eine Starter für alle Versionen (32Bit-,64Bit- und
+  32Bit/64Bit-AutoSwitch)
+- Kompatibilität zu älteren Versionen des Starters erhalten
+
+Version 2.2.5
+- BugFix in der USB-Treibereinbindung (Hardware)
+
+Version 2.2.4
+- kleine Änderung im Aufruf der VBoxRT.dll
+
+Version 2.2.3
+- Sprachdateien aktuallisiert
+- Portable-VirtualBox jetzt auch auf italienisch (danke an @FSL aus
+  dem german-nlite.org-Forum)
+- ein gemeinsamer Ordner für die "VBoxGuestAdditions.iso" bei der
+  32Bit/64Bit-AutoSwitch-Version
+
+Version 2.2.2
+- BugFix beim Laden der Sprachdateien
+
+Version 2.2.1
+- Starter übersetzt (mit BabelFish) ins französische, spanische,
+  portugiesische, russische
+- kleinere BugFixes im AutoIt-Script
+
+Version 2.2.0
+- BugFix des VirtualBox-Manager
+- starten des VirtualBox-Manager mit Parameter
+  (Portable-VirtualBox.exe "VM")
+- alle absoluten Pfade in der VirtualBox.xml werden automatisch
+  durch relative Pfade ersetzt
+- kleinere BugFixes im AutoIt-Script
+
+Version 2.1.3
+- BugFix im TrayMenü
+- BugFix in HotKey-Einstellungen
+- kleinere BugFixes im AutoIt-Script
+
+Version 2.1.2
+- BugFix in Sprach-Einstellungen
+
+Version 2.1.1
+- BugFixes in HotKey-Einstellungen
+
+Version 2.1.0
+- HotKeys können jetzt selbst gewählt werden
+- BugFixes
+
+Version 2.0.0
+- AutoIt-Script neugeschrieben
+- neues Einstellungs-Menü
+- Spracheinstellungen über ein *.ini (mehrsprachige Unterstützung des
+  Starters)
+- BugFixes
+
+Version 1.4.0
+- AutoIt-Script neugeschrieben
+- Treiber werden jetzt alle mit "Windows-Boardmitteln" geladen
+- HotKeys abschaltbar
+
+Version 1.3.7
+- BugFix der Services, umbenannt da es zu Komplikationen kommen
+  konnte, wenn VirtualBox auf dem Hostsystem installiert ist
+- kleinere BugFixes im AutoIt-Script
+
+Version 1.3.6
+- es kann nur eine Instanz von VirtualBox gestartet werden (wenn
+  VirtualBox schon geladen ist, wird auf diese Instanz der Focus
+  gelegt und in den Vordergrund geholt)
+- UAC-Signierung für Windows Vista
+- definitiven Exit-Befehl in das AutoIt-Script eingepflegt
+
+Version 1.3.5
+- BugFix beim benutzen des VirtualBox-Manager
+- BugFix beim Laden und Aufruf der Service
+- Löschen der unnötigen Service im AutoIt-Script
+
+Version 1.3.4
+- BugFix bei den Einstellungen in Englisch
+- Text für die Auswahl des Heimverzeichnisses und Des VirtualBox-
+  Manager angepasst
+
+Version 1.3.3
+- Icon wurde angepasst
+- BugFix beim laden der Treiber
+
+Version 1.3.2
+- BigFix bei dem Focus der Radio-Buttons (wenn ein Heimverzeichnis
+  oder eine VM gewählt wird, springtder Focus nun automatisch auf den
+  richtigen Radio-Button)
+
+Version 1.3.1
+- BugFix bei der Auswahl der VM des VirtualBox-Manager
+
+Version 1.3
+- Heimverzeichnis und VirtualBox-Manager VM können jetzt auch einfach
+  mit der Maus ausgewählt oder per Hand eingetragen werden
+- Überprüfung ob VirtualBox-Dateien vorhanden sind, ist jetzt genauer
+
+Version 1.2.1
+- BugFix im Aufruf vom VirtualBox-Manager
+
+Version 1.2
+- startet auch ohne SplashScreen (einfache Textbox wird angezeigt)
+- Batch-Datei entfernt und durch "settings.ini" ersetzt (wird beim
+  fehlen automatisch erstellt)
+- neue Hotkeys (STRG+1 bis STRG+7)
+- Hotkeys jetzt ausgerichtet
+- Menü erweitert, wegen den Optionen für das Heimverzeichnis und dem
+  VirtualBox-Manager
+- Heimverzeichnis und VirtualBox-Manger können über eine GUI
+  konfiguriert werden (STRG+5: anderes Heimverzeichnis oder DEFAULT;
+  STRG+6: VirtualBox-Manager benutzen oder DEFAULT)
+- Menü erkennt automatisch die Sprache des OS (deutsch: Deutschland,
+  Östereich, Schweiz; englisch: alle anderen Länder)
+- überprüft beim starten, ob die VirtualBox-Dateien vorhanden sind
+  (beim fehlen erscheint eine Fehlermeldung und der Start wird
+  abgebrochen)
+
+Version 1.1
+- SplashScreen beim start und beenden (damit man sieht, das etwas
+  passiert)
+- Hotkeys (STRG+1 bis STRG+5)
+- rechter Mausklick auf das Tray-Icon für Optionen
+- minimieren in den Tray
+
+Version 1.0
+- alle überflüssigen Dateien wurden entfernt und in das AutoIt-Script
+  integriert
+- es werden keinerlei Dateien kopiert
+- die Dienste für VirtualBox werden durch AutoIt gestartet
+
+Viel Spass und MfG
+
+Micha (michaelm_007)
