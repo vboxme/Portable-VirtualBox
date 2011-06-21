@@ -1,5 +1,5 @@
-; AutoIt Version : 3.3.6.0
-; AutoIt Compiler: 3.3.2.0
+; AutoIt Version : 3.3.6.1
+; AutoIt Compiler: 3.3.6.1
 ; Language       : multilanguage
 ; Author         : Michael Meyer (michaelm_007)
 ; e-Mail         : email.address@gmx.de
