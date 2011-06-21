@@ -4,7 +4,7 @@
 ; Author         : Michael Meyer (michaelm_007)
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.2
+; Version        : 6.4.4
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
@@ -30,7 +30,7 @@ TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
 
-Global $version = "6.4.2"
+Global $version = "6.4.4"
 Global $var1 = @ScriptDir&"\data\settings\settings.ini"
 Global $var2 = @ScriptDir&"\data\language\"
 Global $lng = IniRead ($var1, "language", "key", "NotFound")
@@ -756,10 +756,18 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       
       ProcessWaitClose ("VBoxSVC.exe")
       
-      Sleep (4000)
+      EnvSet ("VBOX_USER_HOME")
+      Local $timer=0
       
       Local $PID = ProcessExists ("VBoxSVC.exe")
       If $PID Then ProcessClose ($PID)
+      
+      While $timer < 10000 AND $PID
+	$PID = ProcessExists ("VBoxSVC.exe")
+	If $PID Then ProcessClose ($PID)
+	Sleep(1000)
+	$timer += 1000
+      Wend
       
       RunWait ($arch&"\VBoxSVC.exe /unregserver", @ScriptDir, @SW_HIDE)
       RunWait ("regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
@@ -1488,7 +1496,8 @@ Func DownloadFile ()
   Local $download2 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound")
   Do
     Sleep (250)
-    Local $bytes = InetGetInfo($download1, 0)
+    Local $bytes = 0
+    $bytes = InetGetInfo($download1, 0)
     GUICtrlSetData ($Input200, IniRead ($var2 & $lng &".ini", "status", "01", "NotFound") &" "& @LF & $download2 & @LF & "Bytes = " & $bytes)
   Until InetGetInfo ($download1, 2)
   InetClose ($download1)
@@ -1496,7 +1505,8 @@ Func DownloadFile ()
   Local $download4 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound")
   Do
     Sleep (250)
-    Local $bytes = InetGetInfo($download3, 0)
+    Local $bytes = 0
+    $bytes = InetGetInfo($download3, 0)
     GUICtrlSetData ($Input200, $download4 & @LF & "Bytes = " & $bytes)
   Until InetGetInfo ($download3, 2)
   InetClose ($download3)
@@ -1504,6 +1514,7 @@ Func DownloadFile ()
     GUICtrlSetData ($Input100, @ScriptDir&"\virtualbox.exe")
   EndIf
   GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "02", "NotFound"))
+  $bytes = 0
 EndFunc
 
 Func SearchFile ()
