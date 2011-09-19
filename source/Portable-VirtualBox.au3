@@ -1,12 +1,16 @@
-; AutoIt Version : 3.3.6.1
-; AutoIt Compiler: 3.3.6.1
 ; Language       : multilanguage
-; Author         : Michael Meyer (michaelm_007)
+; Author         : Michael Meyer (michaelm_007) et al.
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
 ; Version        : 6.4.7
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
+
+#AutoIt3Wrapper_Res_Fileversion=6.4.7
+#AutoIt3Wrapper_Res_ProductVersion=6.4.7
+#AutoIt3Wrapper_Icon=VirtualBox.ico
+#AutoIt3Wrapper_Compression=4
+#AutoIt3Wrapper_Compile_both=Y
 
 #include <ColorConstants.au3>
 #include <Constants.au3>
@@ -631,7 +635,7 @@ EndIf
       Endif
 
       RunWait ($arch&"\VBoxSVC.exe /reregserver", @ScriptDir, @SW_HIDE)
-      RunWait ("regsvr32.exe /S "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
+      RunWait (@SystemDir&"\regsvr32.exe /S "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
       DllCall ($arch&"\VBoxRT.dll", "hwnd", "RTR3Init")
 
       SplashOff ()
@@ -696,7 +700,7 @@ EndIf
           EndIf
           FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltNotify.dll", @SystemDir, 9)
           FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
-          RunWait ("regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
+          RunWait (@SystemDir&"\regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
           Local $NET = 1
         Else
           Local $NET = 0
@@ -775,7 +779,7 @@ EndIf
       Wend
 
       RunWait ($arch&"\VBoxSVC.exe /unregserver", @ScriptDir, @SW_HIDE)
-      RunWait ("regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
+      RunWait (@SystemDir&"\regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
 
       If $DRV = 1 Then
         RunWait ("sc stop VBoxDRV", @ScriptDir, @SW_HIDE)
@@ -815,7 +819,7 @@ EndIf
         If @OSArch = "x64" Then
           RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
         EndIf
-        RunWait ("regsvr32.exe /S /U "&@SystemDir&"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
+        RunWait (@SystemDir&"\regsvr32.exe /S /U "&@SystemDir&"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
         RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
         FileDelete (@SystemDir&"\VBoxNetFltNotify.dll")
         FileDelete (@SystemDir&"\drivers\VBoxNetFlt.sys")
@@ -1570,7 +1574,7 @@ Func UseSettings ()
   If GUICtrlRead ($Checkbox100) = $GUI_CHECKED AND FileExists (@ScriptDir&"\temp") Then
     GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "05", "NotFound"))
     RunWait ("cmd /c ren ""%CD%\temp\*_x86.msi"" x86.msi", @ScriptDir, @SW_HIDE)
-    RunWait ("cmd /c msiexec.exe /a ""%CD%\temp\x86.msi"" TARGETDIR=""%CD%\temp\x86""", @ScriptDir, @SW_HIDE)
+    RunWait ("cmd /c msiexec.exe /quiet /a ""%CD%\temp\x86.msi"" TARGETDIR=""%CD%\temp\x86""", @ScriptDir, @SW_HIDE)
     DirCopy (@ScriptDir&"\temp\x86\PFiles\Oracle VM VirtualBox", @ScriptDir&"\app32", 1)
     FileCopy (@ScriptDir&"\temp\x86\PFiles\Oracle VM VirtualBox\*", @ScriptDir&"\app32", 9)
     DirRemove (@ScriptDir&"\app32\accessible", 1)
@@ -1580,7 +1584,7 @@ Func UseSettings ()
   If GUICtrlRead ($Checkbox110) = $GUI_CHECKED AND FileExists (@ScriptDir&"\temp") Then
     GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "05", "NotFound"))
     RunWait ("cmd /c ren ""%CD%\temp\*_amd64.msi"" amd64.msi", @ScriptDir, @SW_HIDE)
-    RunWait ("cmd /c msiexec.exe /a ""%CD%\temp\amd64.msi"" TARGETDIR=""%CD%\temp\x64""", @ScriptDir, @SW_HIDE)
+    RunWait ("cmd /c msiexec.exe /quiet /a ""%CD%\temp\amd64.msi"" TARGETDIR=""%CD%\temp\x64""", @ScriptDir, @SW_HIDE)
     DirCopy (@ScriptDir&"\temp\x64\PFiles\Oracle VM VirtualBox", @ScriptDir&"\app64", 1)
     FileCopy (@ScriptDir&"\temp\x64\PFiles\Oracle VM VirtualBox\*", @ScriptDir&"\app64", 9)
     DirRemove (@ScriptDir&"\app64\accessible", 1)
