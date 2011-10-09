@@ -2,12 +2,12 @@
 ; Author         : Michael Meyer (michaelm_007) et al.
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.7
+; Version        : 6.4.8
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
-#AutoIt3Wrapper_Res_Fileversion=6.4.7
-#AutoIt3Wrapper_Res_ProductVersion=6.4.7
+#AutoIt3Wrapper_Res_Fileversion=6.4.8
+#AutoIt3Wrapper_Res_ProductVersion=6.4.8
 #AutoIt3Wrapper_Icon=VirtualBox.ico
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Compile_both=Y
@@ -34,7 +34,7 @@ TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
 
-Global $version = "6.4.7"
+Global $version = "6.4.8"
 Global $var1 = @ScriptDir&"\data\settings\settings.ini"
 Global $var2 = @ScriptDir&"\data\language\"
 Global $lng = IniRead ($var1, "language", "key", "NotFound")
@@ -692,15 +692,15 @@ EndIf
         If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetFlt", "DisplayName") <> "VBoxNetFlt Service" Then
           If @OSArch = "x86" Then
             RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFlt_m.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
           EndIf
           If @OSArch = "x64" Then
             RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFlt_m.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
           EndIf
-          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltNotify.dll", @SystemDir, 9)
+          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltNobj.dll", @SystemDir, 9)
           FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
-          RunWait (@SystemDir&"\regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
+          RunWait (@SystemDir&"\regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNobj.dll", @ScriptDir, @SW_HIDE)
           Local $NET = 1
         Else
           Local $NET = 0
@@ -819,9 +819,9 @@ EndIf
         If @OSArch = "x64" Then
           RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
         EndIf
-        RunWait (@SystemDir&"\regsvr32.exe /S /U "&@SystemDir&"\VBoxNetFltNotify.dll", @ScriptDir, @SW_HIDE)
+        RunWait (@SystemDir&"\regsvr32.exe /S /U "&@SystemDir&"\VBoxNetFltNobj.dll", @ScriptDir, @SW_HIDE)
         RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
-        FileDelete (@SystemDir&"\VBoxNetFltNotify.dll")
+        FileDelete (@SystemDir&"\VBoxNetFltNobj.dll")
         FileDelete (@SystemDir&"\drivers\VBoxNetFlt.sys")
       EndIf
 
