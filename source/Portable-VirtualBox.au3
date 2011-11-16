@@ -2,12 +2,12 @@
 ; Author         : Michael Meyer (michaelm_007) et al.
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.8.1
+; Version        : 6.4.8.2
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
-#AutoIt3Wrapper_Res_Fileversion=6.4.8.1
-#AutoIt3Wrapper_Res_ProductVersion=6.4.8.1
+#AutoIt3Wrapper_Res_Fileversion=6.4.8.2
+#AutoIt3Wrapper_Res_ProductVersion=6.4.8.2
 #AutoIt3Wrapper_Icon=VirtualBox.ico
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Compile_both=Y
@@ -34,11 +34,12 @@ TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
 
-Global $version = "6.4.8.1"
+Global $version = "6.4.8.2"
 Global $var1 = @ScriptDir&"\data\settings\settings.ini"
 Global $var2 = @ScriptDir&"\data\language\"
 Global $lng = IniRead ($var1, "language", "key", "NotFound")
 Global $pwd = @ScriptDir
+Global $updateUrl = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "update", "NotFound")
 
 Global $new1 = 0, $new2 = 0
 
@@ -156,7 +157,7 @@ EndIf
 $lng = IniRead ($var1, "language", "key", "NotFound")
 
 If IniRead ($var1, "update", "key", "NotFound") = 1 Then
-  Local $hDownload = InetGet ("http://www.vbox.me/update/update.dat", @TempDir&"\update.ini", 1, 1)
+  Local $hDownload = InetGet ($updateUrl&"update.dat", @TempDir&"\update.ini", 1, 1)
   Do
     Sleep (250)
   Until InetGetInfo ($hDownload, 2)
@@ -1722,7 +1723,7 @@ EndFunc
 
 Func UpdateYes ()
   If $new1 = 1 Then
-    Local $hDownload = InetGet ("http://www.vbox.me/update/vboxinstall.dat", @ScriptDir&"\data\settings\vboxinstall.ini", 1, 1)
+    Local $hDownload = InetGet ($updateUrl&"vboxinstall.dat", @ScriptDir&"\data\settings\vboxinstall.ini", 1, 1)
     Do
       Sleep (250)
     Until InetGetInfo ($hDownload, 2)
@@ -1747,10 +1748,10 @@ Func UpdateYes ()
     DirCreate (@ScriptDir&"\update\")
     GUICtrlSetData ($Input300, IniRead ($var2 & $lng &".ini", "status", "10", "NotFound"))
 
-    Local $vboxdown = IniRead ("http://www.vbox.me/update/download.ini", "download", "key", "NotFound")
-    IniWrite ("http://www.vbox.me/update/download.ini", "download", "key", $vboxdown + 1)
+    Local $vboxdown = IniRead ($updateUrl&"download.ini", "download", "key", "NotFound")
+    IniWrite ($updateUrl&"download.ini", "download", "key", $vboxdown + 1)
 
-    Local $hDownload = InetGet ("http://www.vbox.me/update/vbox.7z", @ScriptDir&"\update\vbox.7z", 1, 1)
+    Local $hDownload = InetGet ($updateUrl&"vbox.7z", @ScriptDir&"\update\vbox.7z", 1, 1)
     Do
       Sleep (250)
     Until InetGetInfo ($hDownload, 2)
