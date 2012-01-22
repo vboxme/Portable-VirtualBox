@@ -2,12 +2,12 @@
 ; Author         : Michael Meyer (michaelm_007) et al.
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.8.2
+; Version        : 6.4.8.3
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
-#AutoIt3Wrapper_Res_Fileversion=6.4.8.2
-#AutoIt3Wrapper_Res_ProductVersion=6.4.8.2
+#AutoIt3Wrapper_Res_Fileversion=6.4.8.3
+#AutoIt3Wrapper_Res_ProductVersion=6.4.8.3
 #AutoIt3Wrapper_Icon=VirtualBox.ico
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Compile_both=Y
@@ -1508,16 +1508,20 @@ Func DownloadFile ()
     Sleep (250)
     Local $bytes = 0
     $bytes = InetGetInfo($download1, 0)
-    GUICtrlSetData ($Input200, IniRead ($var2 & $lng &".ini", "status", "01", "NotFound") &" "& @LF & $download2 & @LF & "Bytes = " & $bytes)
+	$total_bytes = InetGetInfo($download1, 1)
+    GUICtrlSetData ($Input200, IniRead ($var2 & $lng &".ini", "status", "01", "NotFound") &" "& $download2 & @LF & DisplayDownloadStatus($bytes,$total_bytes) )
+	GUICtrlSetData($ProgressBar1,Round(100*$bytes/$total_bytes))
   Until InetGetInfo ($download1, 2)
   InetClose ($download1)
   Local $download3 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound"), $pwd&"\Extension", 1, 1)
   Local $download4 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound")
+  $total_bytes = InetGetInfo($download3, 1)
   Do
     Sleep (250)
     Local $bytes = 0
     $bytes = InetGetInfo($download3, 0)
-    GUICtrlSetData ($Input200, $download4 & @LF & "Bytes = " & $bytes)
+	$total_bytes = InetGetInfo($download3, 1)
+    GUICtrlSetData ($Input200, $download4 & @LF & DisplayDownloadStatus($bytes,$total_bytes))
   Until InetGetInfo ($download3, 2)
   InetClose ($download3)
   If FileExists (@ScriptDir&"\virtualbox.exe") Then
@@ -1526,6 +1530,23 @@ Func DownloadFile ()
   GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "02", "NotFound"))
   $bytes = 0
 EndFunc
+
+Func DisplayDownloadStatus($downloaded_bytes,$total_bytes)
+	if $total_bytes > 0 Then
+		Return RoundForceDecimalMB($downloaded_bytes)& "MB / "&RoundForceDecimalMB($total_bytes)&"MB ("&Round(100*$downloaded_bytes/$total_bytes)&"%)"
+	Else
+		Return RoundForceDecimalMB($downloaded_bytes)& "MB"
+	EndIf
+EndFunc
+
+Func RoundForceDecimalMB($number)
+	$rounded = Round($number/1048576, 1)
+	If Not StringInStr($rounded, ".") Then
+		Return $rounded & ".0"
+	Else
+		Return $rounded
+	EndIf
+EndFunc   ;==>RoundForceDecimal
 
 Func SearchFile ()
   Local $FilePath = FileOpenDialog (IniRead ($var2 & $lng &".ini", "status", "03", "NotFound"), @ScriptDir, "(*.exe)", 1+2)
