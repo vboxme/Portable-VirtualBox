@@ -1510,7 +1510,7 @@ Func DownloadFile ()
     $bytes = InetGetInfo($download1, 0)
 	$total_bytes = InetGetInfo($download1, 1)
     GUICtrlSetData ($Input200, IniRead ($var2 & $lng &".ini", "status", "01", "NotFound") &" "& $download2 & @LF & DisplayDownloadStatus($bytes,$total_bytes) )
-	GUICtrlSetData($ProgressBar1,Round(100*$bytes/$total_bytes)) ; <<<TODO: Ticket 3509714
+	;GUICtrlSetData($ProgressBar1,Round(100*$bytes/$total_bytes)) ; <<<TODO: Ticket 3509714
   Until InetGetInfo ($download1, 2)
   InetClose ($download1)
   Local $download3 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound"), $pwd&"\Extension", 1, 1)
