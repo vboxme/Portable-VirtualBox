@@ -7,4 +7,4 @@ More info is available at http://www.vbox.me/
 
 ### Building ###
 
-Please see here for information on how to build from source: [BUILDING]
+Please see here for information on how to build from source: [BUILDING](BUILDING.md).
