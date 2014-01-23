@@ -11,11 +11,11 @@ Obtain and install the following
 
 ## Obtaining the source code ##
 
-Check out the source code from GitHub. For example by using git from the command line like this:
+Check out the source code from GitHub. For example by using [GitHub on Windows](http://windows.github.com/) or use git from the command line like this:
 
 `git clone https://github.com/vboxme/Portable-VirtualBox.git`
 
-This will make a new folder named "Portable-VirtualBox"
+This will make a new folder named "Portable-VirtualBox".
 
 
 ## Making a new version with the build script ##
