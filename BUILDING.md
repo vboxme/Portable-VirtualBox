@@ -2,9 +2,9 @@ To build Portable-VirtualBox from source do the following:
 
 ### Prerequisites ###
 
-Obtain and install the following
+Obtain and install the following free tools
 
-* AutoIt from http://www.autoitscript.com/site/autoit/downloads/ 
+* AutoIt from http://www.autoitscript.com/site/autoit/downloads/ ( you need "AutoIt Full Installation" )
 * 7zip from http://www.7-zip.org/
 * Resource Hacker from http://www.angusj.com/resourcehacker/
 
