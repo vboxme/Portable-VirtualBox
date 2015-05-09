@@ -27,7 +27,7 @@ Features des Starters:
 Hinweis: VirtualBox benötigt mindestens Hauptbenutzer-Rechte, da 4
          Dienste(VBoxDRV, VBoxUSBMon und wenn nicht schon
          installiert VBoxUSB, des weitern VBoxNetFLT und 
-         sun_VboxNetFLT) eingerichtet werden m�üsen und VirtualBox
+         sun_VboxNetFLT) eingerichtet werden müssen und VirtualBox
          im "Ring-3"-Modus initiiert wird. Die Treiber
          des Netzwerkes werden mit snetcfg.exe (aus dem MS DDK 2003)
          eingebunden. Damit sie geladen werden, muss dies in den
