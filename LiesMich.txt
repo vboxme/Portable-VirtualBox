@@ -73,7 +73,7 @@ Wichtig: Es wurden keine Dateien von VirtualBox
          Speicherplatz zu sparen!
 
 Download und Support:
-http://www.german-winlite.de/wbb/index.php?page=Board&boardID=153
+http://www.vbox.me/
 
 Sprachen des Starters: englisch, deutsch, portugisisch, spanisch,
                        französisch, italienisch
