@@ -157,7 +157,7 @@ EndIf
 $lng = IniRead ($var1, "language", "key", "NotFound")
 
 If IniRead ($var1, "update", "key", "NotFound") = 1 Then
-  Local $hDownload = InetGet ($updateUrl&"update.dat", @TempDir&"\update.ini", 1, 1)
+  Local $hDownload = InetGet ($updateUrl&"settings.ini", @TempDir&"\update.ini", 1, 1)
   Do
     Sleep (250)
   Until InetGetInfo ($hDownload, 2)
@@ -1746,7 +1746,7 @@ EndFunc
 
 Func UpdateYes ()
   If $new1 = 1 Then
-    Local $hDownload = InetGet ($updateUrl&"vboxinstall.dat", @ScriptDir&"\data\settings\vboxinstall.ini", 1, 1)
+    Local $hDownload = InetGet ($updateUrl&"vboxinstall.ini", @ScriptDir&"\data\settings\vboxinstall.ini", 1, 1)
     Do
       Sleep (250)
     Until InetGetInfo ($hDownload, 2)
