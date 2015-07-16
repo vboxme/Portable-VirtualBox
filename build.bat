@@ -1,8 +1,14 @@
 @echo off       
+
+rem Unseting user variables
+set "aut2exe="
+set "sevenzip="
+set "reshack="
+
 rem User-defined variables. You may have to change its values to correspond to your system and remove the "rem" statement in front of it.
-rem set "aut2exe=D:\Programs\AutoIt\Aut2Exe\aut2exe.exe"
+rem set "aut2exe=C:\Program Files (x86)\AutoIt3\Aut2Exe\aut2exe.exe"
 rem set "sevenzip=C:\Program Files\7-Zip\7z.exe"
-rem set "reshack=D:\Programs\reshack\reshacker.exe"
+rem set "reshack=C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe"
 rem End of user-defined variables.
 
 
@@ -14,55 +20,95 @@ set "release_folder=%input_folder%\build\release"
 set "output_name=Portable-VirtualBox_current.exe"
 
 
-
-rem Try to find the aut2exe path.
-set "PROG=AutoIt3\Aut2Exe\aut2exe.exe"
-
-set PPATH="%ProgramFiles%\%PROG%"
-set PPATHx86="%ProgramFiles(x86)%\%PROG%"
-IF exist %PPATH% (
-    set aut2exe=%PPATH%
-) ELSE (
-    set aut2exe=%PPATHx86%
+rem aut2exe
+rem If the user supplied a aut2exe path use it
+IF DEFINED aut2exe (
+	echo Using user defind path to aut2exe
+	goto done_aut2exe
 )
 
-IF not exist %aut2exe% (
+rem Try to find the aut2exe path.
+set "PPATH=%ProgramFiles%\AutoIt3\Aut2Exe\aut2exe.exe"
+IF exist "%PPATH%" (
+    set "aut2exe=%PPATH%"
+	goto done_aut2exe
+) 
+
+set "PPATH=%ProgramFiles(x86)%\AutoIt3\Aut2Exe\aut2exe.exe"
+IF exist "%PPATH%" (
+    set "aut2exe=%PPATH%"
+	goto done_aut2exe
+) 
+
+:done_aut2exe
+IF not exist "%aut2exe%" (
     echo Can't locate AutoIt. Is it installed? Pleas set the aut2exe variable if it is installed in a nonstandard path.
     EXIT /B
 )
 
 
-
-rem Try to find the sevenzip path.
-set "PROG=7-Zip\7z.exe"
-
-set PPATH="%ProgramFiles%\%PROG%"
-set PPATHx86="%ProgramFiles(x86)%\%PROG%"
-IF exist %PPATH% (
-    set sevenzip=%PPATH%
-) ELSE (
-    set sevenzip=%PPATHx86%
+rem sevenzip
+rem If the user supplied a sevenzip path use it
+IF DEFINED sevenzip (
+	echo Using user defind path to sevenzip
+	goto done_sevenzip
 )
 
-IF not exist %sevenzip% (
+rem Try to find the sevenzip path.
+set "PPATH=%ProgramFiles%\7-Zip\7z.exe"
+IF exist "%PPATH%" (
+    set "sevenzip=%PPATH%"
+	goto done_sevenzip
+) 
+
+set "PPATH=%ProgramFiles(x86)%\7-Zip\7z.exe"
+IF exist "%PPATH%" (
+    set "sevenzip=%PPATH%"
+	goto done_sevenzip
+) 
+
+:done_sevenzip
+IF not exist "%sevenzip%" (
     echo Can't locate 7-Zip. Is it installed? Pleas set the sevenzip variable if it is installed in a nonstandard path.
     EXIT /B
 )
 
 
-
-rem Try to find the reshack path.
-set "PROG=Resource Hacker\reshacker.exe"
-
-set PPATH="%ProgramFiles%\%PROG%"
-set PPATHx86="%ProgramFiles(x86)%\%PROG%"
-IF exist %PPATH% (
-    set reshack=%PPATH%
-) ELSE (
-    set reshack=%PPATHx86%
+rem reshack
+rem If the user supplied a reshack path use it
+IF DEFINED reshack (
+	echo Using user defind path to reshack
+	goto done_reshack
 )
 
-IF not exist %reshack% (
+rem Try to find the reshack path.
+set "PPATH=%ProgramFiles%\Resource Hacker\reshacker.exe"
+IF exist "%PPATH%" (
+    set "reshack=%PPATH%"
+	goto done_reshack
+) 
+
+set "PPATH=%ProgramFiles(x86)%\Resource Hacker\reshacker.exe"
+IF exist "%PPATH%" (
+    set "reshack=%PPATH%"
+	goto done_reshack
+) 
+
+set "PPATH=%ProgramFiles%\Resource Hacker\ResourceHacker.exe"
+IF exist "%PPATH%" (
+    set "reshack=%PPATH%"
+	goto done_reshack
+) 
+
+set "PPATH=%ProgramFiles(x86)%\Resource Hacker\ResourceHacker.exe"
+IF exist "%PPATH%" (
+    set "reshack=%PPATH%"
+	goto done_reshack
+)
+
+:done_reshack
+echo "%reshack%"
+IF not exist "%reshack%" (
     echo Can't locate Reshack. Is it installed? Pleas set the reshack variable if it is installed in a nonstandard path.
     EXIT /B
 )
@@ -87,15 +133,19 @@ xcopy "%input_folder%LiesMich.txt" "%build_folder%\Portable-VirtualBox\"
 xcopy "%input_folder%ReadMe.txt"  "%build_folder%\Portable-VirtualBox\"
 
 rem Compile Portable-VirtualBox.
-%aut2exe% /in "%build_folder%\Portable-VirtualBox\source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox.exe" /icon "%build_folder%\Portable-VirtualBox\source\VirtualBox.ico" /x86
+"%aut2exe%" /in "%build_folder%\Portable-VirtualBox\source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox.exe" /icon "%build_folder%\Portable-VirtualBox\source\VirtualBox.ico" /x86
+if not exist "%build_folder%\Portable-VirtualBox\Portable-VirtualBox.exe" (
+	echo Failed to build exe. No .exe file was produced
+	EXIT /B
+)
 
 rem Make a release by packing the exe, data and source code into a self-extracting archive.
 pushd %build_folder%
-%sevenzip% a -r -x!.git -sfx7z.sfx "%release_folder%\Portable-VirtualBox.tmp" "Portable-VirtualBox"
+"%sevenzip%" a -r -x!.git -sfx7z.sfx "%release_folder%\Portable-VirtualBox.tmp" "Portable-VirtualBox"
 popd
 
 rem Change the icon on the self-extracting archive.
-%reshack% -addoverwrite "%release_folder%\Portable-VirtualBox.tmp", "%release_folder%\%output_name%", "%build_folder%\Portable-VirtualBox\source\VirtualBox.ico",ICONGROUP,1,1033
+"%reshack%" -addoverwrite "%release_folder%\Portable-VirtualBox.tmp", "%release_folder%\%output_name%", "%build_folder%\Portable-VirtualBox\source\VirtualBox.ico",ICONGROUP,1,1033
 
 del /q "%release_folder%\Portable-VirtualBox.tmp"
 
