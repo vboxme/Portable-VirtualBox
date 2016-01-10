@@ -68,7 +68,7 @@ Important: No files became of VirtualBox (http://www.virtualbox.org)
            order to save storage location!
 
 Download and support:
-http://www.german-winlite.de/wbb/index.php?page=Board&boardID=153
+http://www.vbox.me/
 
 Languages of Launcher: english, german, portuguese, spanish, french,
                        italian
