@@ -1588,8 +1588,8 @@ Func UseSettings ()
 
   If FileExists (@ScriptDir&"\Extension") Then
     If FileExists (@ScriptDir&"\Extension") Then
-      RunWait (@ScriptDir & "\data\tools\7z.exe x -o"& @ScriptDir &"\temp\ "& @ScriptDir &"\Extension", @ScriptDir, @SW_HIDE)
-      RunWait (@ScriptDir & "\data\tools\7z.exe x -o"& @ScriptDir &"\temp\ExtensionPacks\Oracle_VM_VirtualBox_Extension_Pack\ "& @ScriptDir &"\temp\Extension~", @ScriptDir, @SW_HIDE)
+      RunWait (@ScriptDir & "\data\tools\7za.exe x -o"& @ScriptDir &"\temp\ "& @ScriptDir &"\Extension", @ScriptDir, @SW_HIDE)
+      RunWait (@ScriptDir & "\data\tools\7za.exe x -o"& @ScriptDir &"\temp\ExtensionPacks\Oracle_VM_VirtualBox_Extension_Pack\ "& @ScriptDir &"\temp\Extension~", @ScriptDir, @SW_HIDE)
     EndIf
   EndIf
 
@@ -1784,7 +1784,7 @@ Func UpdateYes ()
     Sleep (2000)
 
     If FileExists (@ScriptDir&"\update\vbox.7z") Then
-      RunWait (@ScriptDir&"\data\tools\7z.exe x -o"& @ScriptDir&"\update\ "& @ScriptDir&"\update\vbox.7z", @ScriptDir, @SW_HIDE)
+      RunWait (@ScriptDir&"\data\tools\7za.exe x -o"& @ScriptDir&"\update\ "& @ScriptDir&"\update\vbox.7z", @ScriptDir, @SW_HIDE)
     EndIf
 
     GUICtrlSetData ($Input300, IniRead ($var2 & $lng &".ini", "status", "11", "NotFound"))
