@@ -1570,7 +1570,7 @@ Func UseSettings ()
   If (FileExists (@ScriptDir&"\virtualbox.exe") OR FileExists ($SourceFile)) AND (GUICtrlRead ($Checkbox100) = $GUI_CHECKED OR GUICtrlRead ($Checkbox110) = $GUI_CHECKED) Then
     GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "04", "NotFound"))
     If FileExists (@ScriptDir&"\virtualbox.exe") Then
-      Run (@ScriptDir & "\virtualbox.exe -x -p temp", @ScriptDir, @SW_HIDE)
+      Run (@ScriptDir & "\virtualbox.exe --extract --path temp", @ScriptDir, @SW_HIDE)
       Opt ("WinTitleMatchMode", 2)
       WinWait ("VirtualBox Installer", "")
       ControlClick ("VirtualBox Installer", "OK", "TButton1")
@@ -1578,7 +1578,7 @@ Func UseSettings ()
     EndIf
 
     If FileExists ($SourceFile) Then
-      Run ($SourceFile & " -x -p temp", @ScriptDir, @SW_HIDE)
+      Run ($SourceFile & " --extract --path temp", @ScriptDir, @SW_HIDE)
       Opt ("WinTitleMatchMode", 2)
       WinWait ("VirtualBox Installer", "")
       ControlClick ("VirtualBox Installer", "OK", "TButton1")
@@ -1595,7 +1595,7 @@ Func UseSettings ()
 
   If GUICtrlRead ($Checkbox100) = $GUI_CHECKED AND FileExists (@ScriptDir&"\temp") Then
     GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "05", "NotFound"))
-    RunWait ("cmd /c ren ""%CD%\temp\*_x86.msi"" x86.msi", @ScriptDir, @SW_HIDE)
+    RunWait ("cmd /c ren ""%CD%\temp\*.msi"" x86.msi", @ScriptDir, @SW_HIDE)
     RunWait ("cmd /c msiexec.exe /quiet /a ""%CD%\temp\x86.msi"" TARGETDIR=""%CD%\temp\x86""", @ScriptDir, @SW_HIDE)
     DirCopy (@ScriptDir&"\temp\x86\PFiles\Oracle\VirtualBox", @ScriptDir&"\app32", 1)
     FileCopy (@ScriptDir&"\temp\x86\PFiles\Oracle\VirtualBox\*", @ScriptDir&"\app32", 9)
@@ -1605,7 +1605,7 @@ Func UseSettings ()
 
   If GUICtrlRead ($Checkbox110) = $GUI_CHECKED AND FileExists (@ScriptDir&"\temp") Then
     GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "05", "NotFound"))
-    RunWait ("cmd /c ren ""%CD%\temp\*_amd64.msi"" amd64.msi", @ScriptDir, @SW_HIDE)
+    RunWait ("cmd /c ren ""%CD%\temp\*.msi"" amd64.msi", @ScriptDir, @SW_HIDE)
     RunWait ("cmd /c msiexec.exe /quiet /a ""%CD%\temp\amd64.msi"" TARGETDIR=""%CD%\temp\x64""", @ScriptDir, @SW_HIDE)
     DirCopy (@ScriptDir&"\temp\x64\PFiles\Oracle\VirtualBox", @ScriptDir&"\app64", 1)
     FileCopy (@ScriptDir&"\temp\x64\PFiles\Oracle\VirtualBox\*", @ScriptDir&"\app64", 9)
