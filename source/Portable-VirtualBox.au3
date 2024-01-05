@@ -30,6 +30,7 @@ Opt ("TrayAutoPause", 0)
 Opt ("TrayMenuMode", 11)
 Opt ("TrayOnEventMode", 1)
 
+TraySetIcon(@ScriptDir&"\source\VirtualBox.ico")
 TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
@@ -641,8 +642,8 @@ EndIf
 
       SplashOff ()
 
-      If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxDRV", "DisplayName") <> "VirtualBox Service" Then
-        RunWait ("cmd /c sc create VBoxDRV binpath= ""%CD%\"& $arch &"\drivers\VBoxDrv\VBoxDrv.sys"" type= kernel start= auto error= normal displayname= PortableVBoxDRV", @ScriptDir, @SW_HIDE)
+      If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxSup", "DisplayName") <> "VirtualBox Service" Then
+        RunWait ("cmd /c sc create VBoxSup binpath= ""%CD%\"& $arch &"\drivers\VBoxSup\VBoxSup.sys"" type= kernel start= auto error= normal displayname= PortableVBoxSup", @ScriptDir, @SW_HIDE)
         Local $DRV = 1
       Else
         Local $DRV = 0
@@ -711,7 +712,7 @@ EndIf
       EndIf
 
       If $DRV = 1 Then
-        RunWait ("sc start VBoxDRV", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxSup", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $USB = 1 Then
@@ -735,7 +736,7 @@ EndIf
           Local $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
           Local $StartVM  = $CmdLine[1]
           If IniRead ($var1, "userhome", "key", "NotFound") = "%CD%\data\.VirtualBox" AND FileExists (@ScriptDir&"\data\.VirtualBox\HardDisks\"&$CmdLine[1]&".vdi") Then
-            RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
+            RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxSVC.exe", @ScriptDir, @SW_HIDE)
           Else
             RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
           EndIf
@@ -744,25 +745,26 @@ EndIf
         EndIf
 
         ProcessWaitClose ("VirtualBox.exe")
-        ProcessWaitClose ("VBoxManage.exe")
       Else
         If FileExists (@ScriptDir&"\data\.VirtualBox") Then
           Local $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
           Local $StartVM  = IniRead ($var1, "startvm", "key", "NotFound")
           If IniRead ($var1, "startvm", "key", "NotFound") = true Then
             RunWait ("cmd /C set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
+            ProcessWaitClose ("VirtualBoxVM.exe")
           Else
             RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
           EndIf
         Else
-          RunWait ("cmd /c set VBOX_USER_HOME=%CD%\data\.VirtualBox & .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+          RunWait ("cmd /c set VBOX_USER_HOME=%CD%\data\.VirtualBox & .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE) 
         EndIf
 
         ProcessWaitClose ("VirtualBox.exe")
-        ProcessWaitClose ("VBoxManage.exe")
       EndIf
 
-      SplashTextOn ("Portable-VirtualBox", IniRead ($var2 & $lng &".ini", "messages", "07", "NotFound"), 220, 40, -1, -1, 1, "arial", 12)
+		  Local $sMessage = IniRead ($var2 & $lng &".ini", "messages", "07", "NotFound")
+		
+		  TrayTip("Portable-VirtualBox",$sMessage,10,$TIP_ICONASTERISK)
 
       ProcessWaitClose ("VBoxSVC.exe")
 
@@ -783,7 +785,7 @@ EndIf
       RunWait (@SystemDir&"\regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
 
       If $DRV = 1 Then
-        RunWait ("sc stop VBoxDRV", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxSup", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $USB = 1 Then
@@ -845,7 +847,7 @@ EndIf
       EndIf
 
       If $DRV = 1 Then
-        RunWait ("sc delete VBoxDRV", @ScriptDir, @SW_HIDE)
+        RunWait ("sc delete VBoxSup", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $USB = 1 Then
@@ -864,6 +866,7 @@ EndIf
         RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
 
+      ProcessClose ("VBoxSDS.exe")
       SplashOff ()
     Else
       WinSetState ("Oracle VM VirtualBox Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
