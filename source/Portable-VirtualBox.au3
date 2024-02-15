@@ -2,7 +2,7 @@
 ; Author         : Michael Meyer (michaelm_007) et al.
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
-; Version        : 6.4.9.0
+; Version        : 6.4.9.1
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
