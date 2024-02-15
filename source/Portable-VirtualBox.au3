@@ -36,7 +36,7 @@ TraySetClick (16)
 TraySetState ()
 TraySetToolTip ("Portable-VirtualBox")
 
-Global $version = "6.4.9.0"
+Global $version = "6.4.9.1"
 Global $var1 = @ScriptDir&"\data\settings\settings.ini"
 Global $var2 = @ScriptDir&"\data\language\"
 Global $var3 = @ScriptDir&"\data\settings\vboxinstall.ini"
