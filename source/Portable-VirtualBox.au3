@@ -766,6 +766,23 @@ EndIf
         RunWait ("sc start VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
 
+	#clear log Machines
+	If FileExists (@ScriptDir&"\"&$UserHome&"") Then
+	FileDelete (@ScriptDir&"\"&$UserHome&"\selectorwindow.*.*")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\VBoxSVC.*.*")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\VBoxSVC.*.*")
+	EndIf
+
+	If FileExists (@ScriptDir&"\"&$UserHome&"\Machines\") Then
+	For $i = 0 To UBound ($values1) - 1
+        $values6 = _StringBetween ($values1[$i], 'Machines', '.vbox')
+        If $values6 <> 0 Then
+	$dir = _StringBetween($values6[0], "\", "\")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\Machines\"&$dir[0]&"\Logs\VBox.*.*")
+        EndIf
+	Next
+	EndIf
+
       If $CmdLine[0] = 1 Then
         If FileExists (@ScriptDir&"\"&$UserHome) Then
           Local $StartVM  = $CmdLine[1]
