@@ -6,8 +6,8 @@
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
-#AutoIt3Wrapper_Res_Fileversion=6.4.9.0
-#AutoIt3Wrapper_Res_ProductVersion=6.4.9.0
+#AutoIt3Wrapper_Res_Fileversion=6.4.9.1
+#AutoIt3Wrapper_Res_ProductVersion=6.4.9.1
 #AutoIt3Wrapper_Icon=VirtualBox.ico
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Compile_both=Y
