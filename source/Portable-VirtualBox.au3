@@ -768,9 +768,8 @@ EndIf
 
 	#clear log Machines
 	If FileExists (@ScriptDir&"\"&$UserHome&"") Then
-	FileDelete (@ScriptDir&"\"&$UserHome&"\selectorwindow.*.*")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\VBoxSVC.*.*")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\VBoxSVC.*.*")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
 	EndIf
 
 	If FileExists (@ScriptDir&"\"&$UserHome&"\Machines\") Then
@@ -778,7 +777,8 @@ EndIf
         $values6 = _StringBetween ($values1[$i], 'Machines', '.vbox')
         If $values6 <> 0 Then
 	$dir = _StringBetween($values6[0], "\", "\")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\Machines\"&$dir[0]&"\Logs\VBox.*.*")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\Machines\"&$dir[0]&"\Logs\*.log")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\Machines\"&$dir[0]&"\Logs\*.log.*")
         EndIf
 	Next
 	EndIf
