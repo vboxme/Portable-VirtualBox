@@ -768,7 +768,6 @@ EndIf
 
       If $CmdLine[0] = 1 Then
         If FileExists (@ScriptDir&"\"&$UserHome) Then
-          Local $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
           Local $StartVM  = $CmdLine[1]
           If IniRead ($var1, "userhome", "key", "NotFound") = "%CD%\"&$UserHome AND FileExists (@ScriptDir&"\"&$UserHome&"\HardDisks\"&$CmdLine[1]&".vdi") Then
             RunWait ("cmd /c set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
@@ -783,7 +782,6 @@ EndIf
         ProcessWaitClose ("VBoxManage.exe")
       Else
         If FileExists (@ScriptDir&"\"&$UserHome) Then
-          Local $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
           Local $StartVM  = IniRead ($var1, "startvm", "key", "NotFound")
           If IniRead ($var1, "startvm", "key", "NotFound") = true Then
             RunWait ("cmd /C set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
