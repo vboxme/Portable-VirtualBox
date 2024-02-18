@@ -154,10 +154,18 @@ If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
   GUICtrlCreateLabel ("Please select your language", 14, 8, 260, 14)
   GUICtrlSetFont (-1, 9, 800, "Arial")
 
-  $StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 13, 34, 180, 21)
+    $FileList = _FileListToArray($var2, "*", 1)
+    Local $sdelim, $sfilelist
+    For $i = 1 to $FileList[0]
+    If $i > 1 Then
+    $sdelim = "|";
+    EndIf
+    $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
+    Next
 
-  GUICtrlCreateButton ("Search", 200, 32, 80, 24, 0)
-  GUICtrlSetOnEvent (-1, "SRCLanguage")
+  $StartLng = GUICtrlCreateCombo("", 31, 34, 100)
+  GUICtrlSetData(-1, $sfilelist, "english")
+
   GUICtrlCreateButton ("OK", 30, 66, 100, 28, 0)
   GUICtrlSetOnEvent (-1, "OKLanguage")
   GUICtrlCreateButton ("Exit", 162, 66, 100, 28, 0)
@@ -1234,10 +1242,21 @@ Func Settings ()
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "language-settings", "02", "NotFound"), 16, 40, 546, 105)
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "language-settings", "03", "NotFound"), 26, 185, 180, 21)
 
-    $StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
+    $FileList = _FileListToArray($var2, "*", 1)
+    Local $sdelim, $sfilelist
+    For $i = 1 to $FileList[0]
+    If $i > 1 Then
+    $sdelim = "|";
+    EndIf
+    $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
+    Next
 
-    GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "language-settings", "04", "NotFound"), 476, 185, 81, 21, 0)
-    GUICtrlSetOnEvent (-1, "SRCLanguage")
+    $StartLng = GUICtrlCreateCombo("", 238, 185, 100)
+    GUICtrlSetData($StartLng, $sfilelist, IniRead ($var1, "language", "key", "NotFound"))
+    #$StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
+
+    #GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "language-settings", "04", "NotFound"), 476, 185, 81, 21, 0)
+    #GUICtrlSetOnEvent (-1, "SRCLanguage")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "OKLanguage")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
@@ -1529,7 +1548,16 @@ Func SRCLanguage ()
 EndFunc
 
 Func OKLanguage ()
-  If GUICtrlRead ($StartLng) = "" Then
+    $FileList = _FileListToArray($var2, "*", 1)
+    Local $Lang, $sfilelist
+    For $i = 1 to $FileList[0]
+    $sfilelist = StringReplace($FileList[$i], ".ini", "")
+    If GUICtrlRead ($StartLng) = $sfilelist Then
+    $Lang = $sfilelist
+    EndIf
+    Next
+
+  If $Lang = "" Then
     MsgBox (0, IniRead ($var2 & $lng &".ini", "messages", "01", "NotFound"), IniRead ($var2 & $lng &".ini", "oklanguage", "01", "NotFound"))
   Else
     IniWrite ($var1, "language", "key", GUICtrlRead ($StartLng))
