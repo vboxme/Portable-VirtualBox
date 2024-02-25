@@ -7,7 +7,6 @@ set "sevenzip=data\tools\7za.exe"
 rem User-defined variables. You may have to change its values to correspond to your system and remove the "rem" statement in front of it.
 rem set "aut2exe=C:\Program Files (x86)\AutoIt3\Aut2Exe\aut2exe.exe"
 rem set "sevenzip=C:\Program Files\7-Zip\7z.exe"
-rem set "reshack=C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe"
 rem End of user-defined variables.
 
 
