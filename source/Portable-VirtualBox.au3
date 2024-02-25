@@ -1259,7 +1259,10 @@ Func Settings ()
 
     $StartLng = GUICtrlCreateCombo("", 238, 185, 100)
     GUICtrlSetData($StartLng, $sfilelist, IniRead ($var1, "language", "key", "NotFound"))
+    #$StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
 
+    #GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "language-settings", "04", "NotFound"), 476, 185, 81, 21, 0)
+    #GUICtrlSetOnEvent (-1, "SRCLanguage")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "OKLanguage")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
