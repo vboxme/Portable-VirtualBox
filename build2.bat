@@ -13,8 +13,7 @@ rem End of user-defined variables.
 
 rem Setting up the different folders used for building. %~dp0 is the folder of the build script itself (may not be the same as the working directory).
 set "input_folder=%~dp0"
-set "build_folder=%input_folder%\build\source"
-set "output_name=Portable-VirtualBox_current.exe"
+set "build_folder=%input_folder%\build"
 
 
 rem Find path for aut2exe
@@ -73,17 +72,12 @@ IF not exist "%sevenzip%" (
 echo aut2exe path: %aut2exe%
 echo sevenzip path: %sevenzip%
 
-rem Remove any old files in the build directory.
-rmdir /s /q %build_folder%\Portable-VirtualBox
-
 rem Create build and release folders if needed.
 if not exist "%build_folder%\Portable-VirtualBox" md "%build_folder%\Portable-VirtualBox"
-if not exist "%release_folder%" md "%release_folder%"
+rem if not exist "%release_folder%" md "%release_folder%"
 
 rem Make a copy of the file for easy compression later.
 xcopy /i /e "%input_folder%data" "%build_folder%\Portable-VirtualBox\data\"
-xcopy "%input_folder%LiesMich.txt" "%build_folder%\Portable-VirtualBox\"
-xcopy "%input_folder%ReadMe.txt"  "%build_folder%\Portable-VirtualBox\"
 
 rem Compile Portable-VirtualBox.
 "%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
@@ -93,17 +87,8 @@ if not exist "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x86.exe" (
 	EXIT /B
 )
 
-rem Make a release by packing the exe, data and source code into a self-extracting archive.
-pushd %build_folder%
-"%sevenzip%" a -r -x!.git -sfx7z.sfx "%release_folder%\Portable-VirtualBox.tmp" "Portable-VirtualBox"
-popd
-
-rem Change the icon on the self-extracting archive.
-
-del /q "%release_folder%\Portable-VirtualBox.tmp"
-
 echo ###############################################################################
-echo Build new release as %release_folder%\%output_name%
+echo Build new release as %build_folder%
 echo ###############################################################################
 
 pause
