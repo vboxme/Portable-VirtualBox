@@ -45,15 +45,6 @@ Global $pwd = @ScriptDir
 Global $updateUrl = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "update", "NotFound")
 
 Global $new1 = 0, $new2 = 0
-Global $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
-
-If IniRead ($var1, "userhome", "key", "NotFound") = "NotFound" Then
-IniWrite ($var1, "userhome", "key", "\.VirtualBox")
-EndIf
-
-If $UserHome = false Then
-IniWrite ($var1, "userhome", "key", "\.VirtualBox")
-EndIf
 
 If FileExists (@ScriptDir&"\update.exe") Then
   Sleep (2000)
@@ -139,6 +130,16 @@ Else
   If @error Then
     IniWrite ($var1, "starter", "key", "")
   EndIf
+EndIf
+
+Global $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
+
+If IniRead ($var1, "userhome", "key", "NotFound") = "NotFound" Then
+IniWrite ($var1, "userhome", "key", "\.VirtualBox")
+EndIf
+
+If $UserHome = false Then
+IniWrite ($var1, "userhome", "key", "\.VirtualBox")
 EndIf
 
 If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
