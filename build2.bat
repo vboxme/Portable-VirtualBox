@@ -73,18 +73,23 @@ echo aut2exe path: %aut2exe%
 echo sevenzip path: %sevenzip%
 
 rem Create build and release folders if needed.
-if not exist "%build_folder%\Portable-VirtualBox" md "%build_folder%\Portable-VirtualBox"
-rem if not exist "%release_folder%" md "%release_folder%"
 
 rem Make a copy of the file for easy compression later.
-xcopy /i /e "%input_folder%data" "%build_folder%\Portable-VirtualBox\data\"
+xcopy /d /c /e /i "%input_folder%data" "%build_folder%\data\"
 
 rem Compile Portable-VirtualBox.
-"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
-"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x64
+"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
+"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x64
 
 echo ###############################################################################
-echo Build new release as %build_folder%
+for %%i in ("%build_folder%\Portable-VirtualBox_x64.exe") do (
+echo Build new release as %build_folder%\Portable-VirtualBox_x64.exe
+echo Size: %%~zi bytes
+)
+for %%i in ("%build_folder%\Portable-VirtualBox_x86.exe") do (
+echo Build new release as %build_folder%\Portable-VirtualBox_x86.exe
+echo Size: %%~zi bytes
+)
 echo ###############################################################################
 
 pause
