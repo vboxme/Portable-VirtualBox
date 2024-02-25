@@ -1802,23 +1802,6 @@ Func UseSettings ()
   EndIf
 #ce
 
-  If GUICtrlRead ($Checkbox100) = $GUI_CHECKED AND GUICtrlRead ($Checkbox110) = $GUI_CHECKED Then
-    GUICtrlSetData ($Input200, @LF & "Please wait, delete files and folders.")
-    DirCopy (@ScriptDir&"\temp\x86\PFiles\Oracle\VirtualBox\", @ScriptDir&"\vboxadditions", 1)
-    DirCopy (@ScriptDir&"\temp\ExtensionPacks\", @ScriptDir&"\vboxadditions\ExtensionPacks", 1)
-    FileCopy (@ScriptDir&"\temp\x86\PFiles\Oracle\VirtualBox\*.iso", @ScriptDir&"\vboxadditions\guestadditions\*.iso", 9)
-    DirRemove (@ScriptDir&"\vboxadditions\accessible", 1)
-    DirRemove (@ScriptDir&"\vboxadditions\drivers", 1)
-    DirRemove (@ScriptDir&"\vboxadditions\sdk", 1)
-    FileDelete (@ScriptDir&"\vboxadditions\*.*")
-    DirRemove (@ScriptDir&"\app32\doc", 1)
-    DirRemove (@ScriptDir&"\app32\nls", 1)
-    FileDelete (@ScriptDir&"\app32\*.iso")
-    DirRemove (@ScriptDir&"\app64\doc", 1)
-    DirRemove (@ScriptDir&"\app64\nls", 1)
-    FileDelete (@ScriptDir&"\app64\*.iso")
-  EndIf
-
   If FileExists (@ScriptDir&"\temp") Then
     DirRemove (@ScriptDir&"\temp", 1)
     FileDelete (@ScriptDir&"\virtualbox.exe")
