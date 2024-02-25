@@ -99,7 +99,7 @@ If NOT FileExists ($var1) Then
 
   IniWrite ($var1, "language", "key", "english")
 
-  IniWrite ($var1, "userhome", "key", "\.VirtualBox")
+  IniWrite ($var1, "userhome", "key", ".VirtualBox")
 
   IniWrite ($var1, "startvm", "key", "")
 
@@ -135,11 +135,11 @@ EndIf
 Global $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
 
 If IniRead ($var1, "userhome", "key", "NotFound") = "NotFound" Then
-IniWrite ($var1, "userhome", "key", "\.VirtualBox")
+IniWrite ($var1, "userhome", "key", ".VirtualBox")
 EndIf
 
 If $UserHome = false Then
-IniWrite ($var1, "userhome", "key", "\.VirtualBox")
+IniWrite ($var1, "userhome", "key", ".VirtualBox")
 EndIf
 
 If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
@@ -780,7 +780,7 @@ EndIf
         RunWait ("sc start VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
 
-	#clear log Machines at launch
+	#clear log Machines
 	If FileExists (@ScriptDir&"\"&$UserHome&"") Then
 	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
 	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
@@ -1289,7 +1289,7 @@ Func Settings ()
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "about", "01", "NotFound"))
     GUICtrlCreateLabel (". : Portable-VirtualBox Launcher v"& $version &" : .", 100, 40, 448, 26)
     GUICtrlSetFont (-1, 14, 800, 4, "Arial")
-    GUICtrlCreateLabel("Download and Support: http://github.com/Deac2/Portable-VirtualBox", 40, 70, 500, 20)
+    GUICtrlCreateLabel("Download and Support: https://github.com/Deac2/Portable-VirtualBox", 40, 70, 500, 20)
     GUICtrlSetFont (-1, 8, 800, 0, "Arial")
     GUICtrlCreateLabel ("VirtualBox is a family of powerful x86 virtualization products for enterprise as well as home use. Not only is VirtualBox an extremely feature rich, high performance product for enterprise customers, it is also the only professional solution that is freely available as Open Source Software under the terms of the GNU General Public License (GPL).", 16, 94, 546, 55)
     GUICtrlSetFont (-1, 8, 400, 0, "Arial")
@@ -1316,7 +1316,7 @@ EndFunc
 
 Func OKUserHome ()
   If GUICtrlRead ($Radio1) = $GUI_CHECKED Then
-    IniWrite ($var1, "userhome", "key", "\.VirtualBox")
+    IniWrite ($var1, "userhome", "key", ".VirtualBox")
     MsgBox (0, IniRead ($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead ($var2 & $lng &".ini", "messages", "05", "NotFound"))
   Else
     If GUICtrlRead ($HomeRoot) = IniRead ($var2 & $lng &".ini", "okuserhome", "01", "NotFound") Then
