@@ -774,7 +774,7 @@ EndIf
         RunWait ("sc start VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
 
-	#clear log Machines
+	#clear log Machines at launch
 	If FileExists (@ScriptDir&"\"&$UserHome&"") Then
 	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
 	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
