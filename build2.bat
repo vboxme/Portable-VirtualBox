@@ -13,7 +13,7 @@ rem End of user-defined variables.
 
 rem Setting up the different folders used for building. %~dp0 is the folder of the build script itself (may not be the same as the working directory).
 set "input_folder=%~dp0"
-set "build_folder=%input_folder%\build"
+set "build_folder=%input_folder%build"
 
 
 rem Find path for aut2exe
@@ -82,10 +82,6 @@ xcopy /i /e "%input_folder%data" "%build_folder%\Portable-VirtualBox\data\"
 rem Compile Portable-VirtualBox.
 "%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
 "%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x64
-if not exist "%build_folder%\Portable-VirtualBox\Portable-VirtualBox_x86.exe" (
-	echo Failed to build exe. No .exe file was produced
-	EXIT /B
-)
 
 echo ###############################################################################
 echo Build new release as %build_folder%
