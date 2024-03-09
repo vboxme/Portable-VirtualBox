@@ -726,7 +726,7 @@ EndIf
           If @OSArch = "x64" Then
             RunWait (@ScriptDir &"\data\tools\devcon_x64.exe install .\"& $arch &"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
           EndIf
-          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netadp\VBoxNetAdp"& $ADPVER &".sys", @SystemDir&"\drivers", 9)
+          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".sys", @SystemDir&"\drivers", 9)
           Local $ADP = 1
         Else
           Local $ADP = 0
