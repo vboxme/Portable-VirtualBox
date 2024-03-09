@@ -757,27 +757,27 @@ EndIf
       EndIf
 
       If $DRV = 1 Then
-        RunWait ("net start VBoxDRV", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxDRV", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $SUP = 1 Then
-        RunWait ("net start VBoxSUP", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxSUP", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $USB = 1 Then
-        RunWait ("net start VBoxUSB", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxUSB", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $MON = 1 Then
-        RunWait ("net start VBoxUSBMon", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxUSBMon", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $ADP = 1 Then
-        RunWait ("net start VBoxNetAdp", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxNetAdp", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $NET = 1 Then
-        RunWait ("net start VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        RunWait ("sc start VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
 
 	#clear log Machines
@@ -851,15 +851,15 @@ EndIf
       RunWait (@SystemDir&"\regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
 
       If $DRV = 1 Then
-        RunWait ("net stop VBoxDRV", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxDRV", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $SUP = 1 Then
-        RunWait ("net stop VBoxSUP", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxSUP", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $USB = 1 Then
-        RunWait ("net stop VBoxUSB", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxUSB", @ScriptDir, @SW_HIDE)
         If @OSArch = "x86" Then
           RunWait (@ScriptDir &"\data\tools\devcon_x86.exe remove ""USB\VID_80EE&PID_CAFE""", @ScriptDir, @SW_HIDE)
         EndIf
@@ -870,11 +870,11 @@ EndIf
       EndIf
 
       If $MON = 1 Then
-        RunWait ("net stop VBoxUSBMon", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxUSBMon", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $ADP = 1 Then
-        RunWait ("net stop VBoxNetAdp", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxNetAdp", @ScriptDir, @SW_HIDE)
         If @OSArch = "x86" Then
           RunWait (@ScriptDir &"\data\tools\devcon_x86.exe remove ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
         EndIf
@@ -885,7 +885,7 @@ EndIf
       EndIf
 
       If $NET = 1 Then
-        RunWait ("net stop VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxNetFlt", @ScriptDir, @SW_HIDE)
         If @OSArch = "x86" Then
           RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
         EndIf
