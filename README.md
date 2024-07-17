@@ -9,6 +9,8 @@ More info is available at http://www.vbox.me/
 
 Please see here for information on how to build from source: [BUILDING](BUILDING.md).
 
+### Changelog ###
+
 VirtualBox 7.0.20 (released July 16 2024)
 
 This is a maintenance release. The following items were fixed and/or added:
