@@ -19,5 +19,5 @@ Audio: Fixed recording with HDA emulation after newer Windows 10 / 11 guests got
 USB: Fixed a deadlock in OHCI triggered when saving the current state of a VM or taking a snapshot (bug #22059: https://www.virtualbox.org/ticket/22059)
 Linux Guest and Host: Introduced initial support for OpenSuse 15.6 kernel
 Linux Guest and Host: Introduced initial support for RHEL 9.5 kernel (bug #22099: https://www.virtualbox.org/ticket/22099)
-Guest Additions: Shared Clipboard: Fixed issue when extra new lines were pasted when copying text between Win and X11 (bug #21716: https://www.virtualbox.org/ticket/21716 )
+Guest Additions: Shared Clipboard: Fixed issue when extra new lines were pasted when copying text between Win and X11 (bug #21716: https://www.virtualbox.org/ticket/21716 )<br>
 UEFI Secure Boot: Add new Microsoft certificates to list for new VMs
