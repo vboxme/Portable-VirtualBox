@@ -52,6 +52,25 @@ If FileExists (@ScriptDir&"\update.exe") Then
   FileDelete (@ScriptDir&"\update.exe")
 EndIf
 
+$lng = IniRead ($var1, "language", "key", "NotFound")
+If NOT FileExists ($var2 & $lng &".ini") Then
+DirCreate (@ScriptDir&"\data\language")
+FileInstall("..\data\language\catalan.ini", "data\language\catalan.ini")
+FileInstall("..\data\language\chinese.ini", "data\language\chinese.ini")
+FileInstall("..\data\language\english.ini", "data\language\english.ini")
+FileInstall("..\data\language\french.ini", "data\language\french.ini")
+FileInstall("..\data\language\german.ini", "data\language\german.ini")
+FileInstall("..\data\language\italian.ini", "data\language\italian.ini")
+FileInstall("..\data\language\japanese.ini", "data\language\japanese.ini")
+FileInstall("..\data\language\korean.ini", "data\language\korean.ini")
+FileInstall("..\data\language\polish.ini", "data\language\polish.ini")
+FileInstall("..\data\language\portuguese.ini", "data\language\portuguese.ini")
+FileInstall("..\data\language\russian.ini", "data\language\russian.ini")
+FileInstall("..\data\language\spanish.ini", "data\language\spanish.ini")
+FileInstall("..\data\language\turkish.ini", "data\language\turkish.ini")
+FileInstall("..\data\language\ukrainian.ini", "data\language\ukrainian.ini")
+EndIf
+
 If NOT FileExists ($var3) Then
 DirCreate (@ScriptDir&"\data\settings")
 IniWrite ($var3, "download", "key1", "http://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe")
