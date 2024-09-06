@@ -5,7 +5,7 @@ Edit or add <ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/> sample:
 
 <ExtraData>
 
-</ExtraData>
+<\/ExtraData>
 Save the VirtualBox.xml file
 
 Portable-VirtualBox Change bug
