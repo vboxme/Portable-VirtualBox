@@ -3,7 +3,7 @@ Disable message center notifications and screen capture messages VirtualBoxVM.ex
 Portable-VirtualBox\.VirtualBox\VirtualBox.xml
 Edit or add <ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/> sample:
 
-<ExtraData>
+<ExtraData\>
 
 <\/ExtraData>
 Save the VirtualBox.xml file
