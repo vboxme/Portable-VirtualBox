@@ -3,14 +3,14 @@ Disable message center notifications and screen capture messages VirtualBoxVM.ex
 Portable-VirtualBox\.VirtualBox\VirtualBox.xml
 Edit or add <ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/> sample:
 
-<ExtraData\>
+<ExtraData\><br>
 <ExtraDataItem name=\"GUI/GuestControl/FileManagerVisiblePanel\" value=\"LogPanel\"/><br>
-<ExtraDataItem name=\"GUI/LastItemSelected\" value=\"m=2bd3571f-97f7-4297-b779-2b6f3d9c5ae0\"/>
-<ExtraDataItem name=\"GUI/LastWindowPosition\" value=\"121,139,848,438\"/>
-<ExtraDataItem name=\"GUI/SessionInformationDialogGeometry\" value=\"296,140,512,360\"/>
-<ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/>
-<ExtraDataItem name=\"GUI/Tools/LastItemsSelected\" value=\"Welcome,Details\"/>
-<\/ExtraData>
+<ExtraDataItem name=\"GUI/LastItemSelected\" value=\"m=2bd3571f-97f7-4297-b779-2b6f3d9c5ae0\"/><br>
+<ExtraDataItem name=\"GUI/LastWindowPosition\" value=\"121,139,848,438\"/><br>
+<ExtraDataItem name=\"GUI/SessionInformationDialogGeometry\" value=\"296,140,512,360\"/><br>
+<ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/><br>
+<ExtraDataItem name=\"GUI/Tools/LastItemsSelected\" value=\"Welcome,Details\"/><br>
+<\/ExtraData><br>
 Save the VirtualBox.xml file
 
 Portable-VirtualBox Change bug
