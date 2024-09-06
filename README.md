@@ -1,3 +1,14 @@
+On VirtualBox versions ver. 7 and above
+Disable message center notifications and screen capture messages VirtualBoxVM.exe default settings directory:
+Portable-VirtualBox\.VirtualBox\VirtualBox.xml
+Edit or add <ExtraDataItem name="GUI/SuppressMessages" value="all"/>:
+
+<ExtraData>
+<ExtraDataItem name="GUI/GuestControl/FileManagerVisiblePanels" value="LogPanel"/>
+<ExtraDataItem name="GUI/LastItemSelected" value="m=2bd3571f-97f7-4297-b779-2b6f3d9c5ae0"/>
+<ExtraDataItem name="GUI/LastWindowPosition" value="121,139,848,438"/>
+<ExtraDataItem name="GUI/SessionInformationDialogGeometry" value="296,140,512,360"/> <ExtraDataItem name="GUI/SuppressMessages" value="all"/> <ExtraDataItem name="GUI/Tools/LastItemsSelected" value="Welcome,Details"/> </ExtraData> Save the VirtualBox.xml file
+
 Portable-VirtualBox Change bug
 ===================
 
