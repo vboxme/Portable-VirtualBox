@@ -755,10 +755,6 @@ EndIf
       If IniRead ($var1, "net", "key", "NotFound") = 1 Then
         If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetFlt", "DisplayName") <> "VBoxNetFlt Service" Then
           If @OSArch = "x86" Then
-            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
-            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u oracle_VBoxNetLwf", @ScriptDir, @SW_HIDE)
-            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -m .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
             RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
             RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
             RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
