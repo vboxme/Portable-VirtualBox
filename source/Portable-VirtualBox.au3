@@ -516,10 +516,8 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       FileClose ($file)
     EndIf
   Else
-    If IniRead ($var1, "userhome", "key", "NotFound") = 1 Then
     If Not FileExists (@ScriptDir&"\"&$UserHome) Then
     DirCreate(@ScriptDir&"\"&$UserHome)
-    EndIf
     EndIf
     MsgBox (0, IniRead ($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead ($var2 & $lng &".ini", "download", "16", "NotFound"))
 EndIf
@@ -757,16 +755,25 @@ EndIf
       If IniRead ($var1, "net", "key", "NotFound") = 1 Then
         If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetFlt", "DisplayName") <> "VBoxNetFlt Service" Then
           If @OSArch = "x86" Then
-            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u oracle_VBoxNetLwf", @ScriptDir, @SW_HIDE)
+            ;RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -m .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -m .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
           EndIf
           If @OSArch = "x64" Then
-            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
-            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m .\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
+            RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -m .\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
           EndIf
           FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltNobj.dll", @SystemDir, 9)
           FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
           RunWait (@SystemDir&"\regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNobj.dll", @ScriptDir, @SW_HIDE)
+          FileCopy (@ScriptDir&"\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.sys", @SystemDir&"\drivers", 9)
           Local $NET = 1
         Else
           Local $NET = 0
@@ -905,16 +912,21 @@ EndIf
 
       If $NET = 1 Then
         RunWait ("sc stop VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        RunWait ("sc stop VBoxNetLwf", @ScriptDir, @SW_HIDE)
         If @OSArch = "x86" Then
-          RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+          RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+          RunWait (@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
         EndIf
         If @OSArch = "x64" Then
-          RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u sun_VBoxNetFlt", @ScriptDir, @SW_HIDE)
+          RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+          RunWait (@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
         EndIf
         RunWait (@SystemDir&"\regsvr32.exe /S /U "&@SystemDir&"\VBoxNetFltNobj.dll", @ScriptDir, @SW_HIDE)
         RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        RunWait ("sc delete VBoxNetLwf", @ScriptDir, @SW_HIDE)
         FileDelete (@SystemDir&"\VBoxNetFltNobj.dll")
         FileDelete (@SystemDir&"\drivers\VBoxNetFlt.sys")
+        FileDelete(@SystemDir & "\drivers\VBoxNetLwf.sys")
       EndIf
 
       If FileExists (@ScriptDir&"\"& $arch &"\") AND FileExists (@ScriptDir&"\vboxadditions\") Then
@@ -957,6 +969,7 @@ EndIf
 
       If $NET = 1 Then
         RunWait ("sc delete VBoxNetFlt", @ScriptDir, @SW_HIDE)
+        RunWait ("sc delete VBoxNetLwf", @ScriptDir, @SW_HIDE)
       EndIf
 
       SplashOff ()
