@@ -518,6 +518,8 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
   Else
     If Not FileExists (@ScriptDir&"\"&$UserHome) Then
     DirCreate(@ScriptDir&"\"&$UserHome)
+    RunWait ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder "& @ScriptDir &"\"& $UserHome &"\Machines", @ScriptDir, @SW_HIDE)
+    ProcessClose ("VBoxSVC.exe")
     EndIf
     MsgBox (0, IniRead ($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead ($var2 & $lng &".ini", "download", "16", "NotFound"))
 EndIf
