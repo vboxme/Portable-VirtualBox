@@ -73,8 +73,8 @@ EndIf
 
 If NOT FileExists ($var3) Then
 DirCreate (@ScriptDir&"\data\settings")
-IniWrite ($var3, "download", "key1", "http://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe")
-IniWrite ($var3, "download", "key2", "http://download.virtualbox.org/virtualbox/7.0.20/Oracle_VM_VirtualBox_Extension_Pack-7.0.20.vbox-extpack")
+IniWrite ($var3, "download", "key1", "http://download.virtualbox.org/virtualbox/7.1.0/VirtualBox-7.1.0-164728-Win.exe")
+IniWrite ($var3, "download", "key2", "http://download.virtualbox.org/virtualbox/7.1.0/Oracle_VirtualBox_Extension_Pack-7.1.0.vbox-extpack")
 IniWrite ($var3, "download", "update", "http://www.vbox.me/update/")
 IniWrite ($var3, "startvbox", "key", "1")
 EndIf
