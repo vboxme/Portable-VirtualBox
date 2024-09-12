@@ -1,4 +1,3 @@
-test
 On VirtualBox versions ver. 7 and above
 Disable message center notifications and screen capture messages VirtualBoxVM.exe default settings directory:
 Portable-VirtualBox\\.VirtualBox\VirtualBox.xml
@@ -26,15 +25,20 @@ Please see here for information on how to build from source: [BUILDING](BUILDING
 
 ### Changelog for VirtualBox ###
 
-<strong>VirtualBox 7.0.20</strong> (released July 16 2024)
+<strong>VirtualBox 7.1.0</strong> (released 11.09.2024)
 
-This is a maintenance release. The following items were fixed and/or added:
+This is a major update. The following new features were added:
 
-TPM: Fixed errors appearing the event viewer with Windows guests<br>
-macOS Hosts: Fixed passing USB devices to the VM (bug #21218: https://www.virtualbox.org/ticket/21218)<br>
-Audio: Fixed recording with HDA emulation after newer Windows 10 / 11 guests got rebooted<br>
-USB: Fixed a deadlock in OHCI triggered when saving the current state of a VM or taking a snapshot (bug #22059: https://www.virtualbox.org/ticket/22059)<br>
-Linux Guest and Host: Introduced initial support for OpenSuse 15.6 kernel<br>
-Linux Guest and Host: Introduced initial support for RHEL 9.5 kernel (bug #22099: https://www.virtualbox.org/ticket/22099)<br>
-Guest Additions: Shared Clipboard: Fixed issue when extra new lines were pasted when copying text between Win and X11 (bug #21716: https://www.virtualbox.org/ticket/21716 )<br>
+<ul><li>GUI: Modernized look and feel, offering a selection between Basic and Experienced user level with reduced or full UI functionality
+</li><li>OCI Integration: Performance dashboard now shows resource usage for cloud VMs
+</li><li>OCI Integration: Clone compute instances
+</li><li>OCI Integration: Reset compute instances
+</li><li>Oracle <a class="wiki" href="/wiki/VirtualBox">VirtualBox</a> Extension Pack: Update to the PUEL license, removing the evaluation option. For evaluation use of the Extension Pack, please download it from the Oracle Software Delivery Cloud
+</li><li>VRDE: If user does not set up TLS with custom certificates, enable it with self-signed certificate, including issuing a new one before the old one expires
+</li><li>NAT: New engine with IPv6 support
+</li><li>macOS/Arm host: Arm virtualization for Linux and BSD VMs
+</li><li>Linux host and guest: Added Wayland support for Clipboard sharing (bug <a class="new ticket" href="/ticket/20808" title="#20808: defect: shared clipboard does not work with Wayland (new)">#20808</a>)
+</li><li>Shared Clipboard: Added initial support for transferring files on Linux and Windows hosts / guests. This requires the 7.1 Guest Additions to be installed. See User Guide for known limitations
+</li><li>Screen Recording: Significant performance improvements for the encoding pipeline, resulting in less CPU usage while recording is active. This requires 7.1 Guest Additions to be installed on Windows guests
+</li></ul><br>
 UEFI Secure Boot: Add new Microsoft certificates to list for new VMs
