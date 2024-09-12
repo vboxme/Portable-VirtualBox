@@ -1035,7 +1035,6 @@ Func Settings ()
   GUICtrlSetFont (-1, 10, 800, 0, "Arial")
   GUICtrlCreateTab (0, 0, 577, 296)
 
-    ;homeroot-settings
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "homeroot-settings", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "homeroot-settings", "02", "NotFound"), 16, 40, 546, 105)
 
@@ -1065,9 +1064,7 @@ Func Settings ()
     GUICtrlSetOnEvent (-1, "OKUserHome")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "ExitGUI")
-    ;End homeroot-settings
 
-  ;startvm-settings
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "startvm-settings", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "startvm-settings", "02", "NotFound"), 16, 40, 546, 105)
 
@@ -1097,7 +1094,6 @@ Func Settings ()
     GUICtrlSetOnEvent (-1, "OKStartVM")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "ExitGUI")
-    ;End startvm-settings
 
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "hotkeys", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "hotkeys", "02", "NotFound"), 16, 40, 546, 105)
