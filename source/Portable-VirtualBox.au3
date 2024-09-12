@@ -416,6 +416,13 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
     EndIf
   EndIf
 
+    Global $sFileVer = StringLeft(FileGetVersion($arch&"\VirtualBox.exe"), 5)
+  If $sFileVer>="7.1.0" Then
+    Global $VMTitle = "Oracle VirtualBox"
+  Else
+    Global $VMTitle = "Oracle VM VirtualBox"
+  EndIf
+
   If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-prev") Then
     FileDelete (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-prev")
   EndIf
@@ -862,7 +869,6 @@ EndIf
       ProcessWaitClose ("VBoxSVC.exe")
 
       ProcessWaitClose ("VBoxSDS.exe")
-      RunWait ("sc delete VBoxSDS", @ScriptDir, @SW_HIDE)
 
       EnvSet ("VBOX_USER_HOME")
       Local $timer=0
@@ -977,10 +983,11 @@ EndIf
       EndIf
 
       ProcessClose ("VBoxSDS.exe")
+      RunWait ("sc delete VBoxSDS", @ScriptDir, @SW_HIDE)
       SplashOff ()
     Else
-      WinSetState ("Oracle VM VirtualBox Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
-      WinSetState ("] - Oracle VM VirtualBox", "", BitAND (@SW_SHOW, @SW_RESTORE))
+      WinSetState ($VMTitle&" Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
+      WinSetState ("] - "&$VMTitle, "", BitAND (@SW_SHOW, @SW_RESTORE))
     EndIf
   Else
     SplashOff ()
@@ -993,22 +1000,22 @@ Exit
 
 Func ShowWindows_VM ()
   Opt ("WinTitleMatchMode", 2)
-  WinSetState ("] - Oracle VM VirtualBox", "", BitAND (@SW_SHOW, @SW_RESTORE))
+  WinSetState ("] - "&$VMTitle, "", BitAND (@SW_SHOW, @SW_RESTORE))
 EndFunc
 
 Func HideWindows_VM ()
   Opt ("WinTitleMatchMode", 2)
-  WinSetState ("] - Oracle VM VirtualBox", "", @SW_HIDE)
+  WinSetState ("] - "&$VMTitle, "", @SW_HIDE)
 EndFunc
 
 Func ShowWindows ()
   Opt ("WinTitleMatchMode", 3)
-  WinSetState ("Oracle VM VirtualBox Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
+  WinSetState ($VMTitle&" Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
 EndFunc
 
 Func HideWindows ()
   Opt ("WinTitleMatchMode", 3)
-  WinSetState ("Oracle VM VirtualBox Manager", "", @SW_HIDE)
+  WinSetState ($VMTitle&" Manager", "", @SW_HIDE)
 EndFunc
 
 Func Settings ()
@@ -1028,6 +1035,7 @@ Func Settings ()
   GUICtrlSetFont (-1, 10, 800, 0, "Arial")
   GUICtrlCreateTab (0, 0, 577, 296)
 
+    ;homeroot-settings
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "homeroot-settings", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "homeroot-settings", "02", "NotFound"), 16, 40, 546, 105)
 
@@ -1057,7 +1065,9 @@ Func Settings ()
     GUICtrlSetOnEvent (-1, "OKUserHome")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "ExitGUI")
+    ;End homeroot-settings
 
+  ;startvm-settings
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "startvm-settings", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "startvm-settings", "02", "NotFound"), 16, 40, 546, 105)
 
@@ -1087,6 +1097,7 @@ Func Settings ()
     GUICtrlSetOnEvent (-1, "OKStartVM")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "ExitGUI")
+    ;End startvm-settings
 
   GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "hotkeys", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "hotkeys", "02", "NotFound"), 16, 40, 546, 105)
@@ -1628,9 +1639,11 @@ EndFunc
 
 Func ExitScript ()
   Opt ("WinTitleMatchMode", 2)
-  WinClose ("] - Oracle VM VirtualBox", "")
-  WinWaitClose ("] - Oracle VM VirtualBox", "")
-  WinClose ("Oracle VM VirtualBox", "")
+  WinClose ("VirtualBoxVM", "")
+  WinWaitClose ("VirtualBoxVM", "")
+  WinClose ("] - "&$VMTitle, "")
+  WinWaitClose ("] - "&$VMTitle, "")
+  WinClose ($VMTitle, "")
   Break (1)
 EndFunc
 
