@@ -340,7 +340,7 @@ HybridMode()
 
 If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Then
   Global $Checkbox100, $Checkbox110, $Checkbox130;, $Checkbox120
-  Global $Input100, $Input200
+  Global $Input100, $Input200, $Button100, $Button200
   Global $install = 1
 
   Local $WS_POPUP
@@ -353,7 +353,7 @@ If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Th
   GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "download", "02", "NotFound"), 32, 8, 476, 60)
   GUICtrlSetFont (-1, 9, 800, "Arial")
 
-  GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "download", "03", "NotFound"), 32, 62, 473, 33)
+  $Button100 = GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "download", "03", "NotFound"), 32, 62, 473, 33)
   GUICtrlSetFont (-1, 14, 400, "Arial")
   GUICtrlSetOnEvent (-1, "DownloadFile")
 
@@ -374,13 +374,19 @@ If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Th
   $Input200 = GUICtrlCreateLabel ("", 32, 240, 476, 47)
   GUICtrlSetFont (-1, 8, 400, 0,"Arial")
 
-  GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "download", "12", "NotFound"), 52, 308, 129, 33, 0)
+  $Button200 = GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "download", "12", "NotFound"), 52, 308, 129, 33, 0)
+  GUICtrlSetState($Button200, $GUI_DISABLE)
   GUICtrlSetOnEvent (-1, "UseSettings")
   GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "download", "13", "NotFound"), 194, 308, 149, 33, 0)
   GUICtrlSetFont (-1, 8, 600, "Arial")
   GUICtrlSetOnEvent (-1, "Licence")
   GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "download", "14", "NotFound"), 356, 308, 129, 33, 0)
   GUICtrlSetOnEvent (-1, "ExitExtraction")
+
+  If FileExists (@ScriptDir&"\virtualbox.exe") Then
+    GUICtrlSetData ($Input100, @ScriptDir&"\virtualbox.exe")
+    GUICtrlSetState ($Button200,$GUI_ENABLE)
+  EndIf
 
   GUISetState ()
 
@@ -1629,6 +1635,8 @@ Func ExitScript ()
 EndFunc
 
 Func DownloadFile ()
+  GUICtrlSetState($Button100, $GUI_DISABLE)
+  GUICtrlSetState ($Button200, $GUI_DISABLE)
   Local $download1 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound"), $pwd&"\VirtualBox.exe", 1, 1)
   Local $download2 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound")
   Do
@@ -1651,10 +1659,9 @@ Func DownloadFile ()
     GUICtrlSetData ($Input200, $download4 & @LF & DisplayDownloadStatus($bytes,$total_bytes))
   Until InetGetInfo ($download3, 2)
   InetClose ($download3)
-  If FileExists (@ScriptDir&"\virtualbox.exe") Then
-    GUICtrlSetData ($Input100, @ScriptDir&"\virtualbox.exe")
-  EndIf
   GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "02", "NotFound"))
+  GUICtrlSetState ($Button100, $GUI_ENABLE)
+  GUICtrlSetState ($Button200, $GUI_ENABLE)
   $bytes = 0
 EndFunc
 
