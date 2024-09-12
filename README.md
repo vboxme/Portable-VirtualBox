@@ -33,11 +33,11 @@ This is a major update. The following new features were added:
 </li><li>OCI Integration: Performance dashboard now shows resource usage for cloud VMs
 </li><li>OCI Integration: Clone compute instances
 </li><li>OCI Integration: Reset compute instances
-</li><li>Oracle <a class="wiki" href="/wiki/VirtualBox">VirtualBox</a> Extension Pack: Update to the PUEL license, removing the evaluation option. For evaluation use of the Extension Pack, please download it from the Oracle Software Delivery Cloud
+</li><li>Oracle VirtualBox Extension Pack: Update to the PUEL license, removing the evaluation option. For evaluation use of the Extension Pack, please download it from the Oracle Software Delivery Cloud
 </li><li>VRDE: If user does not set up TLS with custom certificates, enable it with self-signed certificate, including issuing a new one before the old one expires
 </li><li>NAT: New engine with IPv6 support
 </li><li>macOS/Arm host: Arm virtualization for Linux and BSD VMs
-</li><li>Linux host and guest: Added Wayland support for Clipboard sharing (bug <a class="new ticket" href="/ticket/20808" title="#20808: defect: shared clipboard does not work with Wayland (new)">#20808</a>)
+</li><li>Linux host and guest: Added Wayland support for Clipboard sharing (bug <a class="new ticket" href="https://www.virtualbox.org/ticket/20808" title="#20808: defect: shared clipboard does not work with Wayland (new)">#20808</a>)
 </li><li>Shared Clipboard: Added initial support for transferring files on Linux and Windows hosts / guests. This requires the 7.1 Guest Additions to be installed. See User Guide for known limitations
 </li><li>Screen Recording: Significant performance improvements for the encoding pipeline, resulting in less CPU usage while recording is active. This requires 7.1 Guest Additions to be installed on Windows guests
 </li></ul><br>
