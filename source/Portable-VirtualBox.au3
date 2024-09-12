@@ -1635,7 +1635,7 @@ Func ExitScript ()
 EndFunc
 
 Func DownloadFile ()
-  GUICtrlSetState($Button100, $GUI_DISABLE)
+  GUICtrlSetState ($Button100, $GUI_DISABLE)
   GUICtrlSetState ($Button200, $GUI_DISABLE)
   Local $download1 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound"), $pwd&"\VirtualBox.exe", 1, 1)
   Local $download2 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound")
