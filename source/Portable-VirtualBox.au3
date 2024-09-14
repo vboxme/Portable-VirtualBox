@@ -22,7 +22,6 @@
 #include <String.au3>
 #include <WinAPIError.au3>
 #include <SingleTon.au3>
-#include <Include\File.au3>
 
 _SingleTon(@ScriptName)
 #NoTrayIcon
