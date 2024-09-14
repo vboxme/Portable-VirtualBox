@@ -22,6 +22,7 @@
 #include <String.au3>
 #include <WinAPIError.au3>
 #include <SingleTon.au3>
+#include <Include\File.au3>
 
 _SingleTon(@ScriptName)
 #NoTrayIcon
@@ -339,7 +340,7 @@ EndIf
 HybridMode()
 
 If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Then
-  Global $Checkbox100, $Checkbox110, $Checkbox130;, $Checkbox120
+  Global $Checkbox100, $Checkbox110, $Checkbox130
   Global $Input100, $Input200, $Button100, $Button200
   Global $install = 1
 
@@ -366,7 +367,6 @@ If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Th
 
   $Checkbox100 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "07", "NotFound"), 32, 151, 460, 26)
   $Checkbox110 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "08", "NotFound"), 32, 175, 460, 26)
-  ;$Checkbox120 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "09", "NotFound"), 32, 199, 460, 26)
   $Checkbox130 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 26)
 
   GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "download", "11", "NotFound"), 32, 223, 436, 26)
@@ -431,7 +431,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
     FileDelete (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-tmp")
   EndIf
 
-  If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") OR (FileExists (@ScriptDir&"\"&$UserHome&"\Machines\") AND FileExists (@ScriptDir&"\"&$UserHome&"\HardDisks\")) Then
+  If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
     Local $values0, $values1, $values2, $values3, $values4, $values5, $values6, $values7, $values8, $values9, $values10, $values11, $values12, $values13
     Local $line, $content, $i, $j, $k, $l, $m, $n
     Local $file = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128)
@@ -443,18 +443,6 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       Else
         $values1 = _StringBetween ($values0[0], 'src="', '"')
       EndIf
-      $values2 = _StringBetween ($line, '<HardDisks>', '</HardDisks>')
-      If $values2 = 0 Then
-        $values3 = 0
-      Else
-        $values3 = _StringBetween ($values2[0], 'location="', '"')
-      EndIf
-      $values4 = _StringBetween ($line, '<DVDImages>', '</DVDImages>')
-      If $values4 = 0 Then
-        $values5 = 0
-      Else
-        $values5 = _StringBetween ($values4[0], '<Image', '/>')
-      EndIf
       $values10 = _StringBetween ($line, '<Global>', '</Global>')
       If $values10 = 0 Then
         $values11 = 0
@@ -463,44 +451,27 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       EndIf
 
       For $i = 0 To UBound ($values1) - 1
-        $values6 = _StringBetween ($values1[$i], 'Machines', '.vbox')
+	Global $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
+	Global $ResultName = $Result[$Result[0]-2]
+	Global $ResultName2 = $Result[$Result[0]]
+	Global $Patch = StringReplace($values1[$i], "\"&$ResultName&"\"&$ResultName2&"\"&$ResultName2&".vbox", "")
+        If FileExists ($UserHome &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
+        $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
         If $values6 <> 0 Then
           $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
           $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values1[$i], "Machines" & $values6[0] & ".vbox"))
+          FileWrite ($file, StringReplace ($content, $values1[$i], $ResultName & $values6[0] & ".vbox"))
           FileClose ($file)
         EndIf
-      Next
-
-      For $j = 0 To UBound ($values3) - 1
-        $values7 = _StringBetween ($values3[$j], 'HardDisks', '.vdi')
-        If $values7 <> 0 Then
+        EndIf
+        If FileExists ($Patch &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
+        $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
+        If $values6 <> 0 Then
           $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
           $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values3[$j], "HardDisks" & $values7[0] & ".vdi"))
+          FileWrite ($file, StringReplace ($content, $values1[$i], $Patch &"\"&$ResultName & $values6[0] & ".vbox"))
           FileClose ($file)
         EndIf
-      Next
-
-      For $k = 0 To UBound ($values3) - 1
-        $values8 = _StringBetween ($values3[$k], 'Machines', '.vdi')
-        If $values8 <> 0 Then
-          $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
-          $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values3[$k], "Machines" & $values8[0] & ".vdi"))
-          FileClose ($file)
-        EndIf
-      Next
-
-      For $l = 0 To UBound ($values5) - 1
-        $values9 = _StringBetween ($values5[$l], 'location="', '"')
-        If $values9 <> 0 Then
-          If NOT FileExists ($values9[0]) Then
-            $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
-            $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-            FileWrite ($file, StringReplace ($content, "<Image" & $values5[$l] & "/>", ""))
-            FileClose ($file)
-          EndIf
         EndIf
       Next
 
@@ -516,25 +487,13 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         EndIf
       Next
 
-      For $n = 0 To UBound ($values1) - 1
-        $values13 = _StringBetween ($values1[$n], 'Machines', '.xml')
-        If $values13 <> 0 Then
-          $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
-          $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values1[$n], "Machines" & $values13[0] & ".xml"))
-          FileClose ($file)
-        EndIf
-      Next
-
       FileClose ($file)
     EndIf
   Else
     If Not FileExists (@ScriptDir&"\"&$UserHome) Then
     DirCreate(@ScriptDir&"\"&$UserHome)
     EndIf
-    ;MsgBox (0, IniRead ($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead ($var2 & $lng &".ini", "download", "16", "NotFound"))
 EndIf
-
 
   If FileExists (@ScriptDir&"\"& $arch & "\VirtualBox.exe") AND FileExists (@ScriptDir&"\"& $arch & "\VBoxSVC.exe") AND FileExists (@ScriptDir&"\"& $arch & "\VBoxC.dll") Then
     If NOT ProcessExists ("VirtualBox.exe") OR NOT ProcessExists ("VBoxManage.exe") Then
@@ -1775,87 +1734,6 @@ Func UseSettings ()
     DirRemove (@ScriptDir&"\app64\accessible", 1)
     DirRemove (@ScriptDir&"\app64\sdk", 1)
   EndIf
-
-#cs
-  If GUICtrlRead ($Checkbox120) = $GUI_CHECKED Then
-    GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "06", "NotFound"))
-    If FileExists (@ScriptDir&"\app32") AND GUICtrlRead ($Checkbox100) = $GUI_CHECKED Then
-	  ; Thibaut : some files will trigger Virus alerts if compressed ( VBoxTestOGL.exe and VBoxNetDHCP.exe)
-      FileCopy (@ScriptDir&"\data\tools\upx.exe", @ScriptDir&"\app32")
-      RunWait ("cmd /c upx VRDPAuth.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VirtualBox.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx vboxwebsrv.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxVRDP.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxVMM.dll", @ScriptDir&"\app32", @SW_HIDE)
-      ;RunWait ("cmd /c upx VBoxTestOGL.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxSVC.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxSharedFolders.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxSharedCrOpenGL.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxSharedClipboard.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxSDL.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxRT.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxREM32.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxREM64.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxREM.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxOGLrenderspu.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxOGLhosterrorspu.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxOGLhostcrutil.dll", @ScriptDir&"\app32", @SW_HIDE)
-      ;RunWait ("cmd /c upx VBoxNetDHCP.exe", @ScriptDir&"\app32", @SW_HIDE)
-      ;RunWait ("cmd /c upx VBoxManage.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxHeadless.exe", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxGuestPropSvc.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxDDU.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxDD2.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxDD.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx VBoxDbg.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx SDL_ttf.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx SDL.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx QtOpenGLVBox4.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx QtNetworkVBox4.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx QtGUIVBox4.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx QtCoreVBox4.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx msvcr.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx msvcr71.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c upx msvcp71.dll", @ScriptDir&"\app32", @SW_HIDE)
-      FileDelete (@ScriptDir&"\app32\upx.exe")
-    EndIf
-    If FileExists (@ScriptDir&"\app64") AND GUICtrlRead ($Checkbox110) = $GUI_CHECKED Then
-      FileCopy (@ScriptDir&"\data\tools\mpress.exe", @ScriptDir&"\app64")
-      RunWait ("cmd /c mpress VRDPAuth.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VirtualBox.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress vboxwebsrv.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxVRDP.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxVMM.dll", @ScriptDir&"\app64", @SW_HIDE)
-      ;RunWait ("cmd /c mpress VBoxTestOGL.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxSVC.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxSharedFolders.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxSharedCrOpenGL.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxSharedClipboard.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxSDL.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxRT.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxREM.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxOGLrenderspu.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxOGLhosterrorspu.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxOGLhostcrutil.dll", @ScriptDir&"\app64", @SW_HIDE)
-      ;RunWait ("cmd /c mpress VBoxNetDHCP.exe", @ScriptDir&"\app64", @SW_HIDE)
-      ;RunWait ("cmd /c mpress VBoxManage.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxHeadless.exe", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxGuestPropSvc.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxDDU.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxDD2.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxDD.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress VBoxDbg.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress SDL.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress QtOpenGLVBox4.dll", @ScriptDir&"\app32", @SW_HIDE)
-      RunWait ("cmd /c mpress QtNetworkVBox4.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress QtGUIVBox4.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress QtCoreVBox4.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress msvcr80.dll", @ScriptDir&"\app64", @SW_HIDE)
-      RunWait ("cmd /c mpress msvcp80.dll", @ScriptDir&"\app64", @SW_HIDE)
-      FileDelete (@ScriptDir&"\app64\mpress.exe")
-    EndIf
-  EndIf
-#ce
 
   If FileExists (@ScriptDir&"\temp") Then
     DirRemove (@ScriptDir&"\temp", 1)
