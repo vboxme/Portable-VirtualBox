@@ -1626,6 +1626,9 @@ Func DownloadFile ()
     GUICtrlSetData ($Input200, $download4 & @LF & DisplayDownloadStatus($bytes,$total_bytes))
   Until InetGetInfo ($download3, 2)
   InetClose ($download3)
+  If FileExists (@ScriptDir&"\virtualbox.exe") Then
+    GUICtrlSetData ($Input100, @ScriptDir&"\virtualbox.exe")
+  EndIf
   GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "02", "NotFound"))
   GUICtrlSetState ($Button100, $GUI_ENABLE)
   GUICtrlSetState ($Button200, $GUI_ENABLE)
