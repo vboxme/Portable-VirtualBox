@@ -44,12 +44,31 @@ Global $lng = IniRead ($var1, "language", "key", "NotFound")
 Global $pwd = @ScriptDir
 Global $updateUrl = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "update", "NotFound")
 
-Global $new1 = 0, $new2 = 0
+Global $new1 = 0, $new2 = 0, $CBS_DROPDOWNLIST = 0x3
 
 If FileExists (@ScriptDir&"\update.exe") Then
   Sleep (2000)
   DirRemove (@ScriptDir&"\update", 1)
   FileDelete (@ScriptDir&"\update.exe")
+EndIf
+
+If NOT FileExists (@ScriptDir&"\data\tools") Then
+DirCreate (@ScriptDir&"\data\tools")
+EndIf
+If NOT FileExists (@ScriptDir&"\data\tools\7za.exe") Then
+FileInstall("..\data\tools\7za.exe", "data\tools\7za.exe")
+EndIf
+If @OSArch = "x86" Then
+If NOT FileExists (@ScriptDir&"\data\tools\devcon_x86.exe") or NOT FileExists (@ScriptDir&"\data\tools\snetcfg_x86.exe") Then
+FileInstall("..\data\tools\devcon_x86.exe", "data\tools\devcon_x86.exe")
+FileInstall("..\data\tools\snetcfg_x86.exe", "data\tools\snetcfg_x86.exe")
+EndIf
+EndIf
+If @OSArch = "x64" Then
+If NOT FileExists (@ScriptDir&"\data\tools\devcon_x64.exe") or NOT FileExists (@ScriptDir&"\data\tools\snetcfg_x64.exe") Then
+FileInstall("..\data\tools\devcon_x64.exe", "data\tools\devcon_x64.exe")
+FileInstall("..\data\tools\snetcfg_x64.exe", "data\tools\snetcfg_x64.exe")
+EndIf
 EndIf
 
 $lng = IniRead ($var1, "language", "key", "NotFound")
@@ -183,7 +202,7 @@ If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
     $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
     Next
 
-  $StartLng = GUICtrlCreateCombo("", 31, 34, 100)
+  $StartLng = GUICtrlCreateCombo("", 31, 34, 100, 0, $CBS_DROPDOWNLIST)
   GUICtrlSetData(-1, $sfilelist, "english")
 
   GUICtrlCreateButton ("OK", 30, 66, 100, 28, 0)
@@ -954,6 +973,30 @@ EndIf
 Break (1)
 Exit
 
+Func _FileListToArray($sFilePath, $sFilter = "*", $iFlag = $FLTA_FILESFOLDERS, $bReturnPath = False)
+	Local $sDelimiter = "|", $sFileList = "", $sFileName = "", $sFullPath = ""
+
+	$sFilePath = StringRegExpReplace($sFilePath, "[\\/]+$", "") & "\" ; Ensure a single trailing backslash
+	If $iFlag = Default Then $iFlag = $FLTA_FILESFOLDERS
+	If $bReturnPath Then $sFullPath = $sFilePath
+	If $sFilter = Default Then $sFilter = "*"
+
+	If Not FileExists($sFilePath) Then Return SetError(1, 0, 0)
+	If StringRegExp($sFilter, "[\\/:><\|]|(?s)^\s*$") Then Return SetError(2, 0, 0)
+	If Not ($iFlag = 0 Or $iFlag = 1 Or $iFlag = 2) Then Return SetError(3, 0, 0)
+	Local $hSearch = FileFindFirstFile($sFilePath & $sFilter)
+	If @error Then Return SetError(4, 0, 0)
+	While 1
+		$sFileName = FileFindNextFile($hSearch)
+		If @error Then ExitLoop
+		If ($iFlag + @extended = 2) Then ContinueLoop
+		$sFileList &= $sDelimiter & $sFullPath & $sFileName
+	WEnd
+	FileClose($hSearch)
+	If $sFileList = "" Then Return SetError(4, 0, 0)
+	Return StringSplit(StringTrimLeft($sFileList, 1), $sDelimiter)
+EndFunc
+
 Func ShowWindows_VM ()
   Opt ("WinTitleMatchMode", 2)
   WinSetState ("] - "&$VMTitle, "", BitAND (@SW_SHOW, @SW_RESTORE))
@@ -1244,7 +1287,7 @@ Func Settings ()
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "ExitGUI")
 
-  GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "language-settings", "01", "NotFound"))
+    GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "language-settings", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "language-settings", "02", "NotFound"), 16, 40, 546, 105)
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "language-settings", "03", "NotFound"), 26, 185, 180, 21)
 
@@ -1664,7 +1707,7 @@ Func UseSettings ()
     Local $SourceFile = GUICtrlRead ($Input100)
   EndIf
 
-  If NOT (FileExists (@ScriptDir&"\virtualbox.exe") OR FileExists ($SourceFile)) AND (GUICtrlRead ($Checkbox100) = $GUI_CHECKED OR GUICtrlRead ($Checkbox110) = $GUI_CHECKED) Then
+  If NOT (FileExists (@ScriptDir&"\virtualbox.exe") OR FileExists ($SourceFile) AND (GUICtrlRead ($Checkbox100) = $GUI_CHECKED OR GUICtrlRead ($Checkbox110) = $GUI_CHECKED)) Then
     Break (1)
     Exit
   EndIf
