@@ -1645,7 +1645,7 @@ EndFunc
 Func DownloadFile ()
   GUICtrlSetState ($Button100, $GUI_DISABLE)
   GUICtrlSetState ($Button200, $GUI_DISABLE)
-  Local $download1 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound"), $pwd&"\VirtualBox.exe", 1, 1)
+  Local $download1 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound"), $pwd&"\VirtualBox.exe", 8, 1)
   Local $download2 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key1", "NotFound")
   Do
     Sleep (250)
@@ -1656,7 +1656,7 @@ Func DownloadFile ()
 	;GUICtrlSetData($ProgressBar1,Round(100*$bytes/$total_bytes)) ; <<<TODO: Ticket 3509714
   Until InetGetInfo ($download1, 2)
   InetClose ($download1)
-  Local $download3 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound"), $pwd&"\Extension", 1, 1)
+  Local $download3 = InetGet (IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound"), $pwd&"\Extension", 8, 1)
   Local $download4 = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "download", "key2", "NotFound")
   $total_bytes = InetGetInfo($download3, 1)
   Do
