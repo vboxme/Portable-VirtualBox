@@ -688,6 +688,7 @@ EndIf
         Local $DRV = 0
       EndIf
 
+      ;msgbox(0,"", " ""%CD%\"& $arch &"\drivers\VBoxSup\VBoxSup.sys"" ")
       If FileExists (@ScriptDir&"\"& $arch & "\drivers\vboxsup") AND RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxSUP", "DisplayName") <> "VirtualBox Service" Then
         RunWait ("cmd /c sc create VBoxSUP binpath= ""%CD%\"& $arch &"\drivers\VBoxSup\VBoxSup.sys"" type= kernel start= auto error= normal displayname= PortableVBoxSUP", @ScriptDir, @SW_HIDE)
         Local $SUP = 1
@@ -808,7 +809,7 @@ EndIf
 	Next
 	EndIf
 
-      RunWait ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder "& @ScriptDir &"\"& $UserHome &"\Machines", @ScriptDir, @SW_HIDE)
+      Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder "& @ScriptDir &"\"& $UserHome &"\Machines", @ScriptDir, @SW_HIDE)
 
       If $CmdLine[0] = 1 Then
         If FileExists (@ScriptDir&"\"&$UserHome) Then
@@ -1377,6 +1378,7 @@ Func OKUserHome ()
 EndFunc
 
 Func SRCStartVM ()
+#cs
   Local $PathVM, $VM_String, $String, $VDI, $VM_Start
   Local $Start_VM = IniRead ($var1, "startvm", "key", "NotFound")
   If IniRead ($var1, "startvm", "key", "NotFound") Then
@@ -1398,6 +1400,8 @@ Func SRCStartVM ()
     GUICtrlSetState ($Radio4, $GUI_CHECKED)
     GUICtrlSetData ($VMStart, $VM_Start[1])
   EndIf
+#ce
+GUICtrlSetState ($Radio4, $GUI_CHECKED)
 EndFunc
 
 Func OKStartVM ()
