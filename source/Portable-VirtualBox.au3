@@ -56,43 +56,43 @@ If NOT FileExists (@ScriptDir&"\data\tools") Then
 DirCreate (@ScriptDir&"\data\tools")
 EndIf
 If NOT FileExists (@ScriptDir&"\data\tools\7za.exe") Then
-FileInstall("data\tools\7za.exe", "data\tools\7za.exe")
+FileInstall("i_data\tools\7za.exe", "data\tools\7za.exe")
 EndIf
 If @OSArch = "x86" Then
 If NOT FileExists (@ScriptDir&"\data\tools\devcon_x86.exe") or NOT FileExists (@ScriptDir&"\data\tools\snetcfg_x86.exe") Then
-FileInstall("data\tools\devcon_x86.exe", "data\tools\devcon_x86.exe")
-FileInstall("data\tools\snetcfg_x86.exe", "data\tools\snetcfg_x86.exe")
+FileInstall("i_data\tools\devcon_x86.exe", "data\tools\devcon_x86.exe")
+FileInstall("i_data\tools\snetcfg_x86.exe", "data\tools\snetcfg_x86.exe")
 EndIf
 EndIf
 If @OSArch = "x64" Then
 If NOT FileExists (@ScriptDir&"\data\tools\devcon_x64.exe") or NOT FileExists (@ScriptDir&"\data\tools\snetcfg_x64.exe") Then
-FileInstall("data\tools\devcon_x64.exe", "data\tools\devcon_x64.exe")
-FileInstall("data\tools\snetcfg_x64.exe", "data\tools\snetcfg_x64.exe")
+FileInstall("i_data\tools\devcon_x64.exe", "data\tools\devcon_x64.exe")
+FileInstall("i_data\tools\snetcfg_x64.exe", "data\tools\snetcfg_x64.exe")
 EndIf
 EndIf
 
 $lng = IniRead ($var1, "language", "key", "NotFound")
 If NOT FileExists ($var2 & $lng &".ini") Then
 DirCreate (@ScriptDir&"\data\language")
-FileInstall("data\language\catalan.ini", "data\language\catalan.ini")
-FileInstall("data\language\chinese.ini", "data\language\chinese.ini")
-FileInstall("data\language\english.ini", "data\language\english.ini")
-FileInstall("data\language\french.ini", "data\language\french.ini")
-FileInstall("data\language\german.ini", "data\language\german.ini")
-FileInstall("data\language\italian.ini", "data\language\italian.ini")
-FileInstall("data\language\japanese.ini", "data\language\japanese.ini")
-FileInstall("data\language\korean.ini", "data\language\korean.ini")
-FileInstall("data\language\polish.ini", "data\language\polish.ini")
-FileInstall("data\language\portuguese.ini", "data\language\portuguese.ini")
-FileInstall("data\language\russian.ini", "data\language\russian.ini")
-FileInstall("data\language\spanish.ini", "data\language\spanish.ini")
-FileInstall("data\language\turkish.ini", "data\language\turkish.ini")
-FileInstall("data\language\ukrainian.ini", "data\language\ukrainian.ini")
+FileInstall("i_data\language\catalan.ini", "data\language\catalan.ini")
+FileInstall("i_data\language\chinese.ini", "data\language\chinese.ini")
+FileInstall("i_data\language\english.ini", "data\language\english.ini")
+FileInstall("i_data\language\french.ini", "data\language\french.ini")
+FileInstall("i_data\language\german.ini", "data\language\german.ini")
+FileInstall("i_data\language\italian.ini", "data\language\italian.ini")
+FileInstall("i_data\language\japanese.ini", "data\language\japanese.ini")
+FileInstall("i_data\language\korean.ini", "data\language\korean.ini")
+FileInstall("i_data\language\polish.ini", "data\language\polish.ini")
+FileInstall("i_data\language\portuguese.ini", "data\language\portuguese.ini")
+FileInstall("i_data\language\russian.ini", "data\language\russian.ini")
+FileInstall("i_data\language\spanish.ini", "data\language\spanish.ini")
+FileInstall("i_data\language\turkish.ini", "data\language\turkish.ini")
+FileInstall("i_data\language\ukrainian.ini", "data\language\ukrainian.ini")
 EndIf
 
 If NOT FileExists ($var3) Then
 DirCreate (@ScriptDir&"\data\settings")
-FileInstall("data\settings\SplashScreen.jpg", "data\settings\SplashScreen.jpg")
+FileInstall("i_data\settings\SplashScreen.jpg", "data\settings\SplashScreen.jpg")
 IniWrite ($var3, "download", "key1", "http://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe")
 IniWrite ($var3, "download", "key2", "http://download.virtualbox.org/virtualbox/7.0.20/Oracle_VirtualBox_Extension_Pack-7.0.20.vbox-extpack")
 IniWrite ($var3, "download", "update", "http://www.vbox.me/update/")
