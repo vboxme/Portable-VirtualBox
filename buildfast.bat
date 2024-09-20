@@ -2,14 +2,7 @@
 
 rem Unseting user variables
 set "aut2exe=source\Aut2Exe\Aut2exe_x64.exe"
-set "sevenzip=data\tools\7za.exe"
-
-rem User-defined variables. You may have to change its values to correspond to your system and remove the "rem" statement in front of it.
-rem set "aut2exe=C:\Program Files (x86)\AutoIt3\Aut2Exe\aut2exe.exe"
-rem set "sevenzip=C:\Program Files\7-Zip\7z.exe"
-rem End of user-defined variables.
-
-
+set "sevenzip=source\data\tools\7za.exe"
 
 rem Setting up the different folders used for building. %~dp0 is the folder of the build script itself (may not be the same as the working directory).
 set "input_folder=%~dp0"
@@ -75,7 +68,7 @@ echo sevenzip path: %sevenzip%
 rem Create build and release folders if needed.
 
 rem Make a copy of the file for easy compression later.
-xcopy /d /c /e /i "%input_folder%data" "%build_folder%\data\"
+rem xcopy /d /c /e /i "%input_folder%source\data" "%build_folder%\data\"
 
 rem Compile Portable-VirtualBox.
 "%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
