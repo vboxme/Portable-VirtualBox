@@ -840,11 +840,10 @@ EndIf
         ProcessWaitClose ("VBoxManage.exe")
       EndIf
 
-      SplashTextOn ("Portable-VirtualBox", IniRead ($var2 & $lng &".ini", "messages", "07", "NotFound"), 220, 40, -1, -1, 1, "arial", 12)
-
       ProcessWaitClose ("VBoxSVC.exe")
-
       ProcessWaitClose ("VBoxSDS.exe")
+
+      SplashTextOn ("Portable-VirtualBox", IniRead ($var2 & $lng &".ini", "messages", "07", "NotFound"), 220, 40, -1, -1, 1, "arial", 12)
 
       EnvSet ("VBOX_USER_HOME")
       Local $timer=0
