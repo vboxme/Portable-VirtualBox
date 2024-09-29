@@ -359,7 +359,7 @@ EndIf
 HybridMode()
 
 If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Then
-  Global $Checkbox100, $Checkbox110, $Checkbox130
+  Global $Checkbox100, $Checkbox110, $Checkbox120
   Global $Input100, $Input200, $Button100, $Button200
   Global $install = 1
 
@@ -386,7 +386,7 @@ If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Th
 
   $Checkbox100 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "07", "NotFound"), 32, 151, 460, 26)
   $Checkbox110 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "08", "NotFound"), 32, 175, 460, 26)
-  $Checkbox130 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 26)
+  $Checkbox120 = GUICtrlCreateCheckbox (IniRead ($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 26)
 
   GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "download", "11", "NotFound"), 32, 223, 436, 26)
   GUICtrlSetFont (-1, 8, 800, 4,"Arial")
@@ -1703,6 +1703,7 @@ Func SearchFile ()
   Local $FilePath = FileOpenDialog (IniRead ($var2 & $lng &".ini", "status", "03", "NotFound"), @ScriptDir, "(*.exe)", 1+2)
   If NOT @error Then
     GUICtrlSetData ($Input100, $FilePath)
+    GUICtrlSetState ($Button200,$GUI_ENABLE)
   EndIf
 EndFunc
 
@@ -1791,7 +1792,7 @@ Func UseSettings ()
     RunWait ("cmd /c taskkill /im msiexec.exe /f", @ScriptDir, @SW_HIDE)
   EndIf
 
-  If GUICtrlRead ($Checkbox130) = $GUI_CHECKED Then
+  If GUICtrlRead ($Checkbox120) = $GUI_CHECKED Then
     IniWrite (@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "1")
   Else
     IniWrite (@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "0")
