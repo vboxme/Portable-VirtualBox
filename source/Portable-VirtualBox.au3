@@ -804,7 +804,6 @@ EndIf
 	Global $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
 	Global $ResultName = $Result[$Result[0]-2]
 	Global $ResultName2 = $Result[$Result[0]]
-	Global $Patch = StringReplace($values1[$i], "\"&$ResultName&"\"&$ResultName2&"\"&$ResultName2&".vbox", "")
         If FileExists ($UserHome &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
         $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
         If $values6 <> 0 Then
