@@ -792,22 +792,28 @@ EndIf
         RunWait ("sc start VBoxNetFlt", @ScriptDir, @SW_HIDE)
       EndIf
 
-	#clear log Machines
-	If FileExists (@ScriptDir&"\"&$UserHome&"") Then
+      #clear log
+      If FileExists (@ScriptDir&"\"&$UserHome&"") Then
 	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
 	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
-	EndIf
+      EndIf
 
-	If FileExists (@ScriptDir&"\"&$UserHome&"\Machines\") Then
-	For $i = 0 To UBound ($values1) - 1
-        $values6 = _StringBetween ($values1[$i], 'Machines', '.vbox')
+      #clear log Machines
+      If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
+      For $i = 0 To UBound ($values1) - 1
+	Global $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
+	Global $ResultName = $Result[$Result[0]-2]
+	Global $ResultName2 = $Result[$Result[0]]
+	Global $Patch = StringReplace($values1[$i], "\"&$ResultName&"\"&$ResultName2&"\"&$ResultName2&".vbox", "")
+        If FileExists ($UserHome &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
+        $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
         If $values6 <> 0 Then
-	$dir = _StringBetween($values6[0], "\", "\")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\Machines\"&$dir[0]&"\Logs\*.log")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\Machines\"&$dir[0]&"\Logs\*.log.*")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$ResultName&"\"&$ResultName2&"\Logs\*.log")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$ResultName&"\"&$ResultName2&"\Logs\*.log.*")
         EndIf
-	Next
-	EndIf
+        EndIf
+      Next
+      EndIf
 
       Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder "& @ScriptDir &"\"& $UserHome &"\Machines", @ScriptDir, @SW_HIDE)
 
