@@ -69,7 +69,7 @@ rem Create build and release folders if needed.
 
 rem Make a copy of the file for easy compression later.
 rem xcopy /d /c /e /i "%input_folder%source\i_data" "%build_folder%\data\"
-Mkdir %build_folder% . > nul 2>&1
+Mkdir %build_folder% >nul 2>&1
 
 rem Compile Portable-VirtualBox.
 "%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
