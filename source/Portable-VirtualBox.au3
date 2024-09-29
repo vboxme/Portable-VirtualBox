@@ -688,7 +688,6 @@ EndIf
         Local $DRV = 0
       EndIf
 
-      ;msgbox(0,"", " ""%CD%\"& $arch &"\drivers\VBoxSup\VBoxSup.sys"" ")
       If FileExists (@ScriptDir&"\"& $arch & "\drivers\vboxsup") AND RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxSUP", "DisplayName") <> "VirtualBox Service" Then
         RunWait ("cmd /c sc create VBoxSUP binpath= ""%CD%\"& $arch &"\drivers\VBoxSup\VBoxSup.sys"" type= kernel start= auto error= normal displayname= PortableVBoxSUP", @ScriptDir, @SW_HIDE)
         Local $SUP = 1
