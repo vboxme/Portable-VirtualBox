@@ -72,7 +72,7 @@ rem xcopy /d /c /e /i "%input_folder%source\i_data" "%build_folder%\data\"
 Mkdir %build_folder% >nul 2>&1
 
 rem Compile Portable-VirtualBox.
-"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x86.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
+"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x86-x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
 "%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x64
 
 echo ###############################################################################
@@ -80,8 +80,8 @@ for %%i in ("%build_folder%\Portable-VirtualBox_x64.exe") do (
 echo Build new release as %build_folder%\Portable-VirtualBox_x64.exe
 echo Size: %%~zi bytes
 )
-for %%i in ("%build_folder%\Portable-VirtualBox_x86.exe") do (
-echo Build new release as %build_folder%\Portable-VirtualBox_x86.exe
+for %%i in ("%build_folder%\Portable-VirtualBox_x86-x64.exe") do (
+echo Build new release as %build_folder%\Portable-VirtualBox_x86-x64.exe
 echo Size: %%~zi bytes
 )
 echo ###############################################################################
