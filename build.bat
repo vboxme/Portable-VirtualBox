@@ -1,24 +1,12 @@
-@echo off       
+@echo off
 
 rem Unseting user variables
-set "aut2exe="
-set "sevenzip="
-set "reshack="
-set "signtool="
-
-rem User-defined variables. You may have to change its values to correspond to your system and remove the "rem" statement in front of it.
-rem set "aut2exe=C:\Program Files (x86)\AutoIt3\Aut2Exe\aut2exe.exe"
-rem set "sevenzip=C:\Program Files\7-Zip\7z.exe"
-rem set "reshack=C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe"
-rem End of user-defined variables.
-
-
+set "aut2exe=source\Aut2Exe\Aut2exe_x64.exe"
+set "sevenzip=source\i_data\tools\7za.exe"
 
 rem Setting up the different folders used for building. %~dp0 is the folder of the build script itself (may not be the same as the working directory).
 set "input_folder=%~dp0"
-set "build_folder=%input_folder%\build\source"
-set "release_folder=%input_folder%\build\release"
-set "output_name=Portable-VirtualBox_current.exe"
+set "build_folder=%input_folder%build"
 
 
 rem Find path for aut2exe
@@ -74,126 +62,28 @@ IF not exist "%sevenzip%" (
     EXIT /B
 )
 
-
-rem Find path for reshack
-rem If the user supplied a reshack path use it
-IF DEFINED reshack (
-	echo Using user defind path to reshack
-	goto done_reshack
-)
-
-rem Try to find the reshack path.
-set "PPATH=%ProgramFiles%\Resource Hacker\reshacker.exe"
-IF exist "%PPATH%" (
-    set "reshack=%PPATH%"
-	goto done_reshack
-) 
-
-set "PPATH=%ProgramFiles(x86)%\Resource Hacker\reshacker.exe"
-IF exist "%PPATH%" (
-    set "reshack=%PPATH%"
-	goto done_reshack
-) 
-
-set "PPATH=%ProgramFiles%\Resource Hacker\ResourceHacker.exe"
-IF exist "%PPATH%" (
-    set "reshack=%PPATH%"
-	goto done_reshack
-) 
-
-set "PPATH=%ProgramFiles(x86)%\Resource Hacker\ResourceHacker.exe"
-IF exist "%PPATH%" (
-    set "reshack=%PPATH%"
-	goto done_reshack
-)
-
-:done_reshack
-IF not exist "%reshack%" (
-    echo Can't locate Reshack. Is it installed? Pleas set the reshack variable if it is installed in a nonstandard path.
-    EXIT /B
-)
-
-
-
-rem Find path for signtool
-rem If the user supplied a signtool path use it
-IF DEFINED signtool (
-	echo Using user defind path to signtool
-	goto done_signtool
-)
-
-rem Try to find the signtool path.
-set "PPATH=%ProgramFiles(x86)%\Windows Kits\8.1\bin\x64\signtool.exe"
-IF exist "%PPATH%" (
-    set "signtool=%PPATH%"
-	goto done_signtool
-) 
-
-set "PPATH=%ProgramFiles(x86)%\Microsoft SDKs\Windows\v7.0A\Bin\signtool.exe"
-IF exist "%PPATH%" (
-    set "signtool=%PPATH%"
-	goto done_signtool
-) 
-
-
-
-:done_signtool
-IF "%~1"=="-s" IF not exist "%signtool%" (
-    echo Can't locate signtool. Is it installed? Pleas set the signtool variable if it is installed in a nonstandard path.
-    EXIT /B
-)
-
-
-
 echo aut2exe path: %aut2exe%
 echo sevenzip path: %sevenzip%
-echo reshack path: %reshack%
-echo signtool path: %signtool%
-
-rem Remove any old files in the build directory.
-rmdir /s /q %build_folder%\Portable-VirtualBox
 
 rem Create build and release folders if needed.
-if not exist "%build_folder%\Portable-VirtualBox" md "%build_folder%\Portable-VirtualBox"
-if not exist "%release_folder%" md "%release_folder%"
 
 rem Make a copy of the file for easy compression later.
-xcopy /i /e "%input_folder%data" "%build_folder%\Portable-VirtualBox\data\"
-xcopy /i /e "%input_folder%source" "%build_folder%\Portable-VirtualBox\source\"
-xcopy "%input_folder%LiesMich.txt" "%build_folder%\Portable-VirtualBox\"
-xcopy "%input_folder%ReadMe.txt"  "%build_folder%\Portable-VirtualBox\"
+rem xcopy /d /c /e /i "%input_folder%source\i_data" "%build_folder%\data\"
+Mkdir %build_folder% >nul 2>&1
 
 rem Compile Portable-VirtualBox.
-"%aut2exe%" /in "%build_folder%\Portable-VirtualBox\source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox\Portable-VirtualBox.exe" /icon "%build_folder%\Portable-VirtualBox\source\VirtualBox.ico" /x86
-if not exist "%build_folder%\Portable-VirtualBox\Portable-VirtualBox.exe" (
-	echo Failed to build exe. No .exe file was produced
-	EXIT /B
-)
-
-rem Sign the main .exe file if run with -s
-IF "%~1"=="-s" (
-	echo "Signing main .exe file"
-	"%signtool%" sign /a "%build_folder%\Portable-VirtualBox\Portable-VirtualBox.exe"
-)
-
-rem Make a release by packing the exe, data and source code into a self-extracting archive.
-pushd %build_folder%
-"%sevenzip%" a -r -x!.git -sfx7z.sfx "%release_folder%\Portable-VirtualBox.tmp" "Portable-VirtualBox"
-popd
-
-rem Change the icon on the self-extracting archive.
-"%reshack%" -addoverwrite "%release_folder%\Portable-VirtualBox.tmp", "%release_folder%\%output_name%", "%build_folder%\Portable-VirtualBox\source\VirtualBox.ico",ICONGROUP,1,1033
-
-del /q "%release_folder%\Portable-VirtualBox.tmp"
-
-rem Signing the self extracting .exe file if run with -s
-IF "%~1"=="-s" (
-	echo "Signing self extracting .exe file"
-	"%signtool%" sign /a "%release_folder%\%output_name%"
-)
+"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x86-x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x86
+"%aut2exe%" /in "%input_folder%source\Portable-VirtualBox.au3" /out "%build_folder%\Portable-VirtualBox_x64.exe" /icon "%input_folder%source\VirtualBox.ico" /x64
 
 echo ###############################################################################
-echo Build new release as %release_folder%\%output_name%
+for %%i in ("%build_folder%\Portable-VirtualBox_x64.exe") do (
+echo Build new release as %build_folder%\Portable-VirtualBox_x64.exe
+echo Size: %%~zi bytes
+)
+for %%i in ("%build_folder%\Portable-VirtualBox_x86-x64.exe") do (
+echo Build new release as %build_folder%\Portable-VirtualBox_x86-x64.exe
+echo Size: %%~zi bytes
+)
 echo ###############################################################################
 
 pause

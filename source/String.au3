@@ -418,29 +418,3 @@ EndFunc   ;==>_StringReverse
 Func _StringToHex($strChar)
 	Return Hex(StringToBinary($strChar))
 EndFunc   ;==>_StringToHex
-
-Func _FileListToArray($sFilePath, $sFilter = "*", $iFlag = $FLTA_FILESFOLDERS, $bReturnPath = False)
-	Local $sDelimiter = "|", $sFileList = "", $sFileName = "", $sFullPath = ""
-
-	; Check parameters for the Default keyword or they meet a certain criteria
-	$sFilePath = StringRegExpReplace($sFilePath, "[\\/]+$", "") & "\" ; Ensure a single trailing backslash
-	If $iFlag = Default Then $iFlag = $FLTA_FILESFOLDERS
-	If $bReturnPath Then $sFullPath = $sFilePath
-	If $sFilter = Default Then $sFilter = "*"
-
-	; Check if the directory exists
-	If Not FileExists($sFilePath) Then Return SetError(1, 0, 0)
-	If StringRegExp($sFilter, "[\\/:><\|]|(?s)^\s*$") Then Return SetError(2, 0, 0)
-	If Not ($iFlag = 0 Or $iFlag = 1 Or $iFlag = 2) Then Return SetError(3, 0, 0)
-	Local $hSearch = FileFindFirstFile($sFilePath & $sFilter)
-	If @error Then Return SetError(4, 0, 0)
-	While 1
-		$sFileName = FileFindNextFile($hSearch)
-		If @error Then ExitLoop
-		If ($iFlag + @extended = 2) Then ContinueLoop
-		$sFileList &= $sDelimiter & $sFullPath & $sFileName
-	WEnd
-	FileClose($hSearch)
-	If $sFileList = "" Then Return SetError(4, 0, 0)
-	Return StringSplit(StringTrimLeft($sFileList, 1), $sDelimiter)
-EndFunc   ;==>_FileListToArray
