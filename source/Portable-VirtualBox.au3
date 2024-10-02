@@ -470,25 +470,15 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       EndIf
 
       For $i = 0 To UBound ($values1) - 1
-	Global $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
-	Global $ResultName = $Result[$Result[0]-2]
-	Global $ResultName2 = $Result[$Result[0]]
-	Global $Patch = StringReplace($values1[$i], "\"&$ResultName&"\"&$ResultName2&"\"&$ResultName2&".vbox", "")
-        If FileExists ($UserHome &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
+	Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
+	Local $ResultName = $Result[$Result[0]]
+	Local $Patch = StringRegExpReplace($values1[$i], "[^\\]+$", "")
+        If FileExists ($Patch&$ResultName&".vbox") Then
         $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
         If $values6 <> 0 Then
           $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
           $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values1[$i], $ResultName & $values6[0] & ".vbox"))
-          FileClose ($file)
-        EndIf
-        EndIf
-        If FileExists ($Patch &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
-        $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
-        If $values6 <> 0 Then
-          $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
-          $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values1[$i], $Patch &"\"&$ResultName & $values6[0] & ".vbox"))
+          FileWrite ($file, StringReplace ($content, $values1[$i], $Patch&$ResultName&".vbox"))
           FileClose ($file)
         EndIf
         EndIf
@@ -800,15 +790,10 @@ EndIf
       #clear log Machines
       If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
       For $i = 0 To UBound ($values1) - 1
-	Global $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
-	Global $ResultName = $Result[$Result[0]-2]
-	Global $ResultName2 = $Result[$Result[0]]
-        If FileExists ($UserHome &"\"& $ResultName &"\"& $ResultName2 &"\"& $ResultName2 &".vbox") Then
-        $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
-        If $values6 <> 0 Then
-	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$ResultName&"\"&$ResultName2&"\Logs\*.log")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$ResultName&"\"&$ResultName2&"\Logs\*.log.*")
-        EndIf
+	Local $Patch = StringRegExpReplace($values1[$i], "[^\\]+$", "")
+	If FileExists ($Patch&"Logs") Then
+	FileDelete ($Patch&"Logs\*.log")
+	FileDelete ($Patch&"Logs\*.log.*")
         EndIf
       Next
       EndIf
