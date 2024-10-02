@@ -472,10 +472,10 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       For $i = 0 To UBound ($values1) - 1
 	Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
 	Local $ResultName = $Result[$Result[0]]
-	Local $Patch = StringRegExpReplace(_StringBetween ($values1[$i], $UserHome&"\", '.vbox')[0], "[^\\]+$", "")
+	$values6 = _StringBetween ($values1[$i], $UserHome&"\", '.vbox')
+	If $values6 <> 0 Then
+	Local $Patch = StringRegExpReplace($values6[0], "[^\\]+$", "")
         If FileExists (@ScriptDir&"\"&$UserHome&"\"&$Patch&$ResultName&".vbox") Then
-        $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
-        If $values6 <> 0 Then
           $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
           $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
           FileWrite ($file, StringReplace ($content, $values1[$i], @ScriptDir&"\"&$UserHome&"\"&$Patch&$ResultName&".vbox"))
