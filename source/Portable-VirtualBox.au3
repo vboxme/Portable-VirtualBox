@@ -779,7 +779,6 @@ EndIf
       If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
       For $i = 0 To UBound ($values1) - 1
 	Local $Patch = StringRegExpReplace(_StringBetween ($values1[$i], $UserHome&"\", '.vbox')[0], "[^\\]+$", "")
-	msgbox(0, "", @ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs")
 	If FileExists (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs") Then
 	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs\*.log")
 	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs\*.log.*")
