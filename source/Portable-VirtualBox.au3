@@ -484,18 +484,6 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         EndIf
       Next
 
-      For $m = 0 To UBound ($values11) - 1
-        $values12 = _StringBetween ($values11[$m], 'defaultMachineFolder="', '"')
-        If $values12 <> 0 Then
-          If NOT FileExists ($values10[0]) Then
-            $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
-            $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-            FileWrite ($file, StringReplace ($content, $values12[0], @ScriptDir&"\"&$UserHome&"\Machines"))
-            FileClose ($file)
-          EndIf
-        EndIf
-      Next
-
       FileClose ($file)
     EndIf
   Else
@@ -798,7 +786,10 @@ EndIf
       Next
       EndIf
 
+      If Not FileExists (@ScriptDir&"\"&$UserHome&"") Then
+      DirCreate (@ScriptDir&"\"&$UserHome&"\Machines")
       Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder "& @ScriptDir &"\"& $UserHome &"\Machines", @ScriptDir, @SW_HIDE)
+      EndIf
 
       If $CmdLine[0] = 1 Then
         If FileExists (@ScriptDir&"\"&$UserHome) Then
