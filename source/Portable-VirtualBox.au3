@@ -472,13 +472,13 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       For $i = 0 To UBound ($values1) - 1
 	Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
 	Local $ResultName = $Result[$Result[0]]
-	Local $Patch = StringRegExpReplace($values1[$i], "[^\\]+$", "")
-        If FileExists ($Patch&$ResultName&".vbox") Then
+	Local $Patch = StringRegExpReplace(_StringBetween ($values1[$i], $UserHome&"\", '.vbox')[0], "[^\\]+$", "")
+        If FileExists (@ScriptDir&"\"&$UserHome&"\"&$Patch&$ResultName&".vbox") Then
         $values6 = _StringBetween ($values1[$i], $ResultName, '.vbox')
         If $values6 <> 0 Then
           $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
           $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values1[$i], $Patch&$ResultName&".vbox"))
+          FileWrite ($file, StringReplace ($content, $values1[$i], @ScriptDir&"\"&$UserHome&"\"&$Patch&$ResultName&".vbox"))
           FileClose ($file)
         EndIf
         EndIf
@@ -778,17 +778,17 @@ EndIf
       #clear log Machines
       If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
       For $i = 0 To UBound ($values1) - 1
-	Local $Patch = StringRegExpReplace($values1[$i], "[^\\]+$", "")
-	If FileExists ($Patch&"Logs") Then
-	FileDelete ($Patch&"Logs\*.log")
-	FileDelete ($Patch&"Logs\*.log.*")
+	Local $Patch = StringRegExpReplace(_StringBetween ($values1[$i], $UserHome&"\", '.vbox')[0], "[^\\]+$", "")
+	msgbox(0, "", @ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs")
+	If FileExists (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs") Then
+	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs\*.log")
+	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs\*.log.*")
         EndIf
       Next
       EndIf
 
       If Not FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
-      DirCreate (@ScriptDir&"\"&$UserHome&"\Machines")
-      Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder "& @ScriptDir &"\"& $UserHome &"\Machines", @ScriptDir, @SW_HIDE)
+      Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder """& @ScriptDir &"\"& $UserHome &"\Machines""", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $CmdLine[0] = 1 Then
