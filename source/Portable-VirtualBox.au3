@@ -786,8 +786,7 @@ EndIf
       Next
       EndIf
 
-      If Not FileExists (@ScriptDir&"\"&$UserHome&"") Then
-      DirCreate (@ScriptDir&"\"&$UserHome&"\Machines")
+      If Not FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
       Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder """& @ScriptDir &"\"& $UserHome &"\Machines""", @ScriptDir, @SW_HIDE)
       EndIf
 
