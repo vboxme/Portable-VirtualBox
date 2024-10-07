@@ -10,7 +10,6 @@ rem Setting up the different folders used for building. %~dp0 is the folder of t
 set "input_folder=%~dp0"
 set "build_folder=%input_folder%build"
 
-
 rem Find path for aut2exe
 rem If the user supplied a aut2exe path use it
 IF DEFINED "%aut2exe%" (
