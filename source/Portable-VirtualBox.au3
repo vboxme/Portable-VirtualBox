@@ -480,10 +480,11 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
      Next
      EndIf
 
+      msgbox(0, "", $values4)
       $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
       $values6 = _StringBetween ($content, "</ExtraData>", "<NetserviceRegistry>")
       Local $xmlfile    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-      FileWrite ($xmlfile, StringReplace ($content, $values6[0], "<MachineRegistry>"&$values4&"</MachineRegistry>"))
+      FileWrite ($xmlfile, StringReplace ($content, $values6[0], @CRLF &"<MachineRegistry>"&$values4&"</MachineRegistry>"& @CRLF))
       FileClose ($xmlfile)
       FileClose ($file)
     EndIf
