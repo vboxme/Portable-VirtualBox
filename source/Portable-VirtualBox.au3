@@ -1291,7 +1291,7 @@ Func Settings ()
     $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
     Next
 
-    $StartLng = GUICtrlCreateCombo("", 238, 185, 100)
+    $StartLng = GUICtrlCreateCombo("", 238, 185, 100, 0, $CBS_DROPDOWNLIST)
     GUICtrlSetData($StartLng, $sfilelist, IniRead ($var1, "language", "key", "NotFound"))
     #$StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
 
