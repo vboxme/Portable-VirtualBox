@@ -17,10 +17,8 @@
 #include <GUIConstantsEx.au3>
 #include <DirConstants.au3>
 #include <FileConstants.au3>
-#include <IE.au3>
 #include <ProcessConstants.au3>
 #include <String.au3>
-#include <WinAPIError.au3>
 #include <SingleTon.au3>
 #include <RecFileListToArray.au3>
 
@@ -427,7 +425,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
     EndIf
   EndIf
 
-    Global $sFileVer = StringLeft(FileGetVersion($arch&"\VirtualBox.exe"), 5)
+    Local $sFileVer = StringLeft(FileGetVersion($arch&"\VirtualBox.exe"), 5)
   If $sFileVer>="7.1.0" Then
     Global $VMTitle = "Oracle VirtualBox"
   Else
@@ -952,7 +950,7 @@ EndIf
       SplashOff ()
     Else
       WinSetState ($VMTitle&" Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
-      WinSetState ("] - "&$VMTitle, "", BitAND (@SW_SHOW, @SW_RESTORE))
+      WinSetState ("] - "&$VMTitle&"", "", BitAND (@SW_SHOW, @SW_RESTORE))
     EndIf
   Else
     SplashOff ()
@@ -989,12 +987,12 @@ EndFunc
 
 Func ShowWindows_VM ()
   Opt ("WinTitleMatchMode", 2)
-  WinSetState ("] - "&$VMTitle, "", BitAND (@SW_SHOW, @SW_RESTORE))
+  WinSetState ("] - "&$VMTitle&"", "", BitAND (@SW_SHOW, @SW_RESTORE))
 EndFunc
 
 Func HideWindows_VM ()
   Opt ("WinTitleMatchMode", 2)
-  WinSetState ("] - "&$VMTitle, "", @SW_HIDE)
+  WinSetState ("] - "&$VMTitle&"", "", @SW_HIDE)
 EndFunc
 
 Func ShowWindows ()
@@ -1629,8 +1627,8 @@ Func ExitScript ()
   Opt ("WinTitleMatchMode", 2)
   WinClose ("VirtualBoxVM", "")
   WinWaitClose ("VirtualBoxVM", "")
-  WinClose ("] - "&$VMTitle, "")
-  WinWaitClose ("] - "&$VMTitle, "")
+  WinClose ("] - "&$VMTitle&"")
+  WinWaitClose ("] - "&$VMTitle&"")
   WinClose ($VMTitle, "")
   Break (1)
 EndFunc
@@ -1796,7 +1794,7 @@ Func UseSettings ()
 EndFunc
 
 Func Licence ()
-  _IECreate ("http://www.virtualbox.org/wiki/VirtualBox_PUEL", 1, 1)
+  ShellExecute("http://www.virtualbox.org/wiki/VirtualBox_PUEL")
 EndFunc
 
 Func ExitExtraction ()
