@@ -135,14 +135,14 @@ If NOT FileExists ($var1) Then
   IniWrite ($var1, "language", "key", "english")
   IniWrite ($var1, "userhome", "key", ".VirtualBox")
   IniWrite ($var1, "startvm", "key", "")
-  IniWrite ($var1, "update", "key", "1")
+  IniWrite ($var1, "update", "key", "0")
   IniWrite ($var1, "lang", "key", "0")
   IniWrite ($var1, "version", "key", "")
   IniWrite ($var1, "starter", "key", "")
 Else
   IniReadSection ($var1, "update")
   If @error Then
-    IniWrite ($var1, "update", "key", "1")
+    IniWrite ($var1, "update", "key", "0")
   EndIf
 
   IniReadSection ($var1, "lang")
