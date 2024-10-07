@@ -425,7 +425,11 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
     EndIf
   EndIf
 
-    Local $sFileVer = StringLeft(FileGetVersion($arch&"\VirtualBox.exe"), 5)
+  Global $Manager = StringSplit(IniRead($var2 & $lng &".ini", "startvm-settings", "01", "NotFound"), "-")
+  if ($Manager[2]) then
+	$Manager = $Manager[2]
+  EndIf
+  Local $sFileVer = StringLeft(FileGetVersion($arch&"\VirtualBox.exe"), 5)
   If $sFileVer>="7.1.0" Then
     Global $VMTitle = "Oracle VirtualBox"
   Else
@@ -949,7 +953,7 @@ EndIf
       RunWait ("sc delete VBoxSDS", @ScriptDir, @SW_HIDE)
       SplashOff ()
     Else
-      WinSetState ($VMTitle&" Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
+      WinSetState (""&$VMTitle&" "&$Manager&"", "", BitAND (@SW_SHOW, @SW_RESTORE))
       WinSetState ("] - "&$VMTitle&"", "", BitAND (@SW_SHOW, @SW_RESTORE))
     EndIf
   Else
@@ -997,12 +1001,12 @@ EndFunc
 
 Func ShowWindows ()
   Opt ("WinTitleMatchMode", 3)
-  WinSetState ($VMTitle&" Manager", "", BitAND (@SW_SHOW, @SW_RESTORE))
+  WinSetState (""&$VMTitle&" "&$Manager&"", "", BitAND (@SW_SHOW, @SW_RESTORE))
 EndFunc
 
 Func HideWindows ()
   Opt ("WinTitleMatchMode", 3)
-  WinSetState ($VMTitle&" Manager", "", @SW_HIDE)
+  WinSetState (""&$VMTitle&" "&$Manager&"", "", @SW_HIDE)
 EndFunc
 
 Func Settings ()
