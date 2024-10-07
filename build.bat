@@ -4,7 +4,7 @@ cmd /c taskkill /im Portable-VirtualBox_x86.exe /f 2>nul
 cmd /c taskkill /im Portable-VirtualBox_x64.exe /f 2>nul
 
 rem Unseting user variables
-set "aut2exe=source\Aut2Exe\Aut2exe_x64.exe"
+set "aut2exe=source\Aut2Exe\Aut2exe.exe"
 
 rem Setting up the different folders used for building. %~dp0 is the folder of the build script itself (may not be the same as the working directory).
 set "input_folder=%~dp0"
