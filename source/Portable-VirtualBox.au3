@@ -72,7 +72,6 @@ FileInstall("i_data\tools\snetcfg_x64.exe", "data\tools\snetcfg_x64.exe")
 EndIf
 EndIf
 
-$lng = IniRead ($var1, "language", "key", "NotFound")
 If NOT FileExists ($var2 & $lng &".ini") Then
 DirCreate (@ScriptDir&"\data\language")
 FileInstall("i_data\language\catalan.ini", "data\language\catalan.ini")
