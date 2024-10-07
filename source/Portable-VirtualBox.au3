@@ -22,6 +22,7 @@
 #include <String.au3>
 #include <WinAPIError.au3>
 #include <SingleTon.au3>
+#include <RecFileListToArray.au3>
 
 _SingleTon(@ScriptName)
 #NoTrayIcon
@@ -133,21 +134,13 @@ If NOT FileExists ($var1) Then
   IniWrite ($var1, "hotkeys", "24", "6")
 
   IniWrite ($var1, "usb", "key", "0")
-
   IniWrite ($var1, "net", "key", "0")
-
   IniWrite ($var1, "language", "key", "english")
-
   IniWrite ($var1, "userhome", "key", ".VirtualBox")
-
   IniWrite ($var1, "startvm", "key", "")
-
   IniWrite ($var1, "update", "key", "1")
-
   IniWrite ($var1, "lang", "key", "0")
-
   IniWrite ($var1, "version", "key", "")
-
   IniWrite ($var1, "starter", "key", "")
 Else
   IniReadSection ($var1, "update")
@@ -194,15 +187,15 @@ If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
   GUICtrlCreateLabel ("Please select your language", 14, 8, 260, 14)
   GUICtrlSetFont (-1, 9, 800, "Arial")
 
-    $FileList = _FileListToArray($var2, "*", 1)
-    Local $sdelim, $sfilelist
-    For $i = 1 to $FileList[0]
-    If $i > 1 Then
-    $sdelim = "|";
-    EndIf
-    $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
-    Next
-
+  $FileList = _FileListToArray($var2, "*", 1)
+  Local $sdelim, $sfilelist
+  For $i = 1 to $FileList[0]
+  If $i > 1 Then
+  $sdelim = "|";
+  EndIf
+  $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
+  Next
+  
   $StartLng = GUICtrlCreateCombo("", 31, 34, 100, 0, $CBS_DROPDOWNLIST)
   GUICtrlSetData(-1, $sfilelist, "english")
 
@@ -469,21 +462,29 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         $values11 = _StringBetween ($values10[0], '<SystemProperties', '/>')
       EndIf
 
-      For $i = 0 To UBound ($values1) - 1
-	Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
-	Local $ResultName = $Result[$Result[0]]
-	$values6 = _StringBetween ($values1[$i], $UserHome&"\", '.vbox')
-	If $values6 <> 0 Then
-	Local $Patch = StringRegExpReplace($values6[0], "[^\\]+$", "")
-        If FileExists (@ScriptDir&"\"&$UserHome&"\"&$Patch&$ResultName&".vbox") Then
-          $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
-          $file    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
-          FileWrite ($file, StringReplace ($content, $values1[$i], @ScriptDir&"\"&$UserHome&"\"&$Patch&$ResultName&".vbox"))
-          FileClose ($file)
-        EndIf
-        EndIf
-      Next
+     $aArray = _RecFileListToArray(@ScriptDir, "*.vbox", 1, 1, 1, 2)
+     If IsArray($aArray) Then
+     For $i = 1 To $aArray[0]
+      $line = FileRead (FileOpen ($aArray[$i], 128))
+      If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
+      $values2 = _StringBetween ($line, '<HardDisks>', '</HardDisks>')
+      If $values2 = 0 Then
+        $values3 = 0
+      Else
+        $values3 = _StringBetween ($line, 'uuid="', '"')
+      EndIf
+      If FileExists ($aArray[$i]) Then
+      $values4 &= "<MachineEntry uuid="""&$values3[0]&""" src="""&$aArray[$i]&"""/>" & @CRLF
+      EndIf
+      EndIf
+     Next
+     EndIf
 
+      $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
+      $values6 = _StringBetween ($content, "</ExtraData>", "<NetserviceRegistry>")
+      Local $xmlfile    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
+      FileWrite ($xmlfile, StringReplace ($content, $values6[0], "<MachineRegistry>"&$values4&"</MachineRegistry>"))
+      FileClose ($xmlfile)
       FileClose ($file)
     EndIf
   Else
@@ -602,8 +603,8 @@ EndIf
         TrayCreateItem (IniRead ($var2 & $lng &".ini", "tray", "06", "NotFound") &" (" & $ctrl6 & $plus06 & $alt6 & $plus12 & $shift6 & $plus18 & IniRead ($var1, "hotkeys", "24", "NotFound") & ")")
         TrayItemSetOnEvent (-1, "ExitScript")
         TraySetState ()
-	TraySetToolTip (IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"))
-	TrayTip("", IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"), 5)
+        TraySetToolTip (IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"))
+        TrayTip("", IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"), 5)
       Else
         TrayCreateItem (IniRead ($var2 & $lng &".ini", "tray", "01", "NotFound"))
         TrayItemSetOnEvent (-1, "ShowWindows_VM")
@@ -621,8 +622,8 @@ EndIf
         TrayCreateItem (IniRead ($var2 & $lng &".ini", "tray", "06", "NotFound"))
         TrayItemSetOnEvent (-1, "ExitScript")
         TraySetState ()
-	TraySetToolTip (IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"))
-	TrayTip("", IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"), 5)
+        TraySetToolTip (IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"))
+        TrayTip("", IniRead ($var2 & $lng &".ini", "tray", "07", "NotFound"), 5)
       EndIf
 
       If @OSArch = "x86" Then
@@ -698,11 +699,11 @@ EndIf
       EndIf
 
       If IniRead ($var1, "net", "key", "NotFound") = 1 Then
-	If NOT FileExists (@ScriptDir&"\"& $arch & "\drivers\network\netadp6") Then
-	Local $ADPVER = ""
-	else
-	Local $ADPVER = 6
-	EndIf
+        If NOT FileExists (@ScriptDir&"\"& $arch & "\drivers\network\netadp6") Then
+        Local $ADPVER = ""
+        else
+        Local $ADPVER = 6
+        EndIf
         If RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetAdp", "DisplayName") <> "VirtualBox Host-Only Network Adapter" Then
           If @OSArch = "x86" Then
             RunWait (@ScriptDir &"\data\tools\devcon_x86.exe install .\"& $arch &"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
@@ -771,18 +772,25 @@ EndIf
 
       #clear log
       If FileExists (@ScriptDir&"\"&$UserHome&"") Then
-	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
+      FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
+      FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
       EndIf
 
       #clear log Machines
       If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
       For $i = 0 To UBound ($values1) - 1
-	Local $Patch = StringRegExpReplace(_StringBetween ($values1[$i], $UserHome&"\", '.vbox')[0], "[^\\]+$", "")
-	If FileExists (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs") Then
-	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs\*.log")
-	FileDelete (@ScriptDir&"\"&$UserHome&"\"&$Patch&"Logs\*.log.*")
-        EndIf
+      Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
+      Local $ResultName = $Result[$Result[0]]
+      $aArray = _RecFileListToArray(@ScriptDir, "*"&$ResultName&".vbox", 1, 1, 0, 2)
+      If IsArray($aArray) Then
+      For $var = 1 To $aArray[0]
+      If FileExists ($aArray[$var]) Then
+	  Local $Patch = StringRegExpReplace($aArray[$var], "[^\\]+$", "")
+      FileDelete ($Patch&"Logs\*.log")
+      FileDelete ($Patch&"Logs\*.log.*")
+      EndIf
+      Next
+      EndIf
       Next
       EndIf
 
@@ -1000,23 +1008,23 @@ Func HideWindows ()
 EndFunc
 
 Func Settings ()
-  Opt ("GUIOnEventMode", 1)
+    Opt ("GUIOnEventMode", 1)
 
-  Global $Radio1, $Radio2, $Radio3, $Radio4, $Radio5, $Radio6, $Radio7, $Radio8, $Radio9, $Radio10, $Radio11, $Radio12, $Radio13, $Radio14
-  Global $Checkbox01, $Checkbox02, $Checkbox03, $Checkbox04, $Checkbox05, $Checkbox06, $Checkbox07, $Checkbox08, $Checkbox09
-  Global $Checkbox10, $Checkbox11, $Checkbox12, $Checkbox13, $Checkbox14, $Checkbox15, $Checkbox16, $Checkbox17, $Checkbox18
-  Global $Input1, $Input2, $Input3, $Input4, $Input5, $Input6
-  Global $HomeRoot, $VMStart, $StartLng
-
-  Local $WS_POPUP
-
-  GUICreate (IniRead ($var2 & $lng &".ini", "settings-label", "01", "NotFound"), 580, 318, 193, 125, $WS_POPUP)
-  GUISetFont (9, 400, 0, "Arial")
-  GUISetBkColor (0xFFFFFF)
-  GUICtrlSetFont (-1, 10, 800, 0, "Arial")
-  GUICtrlCreateTab (0, 0, 577, 296)
-
-  GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "homeroot-settings", "01", "NotFound"))
+    Global $Radio1, $Radio2, $Radio3, $Radio4, $Radio5, $Radio6, $Radio7, $Radio8, $Radio9, $Radio10, $Radio11, $Radio12, $Radio13, $Radio14
+    Global $Checkbox01, $Checkbox02, $Checkbox03, $Checkbox04, $Checkbox05, $Checkbox06, $Checkbox07, $Checkbox08, $Checkbox09
+    Global $Checkbox10, $Checkbox11, $Checkbox12, $Checkbox13, $Checkbox14, $Checkbox15, $Checkbox16, $Checkbox17, $Checkbox18
+    Global $Input1, $Input2, $Input3, $Input4, $Input5, $Input6
+    Global $HomeRoot, $VMStart, $StartLng
+    
+    Local $WS_POPUP
+    
+    GUICreate (IniRead ($var2 & $lng &".ini", "settings-label", "01", "NotFound"), 580, 318, 193, 125, $WS_POPUP)
+    GUISetFont (9, 400, 0, "Arial")
+    GUISetBkColor (0xFFFFFF)
+    GUICtrlSetFont (-1, 10, 800, 0, "Arial")
+    GUICtrlCreateTab (0, 0, 577, 296)
+    
+    GUICtrlCreateTabItem (IniRead ($var2 & $lng &".ini", "homeroot-settings", "01", "NotFound"))
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "homeroot-settings", "02", "NotFound"), 16, 40, 546, 105)
 
     $Radio1 = GUICtrlCreateRadio ("Radio01", 20, 153, 17, 17)
