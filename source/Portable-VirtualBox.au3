@@ -784,9 +784,9 @@ EndIf
       Local $ResultName = $Result[$Result[0]]
       $aArray = _RecFileListToArray(@ScriptDir, "*"&$ResultName&".vbox", 1, 1, 0, 2)
       If IsArray($aArray) Then
-      For $var = 1 To $aArray[0]
-      If FileExists ($aArray[$var]) Then
-	  Local $Patch = StringRegExpReplace($aArray[$var], "[^\\]+$", "")
+      For $j = 1 To $aArray[0]
+      If FileExists ($aArray[$j]) Then
+	  Local $Patch = StringRegExpReplace($aArray[$j], "[^\\]+$", "")
       FileDelete ($Patch&"Logs\*.log")
       FileDelete ($Patch&"Logs\*.log.*")
       EndIf
