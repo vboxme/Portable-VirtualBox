@@ -186,13 +186,11 @@ If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
   GUICtrlSetFont (-1, 9, 800, "Arial")
 
   $FileList = _FileListToArray($var2, "*", 1)
-  Local $sdelim, $sfilelist
+  Local $sfilelist
   For $i = 1 to $FileList[0]
-  If $i > 1 Then
-  $sdelim = "|";
-  EndIf
-  $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
+  $sfilelist &= StringReplace($FileList[$i], ".ini", "")&"|"
   Next
+  $sfilelist = StringTrimRight($sfilelist, 1)
   
   $StartLng = GUICtrlCreateCombo("", 31, 34, 100, 0, $CBS_DROPDOWNLIST)
   GUICtrlSetData(-1, $sfilelist, "english")
@@ -1285,20 +1283,18 @@ Func Settings ()
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "language-settings", "03", "NotFound"), 26, 185, 180, 21)
 
     $FileList = _FileListToArray($var2, "*", 1)
-    Local $sdelim, $sfilelist
+    Local $sfilelist
     For $i = 1 to $FileList[0]
-    If $i > 1 Then
-    $sdelim = "|";
-    EndIf
-    $sfilelist &= $sdelim & StringReplace($FileList[$i], ".ini", "")
+    $sfilelist &= StringReplace($FileList[$i], ".ini", "")&"|"
     Next
+    $sfilelist = StringTrimRight($sfilelist, 1)
 
     $StartLng = GUICtrlCreateCombo("", 238, 185, 100, 0, $CBS_DROPDOWNLIST)
     GUICtrlSetData($StartLng, $sfilelist, IniRead ($var1, "language", "key", "NotFound"))
-    #$StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
+    ;$StartLng = GUICtrlCreateInput (IniRead ($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
 
-    #GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "language-settings", "04", "NotFound"), 476, 185, 81, 21, 0)
-    #GUICtrlSetOnEvent (-1, "SRCLanguage")
+    ;GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "language-settings", "04", "NotFound"), 476, 185, 81, 21, 0)
+    ;GUICtrlSetOnEvent (-1, "SRCLanguage")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
     GUICtrlSetOnEvent (-1, "OKLanguage")
     GUICtrlCreateButton (IniRead ($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
