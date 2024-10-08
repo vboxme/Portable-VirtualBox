@@ -6,6 +6,7 @@
 ; Download       : http://www.vbox.me
 ; Support        : http://www.win-lite.de/wbb/index.php?page=Board&boardID=153
 
+AutoItSetOption("TrayIconDebug", 1)
 #AutoIt3Wrapper_Res_Fileversion=6.4.9.1
 #AutoIt3Wrapper_Res_ProductVersion=6.4.9.1
 #AutoIt3Wrapper_Icon=VirtualBox.ico
