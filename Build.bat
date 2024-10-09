@@ -1,5 +1,6 @@
 @echo off
 @title Build Aut2Exe
+@chcp 65001>Nul
 cmd /c taskkill /im Portable-VirtualBox_x86.exe /f 2>nul
 cmd /c taskkill /im Portable-VirtualBox_x64.exe /f 2>nul
 
