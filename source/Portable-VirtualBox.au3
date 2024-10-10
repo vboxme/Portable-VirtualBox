@@ -394,6 +394,7 @@ If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Th
   If FileExists (@ScriptDir&"\virtualbox.exe") Then
     GUICtrlSetData ($Input100, @ScriptDir&"\virtualbox.exe")
     GUICtrlSetState ($Button200,$GUI_ENABLE)
+	DownloadCheckVer()
   EndIf
 
   GUISetState ()
@@ -428,7 +429,8 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
   if ($Manager[2]) then
 	$Manager = $Manager[2]
   EndIf
-  Local $sFileVer = StringLeft(FileGetVersion($arch&"\VirtualBox.exe"), 5)
+
+    Local $sFileVer = StringRegExpReplace(FileGetVersion(@ScriptDir&"\VirtualBox.exe"), "^(\d+\.\d+.\d+)?.*", "\1")
   If $sFileVer>="7.1.0" Then
     Global $VMTitle = "Oracle VirtualBox"
   Else
@@ -963,6 +965,16 @@ EndIf
 
 Break (1)
 Exit
+
+Func DownloadCheckVer()
+	Local $sFileVer = StringRegExpReplace(FileGetVersion(@ScriptDir&"\VirtualBox.exe"), "^(\d+\.\d+.\d+)?.*", "\1")
+	If $sFileVer<="6.0.24" Then
+		GUICtrlSetState($Checkbox100, $GUI_ENABLE)
+		Else
+		GUICtrlSetState($Checkbox100, $GUI_UNCHECKED)
+		GUICtrlSetState($Checkbox100, $GUI_DISABLE)
+	EndIf
+EndFunc
 
 Func _FileListToArray($sFilePath, $sFilter = "*", $iFlag = $FLTA_FILESFOLDERS, $bReturnPath = False)
 	Local $sDelimiter = "|", $sFileList = "", $sFileName = "", $sFullPath = ""
@@ -1661,6 +1673,7 @@ Func DownloadFile ()
   InetClose ($download3)
   If FileExists (@ScriptDir&"\virtualbox.exe") Then
     GUICtrlSetData ($Input100, @ScriptDir&"\virtualbox.exe")
+    DownloadCheckVer()
   EndIf
   GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "02", "NotFound"))
   GUICtrlSetState ($Button100, $GUI_ENABLE)
@@ -1732,7 +1745,7 @@ Func UseSettings ()
 
   If GUICtrlRead ($Checkbox100) = $GUI_CHECKED AND FileExists (@ScriptDir&"\temp") Then
     GUICtrlSetData ($Input200, @LF & IniRead ($var2 & $lng &".ini", "status", "05", "NotFound"))
-    RunWait ("cmd /c ren ""%CD%\temp\*.msi"" x86.msi", @ScriptDir, @SW_HIDE)
+    RunWait ("cmd /c ren ""%CD%\temp\*_x86.msi"" x86.msi", @ScriptDir, @SW_HIDE)
     RunWait ("cmd /c msiexec.exe /quiet /a ""%CD%\temp\x86.msi"" TARGETDIR=""%CD%\temp\x86""", @ScriptDir, @SW_HIDE)
     DirCopy (@ScriptDir&"\temp\x86\PFiles\Oracle\VirtualBox", @ScriptDir&"\app32", 1)
     DirCopy (@ScriptDir&"\temp\ExtensionPacks\Oracle_VM_VirtualBox_Extension_Pack", @ScriptDir&"\app32\ExtensionPacks\Oracle_VM_VirtualBox_Extension_Pack", 1)
