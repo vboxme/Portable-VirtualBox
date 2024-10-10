@@ -347,7 +347,7 @@ EndIf
 ; Thibaut : use Hybrid Mode if available
 HybridMode()
 
-If NOT (FileExists (@ScriptDir&"\app32") OR FileExists (@ScriptDir&"\app64")) Then
+If NOT (FileExists (@ScriptDir&"\app32\VirtualBox.exe") OR FileExists (@ScriptDir&"\app64\VirtualBox.exe")) Then
   Global $Checkbox100, $Checkbox110, $Checkbox120
   Global $Input100, $Input200, $Button100, $Button200
   Global $install = 1
@@ -482,7 +482,6 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
      Next
      EndIf
 
-      msgbox(0, "", $values4)
       $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
       $values6 = _StringBetween ($content, "</ExtraData>", "<NetserviceRegistry>")
       Local $xmlfile    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
