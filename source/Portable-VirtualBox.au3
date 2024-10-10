@@ -818,7 +818,7 @@ EndIf
       EndIf
 
       If Not FileExists ($UserHome&"\VirtualBox.xml") Then
-	  Run ("cmd /c "& @ScriptDir &"\"& $arch &"\VBoxManage.exe setproperty machinefolder """& $UserHome &"\Machines""", @ScriptDir, @SW_HIDE)
+	  Run('cmd /c ""'&@ScriptDir&'\'& $arch &'\VBoxManage.exe" setproperty machinefolder "'& $UserHome &'\Machines""',@ScriptDir,@SW_HIDE)
       EndIf
 
       If $CmdLine[0] = 1 Then
