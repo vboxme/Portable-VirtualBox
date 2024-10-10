@@ -700,7 +700,7 @@ EndIf
       EndIf
 
       If IniRead ($var1, "net", "key", "NotFound") = 1 Then
-        If NOT FileExists (@ScriptDir&"\"& $arch & "\drivers\network\netadp6") Then
+        If NOT FileExists (@ScriptDir&"\"& $arch &"\drivers\network\netadp6") Then
         Local $ADPVER = ""
         else
         Local $ADPVER = 6
