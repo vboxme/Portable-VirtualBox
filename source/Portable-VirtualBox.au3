@@ -55,15 +55,18 @@ EndIf
 If NOT FileExists (@ScriptDir&"\data\tools") Then
 DirCreate (@ScriptDir&"\data\tools")
 EndIf
+
 If NOT FileExists (@ScriptDir&"\data\tools\7za.exe") Then
 FileInstall("i_data\tools\7za.exe", "data\tools\7za.exe")
 EndIf
+
 If @OSArch = "x86" Then
 If NOT FileExists (@ScriptDir&"\data\tools\devcon_x86.exe") or NOT FileExists (@ScriptDir&"\data\tools\snetcfg_x86.exe") Then
 FileInstall("i_data\tools\devcon_x86.exe", "data\tools\devcon_x86.exe")
 FileInstall("i_data\tools\snetcfg_x86.exe", "data\tools\snetcfg_x86.exe")
 EndIf
 EndIf
+
 If @OSArch = "x64" Then
 If NOT FileExists (@ScriptDir&"\data\tools\devcon_x64.exe") or NOT FileExists (@ScriptDir&"\data\tools\snetcfg_x64.exe") Then
 FileInstall("i_data\tools\devcon_x64.exe", "data\tools\devcon_x64.exe")
@@ -134,7 +137,7 @@ If NOT FileExists ($var1) Then
   IniWrite ($var1, "usb", "key", "0")
   IniWrite ($var1, "net", "key", "0")
   IniWrite ($var1, "language", "key", "english")
-  IniWrite ($var1, "userhome", "key", ".VirtualBox")
+  IniWrite ($var1, "userhome", "key", $DefaultUserHome)
   IniWrite ($var1, "startvm", "key", "")
   IniWrite ($var1, "update", "key", "0")
   IniWrite ($var1, "lang", "key", "0")
@@ -162,15 +165,20 @@ Else
   EndIf
 EndIf
 
+Global $DefaultUserHome = @ScriptDir&"\.VirtualBox"
 Global $UserHome = IniRead ($var1, "userhome", "key", "NotFound")
 
-If IniRead ($var1, "userhome", "key", "NotFound") = "NotFound" Then
-IniWrite ($var1, "userhome", "key", ".VirtualBox")
+If FileExists (StringLeft($UserHome, 2)) Then
+DirCreate($UserHome)
 EndIf
 
-If $UserHome = false Then
-IniWrite ($var1, "userhome", "key", ".VirtualBox")
+If NOT FileExists ($UserHome) Then
+IniWrite ($var1, "userhome", "key", $DefaultUserHome)
 EndIf
+
+$UserHome = IniRead ($var1, "userhome", "key", "NotFound")
+$UserHome = StringRegExpReplace($UserHome, "\\+$", "")
+IniWrite ($var1, "userhome", "key", $UserHome)
 
 If IniRead ($var1, "lang", "key", "NotFound") = 0 Then
   Global $cl = 1, $StartLng
@@ -437,18 +445,18 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
     Global $VMTitle = "Oracle VM VirtualBox"
   EndIf
 
-  If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-prev") Then
-    FileDelete (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-prev")
+  If FileExists ($UserHome&"\VirtualBox.xml-prev") Then
+    FileDelete ($UserHome&"\VirtualBox.xml-prev")
   EndIf
 
-  If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-tmp") Then
-    FileDelete (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml-tmp")
+  If FileExists ($UserHome&"\VirtualBox.xml-tmp") Then
+    FileDelete ($UserHome&"\VirtualBox.xml-tmp")
   EndIf
 
-  If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
+  If FileExists ($UserHome&"\VirtualBox.xml") Then
     Local $values0, $values1, $values2, $values3, $values4, $values5, $values6, $values7, $values8, $values9, $values10, $values11, $values12, $values13
     Local $line, $content, $i, $j, $k, $l, $m, $n
-    Local $file = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128)
+    Local $file = FileOpen ($UserHome&"\VirtualBox.xml", 128)
     If $file <> -1 Then
       $line    = FileRead ($file)
       $values0 = _StringBetween ($line, '<MachineRegistry>', '</MachineRegistry>')
@@ -464,7 +472,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         $values11 = _StringBetween ($values10[0], '<SystemProperties', '/>')
       EndIf
 
-     $aArray = _RecFileListToArray(@ScriptDir, "*.vbox", 1, 1, 1, 2)
+     $aArray = _RecFileListToArray($UserHome, "*.vbox", 1, 1, 1, 2)
      If IsArray($aArray) Then
      For $i = 1 To $aArray[0]
       $line = FileRead (FileOpen ($aArray[$i], 128))
@@ -482,11 +490,24 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
      Next
      EndIf
 
-      $content = FileRead (FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 128))
+      $content = FileRead (FileOpen ($UserHome&"\VirtualBox.xml", 128))
       $values6 = _StringBetween ($content, "</ExtraData>", "<NetserviceRegistry>")
-      Local $xmlfile    = FileOpen (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml", 2)
+      Local $xmlfile    = FileOpen ($UserHome&"\VirtualBox.xml", 2)
       FileWrite ($xmlfile, StringReplace ($content, $values6[0], @CRLF &"<MachineRegistry>"&$values4&"</MachineRegistry>"& @CRLF))
       FileClose ($xmlfile)
+
+      For $m = 0 To UBound ($values11) - 1
+        $values12 = _StringBetween ($values11[$m], 'defaultMachineFolder="', '"')
+        If $values12 <> 0 Then
+		  If Not FileExists (StringLeft($values12[0], 2)) Then
+            $content = FileRead (FileOpen ($UserHome&"\VirtualBox.xml", 128))
+            $file    = FileOpen ($UserHome&"\VirtualBox.xml", 2)
+            FileWrite ($file, StringReplace ($content, $values12[0], $UserHome&"\Machines"))
+            FileClose ($file)
+          EndIf
+        EndIf
+      Next
+
       FileClose ($file)
     EndIf
   Else
@@ -663,7 +684,10 @@ EndIf
       SplashOff ()
 
       If FileExists (@ScriptDir&"\"& $arch & "\drivers\VBoxDrv") AND RegRead ("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxDRV", "DisplayName") <> "VirtualBox Service" Then
-        RunWait ("cmd /c sc create VBoxDRV binpath= ""%CD%\"& $arch &"\drivers\VBoxDrv\VBoxDrv.sys"" type= kernel start= auto error= normal displayname= PortableVBoxDRV", @ScriptDir, @SW_HIDE)
+        $VBoxDRV = RunWait ("cmd /c sc create VBoxDRV binpath= ""%CD%\"& $arch &"\drivers\VBoxDrv\VBoxDrv.sys"" type= kernel start= auto error= normal displayname= PortableVBoxDRV", @ScriptDir, @SW_HIDE)
+		If $VBoxDRV <> "0" Then
+		MsgBox(0, "VBoxDRV", "Not Running")
+		EndIf
         Local $DRV = 1
       Else
         Local $DRV = 0
@@ -773,57 +797,57 @@ EndIf
       EndIf
 
       #clear log
-      If FileExists (@ScriptDir&"\"&$UserHome&"") Then
-      FileDelete (@ScriptDir&"\"&$UserHome&"\*.log")
-      FileDelete (@ScriptDir&"\"&$UserHome&"\*.log.*")
+      If FileExists ($UserHome) Then
+      FileDelete ($UserHome&"\*.log")
+      FileDelete ($UserHome&"\*.log.*")
       EndIf
 
       #clear log Machines
-      If FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
-      For $i = 0 To UBound ($values1) - 1
-      Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
-      Local $ResultName = $Result[$Result[0]]
-      $aArray = _RecFileListToArray(@ScriptDir, "*"&$ResultName&".vbox", 1, 1, 0, 2)
-      If IsArray($aArray) Then
-      For $j = 1 To $aArray[0]
-      If FileExists ($aArray[$j]) Then
-	  Local $Patch = StringRegExpReplace($aArray[$j], "[^\\]+$", "")
-      FileDelete ($Patch&"Logs\*.log")
-      FileDelete ($Patch&"Logs\*.log.*")
-      EndIf
-      Next
-      EndIf
-      Next
+      If FileExists ($UserHome&"\VirtualBox.xml") Then
+		For $i = 0 To UBound ($values1) - 1
+		Local $Result = StringSplit(StringReplace($values1[$i], ".vbox", ""), "\")
+		Local $ResultName = $Result[$Result[0]]
+		$aArray = _RecFileListToArray($UserHome, "*"&$ResultName&".vbox", 1, 1, 0, 2)
+		If IsArray($aArray) Then
+		For $j = 1 To $aArray[0]
+		If FileExists ($aArray[$j]) Then
+		Local $Patch = StringRegExpReplace($aArray[$j], "[^\\]+$", "")
+		FileDelete ($Patch&"Logs\*.log")
+		FileDelete ($Patch&"Logs\*.log.*")
+		EndIf
+		Next
+		EndIf
+		Next
       EndIf
 
-      If Not FileExists (@ScriptDir&"\"&$UserHome&"\VirtualBox.xml") Then
-      Run ("cmd /c %CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe setproperty machinefolder """& @ScriptDir &"\"& $UserHome &"\Machines""", @ScriptDir, @SW_HIDE)
+      If Not FileExists ($UserHome&"\VirtualBox.xml") Then
+	  Run ("cmd /c "& @ScriptDir &"\"& $arch &"\VBoxManage.exe setproperty machinefolder """& $UserHome &"\Machines""", @ScriptDir, @SW_HIDE)
       EndIf
 
       If $CmdLine[0] = 1 Then
-        If FileExists (@ScriptDir&"\"&$UserHome) Then
+        If FileExists ($UserHome) Then
           Local $StartVM  = $CmdLine[1]
-          If IniRead ($var1, "userhome", "key", "NotFound") = "%CD%\"&$UserHome AND FileExists (@ScriptDir&"\"&$UserHome&"\HardDisks\"&$CmdLine[1]&".vdi") Then
-            RunWait ("cmd /c set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
+          If IniRead ($var1, "userhome", "key", "NotFound") = $UserHome AND FileExists ($UserHome&"\HardDisks\"&$CmdLine[1]&".vdi") Then
+			RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
           Else
-            RunWait ("cmd /c set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+            RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
           EndIf
         Else
-          RunWait ("cmd /c set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+          RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
         EndIf
 
         ProcessWaitClose ("VirtualBox.exe")
         ProcessWaitClose ("VBoxManage.exe")
       Else
-        If FileExists (@ScriptDir&"\"&$UserHome) Then
+        If FileExists ($UserHome) Then
           Local $StartVM  = IniRead ($var1, "startvm", "key", "NotFound")
           If IniRead ($var1, "startvm", "key", "NotFound") = true Then
-            RunWait ("cmd /C set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
+            RunWait ("cmd /C set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
           Else
-            RunWait ("cmd /c set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+            RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
           EndIf
         Else
-          RunWait ("cmd /c set VBOX_USER_HOME=%CD%\"& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+          RunWait ("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
         EndIf
 
         ProcessWaitClose ("VirtualBox.exe")
@@ -1040,19 +1064,19 @@ Func Settings ()
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "homeroot-settings", "02", "NotFound"), 16, 40, 546, 105)
 
     $Radio1 = GUICtrlCreateRadio ("Radio01", 20, 153, 17, 17)
-    If IniRead ($var1, "userhome", "key", "NotFound") = "%CD%\"&$UserHome Then
+    If IniRead ($var1, "userhome", "key", "NotFound") = $DefaultUserHome Then
       GUICtrlSetState (-1, $GUI_CHECKED)
     EndIf
 
     $Radio2 = GUICtrlCreateRadio ("Radio02", 20, 185, 17, 17)
-    If IniRead ($var1, "userhome", "key", "NotFound") <> "%CD%\"&$UserHome Then
+    If IniRead ($var1, "userhome", "key", "NotFound") <> $DefaultUserHome Then
       GUICtrlSetState (-1, $GUI_CHECKED)
     EndIf
 
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "homeroot-settings", "03", "NotFound"), 36, 153, 524, 21)
     GUICtrlCreateLabel (IniRead ($var2 & $lng &".ini", "homeroot-settings", "04", "NotFound"), 36, 185, 180, 21)
 
-    If IniRead ($var1, "userhome", "key", "NotFound") = "%CD%\"&$UserHome Then
+    If IniRead ($var1, "userhome", "key", "NotFound") = $DefaultUserHome Then
       $HomeRoot = GUICtrlCreateInput (IniRead ($var2 & $lng &".ini", "homeroot-settings", "05", "NotFound"), 220, 185, 249, 21)
     Else
       $User_Home = IniRead ($var1, "userhome", "key", "NotFound")
@@ -1362,7 +1386,7 @@ EndFunc
 
 Func OKUserHome ()
   If GUICtrlRead ($Radio1) = $GUI_CHECKED Then
-    IniWrite ($var1, "userhome", "key", ".VirtualBox")
+    IniWrite ($var1, "userhome", "key",  $DefaultUserHome)
     MsgBox (0, IniRead ($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead ($var2 & $lng &".ini", "messages", "05", "NotFound"))
   Else
     If GUICtrlRead ($HomeRoot) = IniRead ($var2 & $lng &".ini", "okuserhome", "01", "NotFound") Then
@@ -1379,12 +1403,12 @@ Func SRCStartVM ()
   Local $PathVM, $VM_String, $String, $VDI, $VM_Start
   Local $Start_VM = IniRead ($var1, "startvm", "key", "NotFound")
   If IniRead ($var1, "startvm", "key", "NotFound") Then
-    If FileExists (@ScriptDir&"\"&$UserHome&"\HardDisks\") Then
+    If FileExists ($UserHome&"\HardDisks\") Then
       $PathVM = FileOpenDialog (IniRead ($var2 & $lng &".ini", "srcstartvm", "01", "NotFound"), $Start_VM&"\.VirtualBox\HardDisks", "VirtualBox VM (*.vdi)", 1+2)
     EndIf
   Else
-    If FileExists (@ScriptDir&"\"&$UserHome&"\HardDisks\") Then
-      $PathVM = FileOpenDialog (IniRead ($var2 & $lng &".ini", "srcstartvm", "01", "NotFound"), @ScriptDir&"\"&$UserHome&"\HardDisks", "VirtualBox VM (*.vdi)", 1+2)
+    If FileExists ($UserHome&"\HardDisks\") Then
+      $PathVM = FileOpenDialog (IniRead ($var2 & $lng &".ini", "srcstartvm", "01", "NotFound"), $UserHome&"\HardDisks", "VirtualBox VM (*.vdi)", 1+2)
     EndIf
   EndIf
   If NOT @error Then
@@ -1932,7 +1956,7 @@ Func HybridMode()
 	EndIf
 
 	; Setting VBOX_USER_HOME to portable virtualbox directory (VM settings stays in this one)
-	EnvSet("VBOX_USER_HOME",@ScriptDir&"\"&$UserHome)
+	EnvSet("VBOX_USER_HOME",$UserHome)
 
 	; Testing if major version of regular vbox is 4 then running from it
 	If $version_new <> "" AND StringLeft($version_new,1)>=4 Then
