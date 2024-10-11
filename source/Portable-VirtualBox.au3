@@ -44,6 +44,7 @@ Global $lng = IniRead ($var1, "language", "key", "NotFound")
 Global $pwd = @ScriptDir
 Global $updateUrl = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "", "update", "NotFound")
 Global $DefaultUserHome = @ScriptDir&"\.VirtualBox"
+Global $iSort = 0
 
 Global $new1 = 0, $new2 = 0, $CBS_DROPDOWNLIST = 0x3
 
@@ -139,6 +140,7 @@ If NOT FileExists ($var1) Then
   IniWrite ($var1, "net", "key", "0")
   IniWrite ($var1, "language", "key", "english")
   IniWrite ($var1, "userhome", "key", $DefaultUserHome)
+  IniWrite ($var1, "userhome", "sort", "1")
   IniWrite ($var1, "startvm", "key", "")
   IniWrite ($var1, "update", "key", "0")
   IniWrite ($var1, "lang", "key", "0")
@@ -163,6 +165,15 @@ Else
   IniReadSection ($var1, "starter")
   If @error Then
     IniWrite ($var1, "starter", "key", "")
+  EndIf
+  If Not IniRead (@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", "") Then
+	 IniWrite ($var1, "userhome", "sort", "1")
+	 Else
+	 $iSort = Int(IniRead (@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", ""))
+	 If Not ($iSort = 0 OR $iSort = 1) Then
+	 $iSort = "1"
+	 EndIf
+	 IniWrite (@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", $iSort)
   EndIf
 EndIf
 
@@ -472,7 +483,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
         $values11 = _StringBetween ($values10[0], '<SystemProperties', '/>')
       EndIf
 
-     $aArray = _RecFileListToArray($UserHome, "*.vbox", 1, 1, 1, 2)
+     $aArray = _RecFileListToArray($UserHome, "*.vbox", 1, 1, $iSort, 2)
      If IsArray($aArray) Then
      For $i = 1 To $aArray[0]
       $line = FileRead (FileOpen ($aArray[$i], 128))
@@ -859,17 +870,23 @@ EndIf
       ProcessWaitClose ("VBoxSDS.exe")
 
       EnvSet ("VBOX_USER_HOME")
+	  #cs
       Local $timer=0
-
       Local $PID = ProcessExists ("VBoxSVC.exe")
       If $PID Then ProcessClose ($PID)
-
       While $timer < 10000 AND $PID
-	$PID = ProcessExists ("VBoxSVC.exe")
-	If $PID Then ProcessClose ($PID)
-	Sleep(1000)
-	$timer += 1000
+			$PID = ProcessExists ("VBoxSVC.exe")
+			If $PID Then ProcessClose ($PID)
+			Sleep(1000)
+			$timer += 1000
       Wend
+	  #ce
+		Local $ListArray = ProcessList('VBoxSVC.exe')
+		For $i = 0 To $ListArray[0][0]
+		  If ProcessExists($ListArray[$i][1]) Then
+			  ProcessClose($ListArray[$i][1])
+		  EndIf
+		Next
 
       RunWait ($arch&"\VBoxSVC.exe /unregserver", @ScriptDir, @SW_HIDE)
       RunWait (@SystemDir&"\regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
