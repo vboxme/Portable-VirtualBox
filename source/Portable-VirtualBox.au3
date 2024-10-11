@@ -485,18 +485,20 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
      $aArray = _RecFileListToArray($UserHome, "*.vbox", 1, 1, $iSort, 2)
      If IsArray($aArray) Then
      For $i = 1 To $aArray[0]
-      $line = FileRead (FileOpen ($aArray[$i], 128))
-      If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
-      $values2 = _StringBetween ($line, '<HardDisks>', '</HardDisks>')
-      If $values2 = 0 Then
-        $values3 = 0
-      Else
-        $values3 = _StringBetween ($line, 'uuid="', '"')
-      EndIf
-      If FileExists ($aArray[$i]) Then
-      $values4 &= "<MachineEntry uuid="""&$values3[0]&""" src="""&$aArray[$i]&"""/>" & @CRLF
-      EndIf
-      EndIf
+		If Not StringRegExp($aArray[$i], ".bin") Then
+		  $line = FileRead (FileOpen ($aArray[$i], 128))
+		  If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
+		  $values2 = _StringBetween ($line, '<HardDisks>', '</HardDisks>')
+		  If $values2 = 0 Then
+		    $values3 = 0
+		  Else
+		    $values3 = _StringBetween ($line, 'uuid="', '"')
+		  EndIf
+		  If FileExists ($aArray[$i]) Then
+		  $values4 &= "<MachineEntry uuid="""&$values3[0]&""" src="""&$aArray[$i]&"""/>" & @CRLF
+		  EndIf
+		  EndIf
+		EndIf
      Next
      EndIf
 
