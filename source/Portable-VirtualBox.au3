@@ -182,7 +182,7 @@ If FileExists (StringLeft($UserHome, 2)) Then
 DirCreate($UserHome)
 EndIf
 
-If NOT FileExists ($UserHome) Then
+If Not FileExists ($UserHome) or FileExists ($UserHome) Then
 IniWrite ($var1, "userhome", "key", $DefaultUserHome)
 EndIf
 
