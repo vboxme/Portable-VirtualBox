@@ -44,9 +44,8 @@ Global $lng = IniRead ($var1, "language", "key", "NotFound")
 Global $pwd = @ScriptDir
 Global $updateUrl = IniRead (@ScriptDir&"\data\settings\vboxinstall.ini", "", "update", "NotFound")
 Global $DefaultUserHome = @ScriptDir&"\.VirtualBox"
-Global $iSort = 0
 
-Global $new1 = 0, $new2 = 0, $CBS_DROPDOWNLIST = 0x3
+Global $new1 = 0, $new2 = 0, $iSort, $CBS_DROPDOWNLIST = 0x3
 
 If FileExists (@ScriptDir&"\update.exe") Then
   Sleep (2000)
