@@ -870,17 +870,7 @@ EndIf
       ProcessWaitClose ("VBoxSDS.exe")
 
       EnvSet ("VBOX_USER_HOME")
-	  #cs
-      Local $timer=0
-      Local $PID = ProcessExists ("VBoxSVC.exe")
-      If $PID Then ProcessClose ($PID)
-      While $timer < 10000 AND $PID
-			$PID = ProcessExists ("VBoxSVC.exe")
-			If $PID Then ProcessClose ($PID)
-			Sleep(1000)
-			$timer += 1000
-      Wend
-	  #ce
+
 		Local $ListArray = ProcessList('VBoxSVC.exe')
 		For $i = 0 To $ListArray[0][0]
 		  If ProcessExists($ListArray[$i][1]) Then
