@@ -511,7 +511,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       For $m = 0 To UBound ($values11) - 1
         $values12 = _StringBetween ($values11[$m], 'defaultMachineFolder="', '"')
         If $values12 <> 0 Then
-		  If Not FileExists (StringLeft($values12[0], 2)) Then
+		  If Not FileExists (StringLeft($values12[0], 2)) or Not FileExists ($values12[0]) Then
             $content = FileRead (FileOpen ($UserHome&"\VirtualBox.xml", 128))
             $file    = FileOpen ($UserHome&"\VirtualBox.xml", 2)
             FileWrite ($file, StringReplace ($content, $values12[0], $UserHome&"\Machines"))
