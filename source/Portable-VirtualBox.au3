@@ -523,7 +523,7 @@ If (FileExists (@ScriptDir&"\app32\virtualbox.exe") OR FileExists (@ScriptDir&"\
       FileClose ($file)
     EndIf
   Else
-    MsgBox (0, IniRead ($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead ($var2 & $lng &".ini", "download", "16", "NotFound"))
+    MsgBox (0+262144, IniRead ($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead ($var2 & $lng &".ini", "download", "16", "NotFound"))
 EndIf
 
   If FileExists (@ScriptDir&"\"& $arch & "\VirtualBox.exe") AND FileExists (@ScriptDir&"\"& $arch & "\VBoxSVC.exe") AND FileExists (@ScriptDir&"\"& $arch & "\VBoxC.dll") Then
