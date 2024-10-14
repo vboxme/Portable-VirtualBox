@@ -495,17 +495,36 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 		    $values3 = _StringBetween($line, 'uuid="', '"')
 		  EndIf
 		  If FileExists($aArray[$i]) Then
-		  $values4 &= "<MachineEntry uuid="""&$values3[0]&""" src="""&$aArray[$i]&"""/>" & @CRLF
+		  $values4 &= "<MachineEntry uuid="""&$values3[0]&""" src="""&$aArray[$i]&"""/>" & @LF
 		  EndIf
 		  EndIf
 		EndIf
      Next
      EndIf
 
+	FileDelete(@ScriptDir&"\Portable-VirtualBox.error.txt")
+	$values4 = StringTrimRight($values4, 1)
+	$a = stringsplit($values4, @LF, 2)
+	local $b = 0
+    for $i = ubound($a) - 1 to 0 step - 1
+		$uuid1 = _StringBetween($a[$i], 'uuid="', '"')
+        For $x = $i - 1 to 0 step - 1
+			$uuid2 = _StringBetween($a[$x], 'uuid="', '"')
+			If $uuid1[0] = $uuid2[0] Then
+			$b += 1
+			MsgBox(16+262144, "Duplicate machine with the same uuid "&$b, $a[$x] &@LF& $a[$i] &@LF)
+            $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
+            FileWrite($file, $a[$x] &@LF& $a[$i] &@LF&@LF)
+            FileClose($file)
+			$x = 0
+			EndIf
+		Next
+    Next
+
       $content = FileRead(FileOpen($UserHome&"\VirtualBox.xml", 128))
       $values6 = _StringBetween($content, "</ExtraData>", "<NetserviceRegistry>")
       Local $xmlfile    = FileOpen($UserHome&"\VirtualBox.xml", 2)
-      FileWrite($xmlfile, StringReplace($content, $values6[0], @CRLF &"<MachineRegistry>"&$values4&"</MachineRegistry>"& @CRLF))
+      FileWrite($xmlfile, StringReplace($content, $values6[0], @LF &"<MachineRegistry>"&$values4&"</MachineRegistry>"& @LF))
       FileClose($xmlfile)
 
       For $m = 0 To UBound($values11) - 1
@@ -523,7 +542,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
       FileClose($file)
     EndIf
   Else
-    MsgBox(0, IniRead($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead($var2 & $lng &".ini", "download", "16", "NotFound"))
+    MsgBox(0+262144, IniRead($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead($var2 & $lng &".ini", "download", "16", "NotFound"))
 EndIf
 
   If FileExists(@ScriptDir&"\"& $arch & "\VirtualBox.exe") AND FileExists(@ScriptDir&"\"& $arch & "\VBoxSVC.exe") AND FileExists(@ScriptDir&"\"& $arch & "\VBoxC.dll") Then
