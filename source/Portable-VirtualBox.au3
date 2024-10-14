@@ -1,5 +1,5 @@
 ; Language       : multilanguage
-; Author         : Michael Meyer(michaelm_007) et al.
+; Author         : Michael Meyer (michaelm_007) et al.
 ; e-Mail         : email.address@gmx.de
 ; License        : http://creativecommons.org/licenses/by-nc-sa/3.0/
 ; Version        : 6.4.9.1
@@ -426,7 +426,7 @@ Else
   Global $startvbox = 1
 EndIf
 
-If(FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\app64\virtualbox.exe")) AND($startvbox = 1 OR IniRead(@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "NotFound") = 1) Then
+If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\app64\virtualbox.exe")) AND($startvbox = 1 OR IniRead(@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "NotFound") = 1) Then
   If FileExists(@ScriptDir&"\app32\") AND FileExists(@ScriptDir&"\app64\") Then
     If @OSArch = "x86" Then
       Global $arch = "app32"
@@ -444,7 +444,7 @@ If(FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\app
   EndIf
 
   Global $Manager = StringSplit(IniRead($var2 & $lng &".ini", "startvm-settings", "01", "NotFound"), "-")
-  if($Manager[2]) then
+  if ($Manager[2]) then
 	$Manager = $Manager[2]
   EndIf
 
@@ -1022,7 +1022,7 @@ Func _FileListToArray($sFilePath, $sFilter = "*", $iFlag = $FLTA_FILESFOLDERS, $
 	While 1
 		$sFileName = FileFindNextFile($hSearch)
 		If @error Then ExitLoop
-		If($iFlag + @extended = 2) Then ContinueLoop
+		If ($iFlag + @extended = 2) Then ContinueLoop
 		$sFileList &= $sDelimiter & $sFullPath & $sFileName
 	WEnd
 	FileClose($hSearch)
@@ -1751,7 +1751,7 @@ Func UseSettings()
     Exit
   EndIf
 
-  If(FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
+  If (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
     GUICtrlSetData($Input200, @LF & IniRead($var2 & $lng &".ini", "status", "04", "NotFound"))
     If FileExists(@ScriptDir&"\virtualbox.exe") Then
       Run(@ScriptDir & "\virtualbox.exe -x -p temp", @ScriptDir, @SW_HIDE)
@@ -1831,7 +1831,7 @@ Func UseSettings()
     IniWrite(@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "0")
   EndIf
 
-  If(FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
+  if (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
     GUICtrlSetData($Input200, @LF & IniRead($var2 & $lng &".ini", "status", "08", "NotFound"))
     Sleep(2000)
   EndIf
@@ -1960,7 +1960,7 @@ Func HybridMode()
 	$version_old = RegRead("HKLM"&$append_arch&"\SOFTWARE\Sun\VirtualBox","Version")
 
 	; if old version => Exit to avoid corruption of services
-	if($version_new <> "" AND Int(StringLeft($version_new,1))<4 ) OR $version_old <> "" Then
+	if ($version_new <> "" AND Int(StringLeft($version_new,1))<4 ) OR $version_old <> "" Then
 		MsgBox(16,"Sorry","Please update your version of VirtualBox to 4.X or uninstall it from your computer to be able to run this portable version"&@CRLF&@CRLF&"This is a security in order to avoid corrupting your current installed version."&@CRLF&@CRLF &"Thank you for your comprehension.")
 		Exit
 	EndIf
