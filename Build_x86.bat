@@ -51,7 +51,7 @@ SET "_replace=%build_folder%"
 SET "build_folder=%_replace:)=^)%"
 
 echo ###############################################################################
-for %%i in ("%build_folder%\Portable-VirtualBox_x86-x64.exe") do (
+for %%i in ("%build_folder%\Portable-VirtualBox_x86.exe") do (
 echo Build new release as %build_folder%\Portable-VirtualBox_x86.exe
 if DEFINED %%~zi (echo Size: %%~zi bytes)
 )
