@@ -1406,19 +1406,22 @@ Func OKUserHome()
 EndFunc
 
 Func SRCStartVM()
-  Local $PathVM, $VM_String, $String, $VDI, $VM_Start
+  Local $PathVM
     If FileExists ($UserHome) Then
-      $PathVM = FileOpenDialog (IniRead ($var2 & $lng &".ini", "srcstartvm", "01", "NotFound"), $UserHome, "VirtualBox VM (*.vdi)", 1+2)
+      $PathVM = FileOpenDialog (IniRead ($var2 & $lng &".ini", "srcstartvm", "01", "NotFound"), $UserHome, "VirtualBox VM (*.vbox)", 1+2)
     EndIf
   If NOT @error Then
-    $VM_String = StringSplit ($PathVM, "\")
-    $String = ""
-    For $VDI In $VM_String
-      $String = $VDI
-    Next
-    $VM_Start = StringSplit ($String, ".")
+    $line = FileRead(FileOpen($PathVM, 128))
+    If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
+		$values2 = _StringBetween($line, '<HardDisks>', '</HardDisks>')
+		If $values2 = 0 Then
+		$values3 = ""
+		Else
+		$values3 = _StringBetween($line, 'uuid="', '"')
+		EndIf
+    EndIf
     GUICtrlSetState ($Radio4, $GUI_CHECKED)
-    GUICtrlSetData ($VMStart, $VM_Start[1])
+    GUICtrlSetData ($VMStart, $values3[0])
   EndIf
 EndFunc
 
