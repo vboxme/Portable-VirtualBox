@@ -63,6 +63,8 @@ echo Portable-VirtualBox, you will return to the menu, if the console is
 echo no longer needed, you can close it manually
 
 TaskList /FI "ImageName EQ AutoIt3.exe"|Find /I "AutoIt3">nul||(
+rem Copying files
+xcopy /d /c /e /i "source\i_data" "source\data\" >nul 2>&1
 rem Launch Portable-VirtualBox.
 start "" "%AutoIt3%" "%input_folder%source\Portable-VirtualBox.au3"
 timeout /t 10
