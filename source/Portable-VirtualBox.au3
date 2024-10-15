@@ -169,7 +169,7 @@ Else
 	 IniWrite($var1, "userhome", "sort", "1")
 	 Else
 	 $iSort = Int(IniRead(@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", ""))
-	 If Not($iSort = 0 OR $iSort = 1) Then
+	 If NOT ($iSort = 0 OR $iSort = 1) Then
 	 $iSort = "1"
 	 EndIf
 	 IniWrite(@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", $iSort)
@@ -365,7 +365,7 @@ EndIf
 ; Thibaut : use Hybrid Mode if available
 HybridMode()
 
-If NOT(FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&"\app64\VirtualBox.exe")) Then
+If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&"\app64\VirtualBox.exe")) Then
   Global $Checkbox100, $Checkbox110, $Checkbox120
   Global $Input100, $Input200, $Button100, $Button200
   Global $install = 1
@@ -426,7 +426,7 @@ Else
   Global $startvbox = 1
 EndIf
 
-If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\app64\virtualbox.exe")) AND($startvbox = 1 OR IniRead(@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "NotFound") = 1) Then
+If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\app64\virtualbox.exe")) AND ($startvbox = 1 OR IniRead(@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "NotFound") = 1) Then
   If FileExists(@ScriptDir&"\app32\") AND FileExists(@ScriptDir&"\app64\") Then
     If @OSArch = "x86" Then
       Global $arch = "app32"
@@ -554,7 +554,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
     MsgBox(0+262144, IniRead($var2 & $lng &".ini", "download", "15", "NotFound"), IniRead($var2 & $lng &".ini", "download", "16", "NotFound"))
 EndIf
 
-  If FileExists(@ScriptDir&"\"& $arch & "\VirtualBox.exe") AND FileExists(@ScriptDir&"\"& $arch & "\VBoxSVC.exe") AND FileExists(@ScriptDir&"\"& $arch & "\VBoxC.dll") Then
+  If FileExists(@ScriptDir&"\"&$arch& "\VirtualBox.exe") AND FileExists(@ScriptDir&"\"&$arch& "\VBoxSVC.exe") AND FileExists(@ScriptDir&"\"&$arch& "\VBoxC.dll") Then
     If NOT ProcessExists("VirtualBox.exe") OR NOT ProcessExists("VBoxManage.exe") Then
       If FileExists(@ScriptDir&"\data\settings\SplashScreen.jpg") Then
         SplashImageOn("Portable-VirtualBox", @ScriptDir&"\data\settings\SplashScreen.jpg", 480, 360, -1, -1, 1)
@@ -710,28 +710,28 @@ EndIf
         EndIf
       EndIf
 
-      If FileExists(@ScriptDir&"\"& $arch &"\") AND FileExists(@ScriptDir&"\vboxadditions\") Then
+      If FileExists(@ScriptDir&"\"&$arch&"\") AND FileExists(@ScriptDir&"\vboxadditions\") Then
         DirMove(@ScriptDir&"\vboxadditions\doc", @ScriptDir&"\"& $arch, 1)
         DirMove(@ScriptDir&"\vboxadditions\ExtensionPacks", @ScriptDir&"\"& $arch, 1)
         DirMove(@ScriptDir&"\vboxadditions\nls", @ScriptDir&"\"& $arch, 1)
-        FileMove(@ScriptDir&"\vboxadditions\guestadditions\*.*", @ScriptDir&"\"& $arch &"\", 9)
+        FileMove(@ScriptDir&"\vboxadditions\guestadditions\*.*", @ScriptDir&"\"&$arch&"\", 9)
       Endif
 
       RunWait($arch&"\VBoxSVC.exe /reregserver", @ScriptDir, @SW_HIDE)
-      RunWait(@SystemDir&"\regsvr32.exe /S "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
+      RunWait(@SystemDir&"\regsvr32.exe /S "&$arch&"\VBoxC.dll", @ScriptDir, @SW_HIDE)
       DllCall($arch&"\VBoxRT.dll", "hwnd", "RTR3Init")
 
       SplashOff()
 
-      If FileExists(@ScriptDir&"\"& $arch & "\drivers\VBoxDrv") AND RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxDRV", "DisplayName") <> "VirtualBox Service" Then
-        RunWait("cmd /c sc create VBoxDRV binpath= ""%CD%\"& $arch &"\drivers\VBoxDrv\VBoxDrv.sys"" type= kernel start= auto error= normal displayname= PortableVBoxDRV", @ScriptDir, @SW_HIDE)
+      If FileExists(@ScriptDir&"\"&$arch& "\drivers\VBoxDrv") AND RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxDRV", "DisplayName") <> "VirtualBox Service" Then
+        RunWait("cmd /c sc create VBoxDRV binpath= ""%CD%\"&$arch&"\drivers\VBoxDrv\VBoxDrv.sys"" type= kernel start= auto error= normal displayname= PortableVBoxDRV", @ScriptDir, @SW_HIDE)
         Local $DRV = 1
       Else
         Local $DRV = 0
       EndIf
 
-      If FileExists(@ScriptDir&"\"& $arch & "\drivers\vboxsup") AND RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxSUP", "DisplayName") <> "VirtualBox Service" Then
-        RunWait("cmd /c sc create VBoxSUP binpath= ""%CD%\"& $arch &"\drivers\VBoxSup\VBoxSup.sys"" type= kernel start= auto error= normal displayname= PortableVBoxSUP", @ScriptDir, @SW_HIDE)
+      If FileExists(@ScriptDir&"\"&$arch& "\drivers\vboxsup") AND RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxSUP", "DisplayName") <> "VirtualBox Service" Then
+        RunWait("cmd /c sc create VBoxSUP binpath= ""%CD%\"&$arch&"\drivers\VBoxSup\VBoxSup.sys"" type= kernel start= auto error= normal displayname= PortableVBoxSUP", @ScriptDir, @SW_HIDE)
         Local $SUP = 1
       Else
         Local $SUP = 0
@@ -740,12 +740,12 @@ EndIf
       If IniRead($var1, "usb", "key", "NotFound") = 1 Then
         If RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxUSB", "DisplayName") <> "VirtualBox USB" Then
           If @OSArch = "x86" Then
-            RunWait(@ScriptDir &"\data\tools\devcon_x86.exe install "&@ScriptDir&"\"& $arch &"\drivers\USB\device\VBoxUSB.inf ""USB\VID_80EE&PID_CAFE""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir &"\data\tools\devcon_x86.exe install "&@ScriptDir&"\"&$arch&"\drivers\USB\device\VBoxUSB.inf ""USB\VID_80EE&PID_CAFE""", @ScriptDir, @SW_HIDE)
           EndIf
           If @OSArch = "x64" Then
-            RunWait(@ScriptDir &"\data\tools\devcon_x64.exe install "&@ScriptDir&"\"& $arch &"\drivers\USB\device\VBoxUSB.inf ""USB\VID_80EE&PID_CAFE""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir &"\data\tools\devcon_x64.exe install "&@ScriptDir&"\"&$arch&"\drivers\USB\device\VBoxUSB.inf ""USB\VID_80EE&PID_CAFE""", @ScriptDir, @SW_HIDE)
           EndIf
-          FileCopy(@ScriptDir&"\"& $arch &"\drivers\USB\device\VBoxUSB.sys", @SystemDir&"\drivers", 9)
+          FileCopy(@ScriptDir&"\"&$arch&"\drivers\USB\device\VBoxUSB.sys", @SystemDir&"\drivers", 9)
           Local $USB = 1
         Else
           Local $USB = 0
@@ -755,26 +755,26 @@ EndIf
       EndIf
 
       If RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxUSBMon", "DisplayName") <> "VirtualBox USB Monitor Driver" Then
-        RunWait("cmd /c sc create VBoxUSBMon binpath= ""%CD%\"& $arch &"\drivers\USB\filter\VBoxUSBMon.sys"" type= kernel start= auto error= normal displayname= PortableVBoxUSBMon", @ScriptDir, @SW_HIDE)
+        RunWait("cmd /c sc create VBoxUSBMon binpath= ""%CD%\"&$arch&"\drivers\USB\filter\VBoxUSBMon.sys"" type= kernel start= auto error= normal displayname= PortableVBoxUSBMon", @ScriptDir, @SW_HIDE)
         Local $MON = 1
       Else
         Local $MON = 0
       EndIf
 
       If IniRead($var1, "net", "key", "NotFound") = 1 Then
-        If NOT FileExists(@ScriptDir&"\"& $arch &"\drivers\network\netadp6") Then
+        If NOT FileExists(@ScriptDir&"\"&$arch&"\drivers\network\netadp6") Then
         Local $ADPVER = ""
         else
         Local $ADPVER = 6
         EndIf
         If RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetAdp", "DisplayName") <> "VirtualBox Host-Only Network Adapter" Then
           If @OSArch = "x86" Then
-            RunWait(@ScriptDir &"\data\tools\devcon_x86.exe install "&@ScriptDir&"\"& $arch &"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir &"\data\tools\devcon_x86.exe install "&@ScriptDir&"\"&$arch&"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
           EndIf
           If @OSArch = "x64" Then
-            RunWait(@ScriptDir &"\data\tools\devcon_x64.exe install "&@ScriptDir&"\"& $arch &"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir &"\data\tools\devcon_x64.exe install "&@ScriptDir&"\"&$arch&"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".inf ""sun_VBoxNetAdp""", @ScriptDir, @SW_HIDE)
           EndIf
-          FileCopy(@ScriptDir&"\"& $arch &"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".sys", @SystemDir&"\drivers", 9)
+          FileCopy(@ScriptDir&"\"&$arch&"\drivers\network\netadp"& $ADPVER &"\VBoxNetAdp"& $ADPVER &".sys", @SystemDir&"\drivers", 9)
           Local $ADP = 1
         Else
           Local $ADP = 0
@@ -787,20 +787,20 @@ EndIf
         If RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\VBoxNetFlt", "DisplayName") <> "VBoxNetFlt Service" Then
           If @OSArch = "x86" Then
             RunWait(@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
-            RunWait(@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l "&@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m "&@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l "&@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFlt.inf -m "&@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
             RunWait(@ScriptDir&"\data\tools\snetcfg_x86.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
-            RunWait(@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l "&@ScriptDir&"\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -m "&@ScriptDir&"\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir&"\data\tools\snetcfg_x86.exe -v -l "&@ScriptDir&"\"&$arch&"\drivers\network\netlwf\VBoxNetLwf.inf -m "&@ScriptDir&"\"&$arch&"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
           EndIf
           If @OSArch = "x64" Then
             RunWait(@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
-            RunWait(@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l "&@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.inf -m "&@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l "&@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFlt.inf -m "&@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFltM.inf -c s -i ""sun_VBoxNetFlt""", @ScriptDir, @SW_HIDE)
             RunWait(@ScriptDir&"\data\tools\snetcfg_x64.exe -v -u ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
-            RunWait(@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l "&@ScriptDir&"\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -m "&@ScriptDir&"\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
+            RunWait(@ScriptDir&"\data\tools\snetcfg_x64.exe -v -l "&@ScriptDir&"\"&$arch&"\drivers\network\netlwf\VBoxNetLwf.inf -m "&@ScriptDir&"\"&$arch&"\drivers\network\netlwf\VBoxNetLwf.inf -c s -i ""oracle_VBoxNetLwf""", @ScriptDir, @SW_HIDE)
           EndIf
-          FileCopy(@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFltNobj.dll", @SystemDir, 9)
-          FileCopy(@ScriptDir&"\"& $arch &"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
+          FileCopy(@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFltNobj.dll", @SystemDir, 9)
+          FileCopy(@ScriptDir&"\"&$arch&"\drivers\network\netflt\VBoxNetFlt.sys", @SystemDir&"\drivers", 9)
           RunWait(@SystemDir&"\regsvr32.exe /S "& @SystemDir &"\VBoxNetFltNobj.dll", @ScriptDir, @SW_HIDE)
-          FileCopy(@ScriptDir&"\"& $arch &"\drivers\network\netlwf\VBoxNetLwf.sys", @SystemDir&"\drivers", 9)
+          FileCopy(@ScriptDir&"\"&$arch&"\drivers\network\netlwf\VBoxNetLwf.sys", @SystemDir&"\drivers", 9)
           Local $NET = 1
         Else
           Local $NET = 0
@@ -858,12 +858,12 @@ EndIf
       EndIf
 
       If Not FileExists($UserHome&"\VirtualBox.xml") Then
-	  Run('cmd /c ""'&@ScriptDir&'\'& $arch &'\VBoxManage.exe" setproperty machinefolder "'& $UserHome &'\Machines""', @ScriptDir, @SW_HIDE)
+	  Run('cmd /c ""'&@ScriptDir&'\'&$arch&'\VBoxManage.exe" setproperty machinefolder "'&$UserHome&'\Machines""', @ScriptDir, @SW_HIDE)
       EndIf
 
       If $CmdLine[0] = 1 Then
         If FileExists($UserHome) Then
-          Local $StartVM  = $CmdLine[1]
+          Local $StartVM = $CmdLine[1]
 		  Local $Patch = ""
           $aArray = _RecFileListToArray($UserHome, "*"&$CmdLine[1]&".vdi", 1, 1, 0, 2)
           If IsArray($aArray) Then
@@ -872,13 +872,13 @@ EndIf
 			Next
           Endif
           If IniRead($var1, "userhome", "key", "NotFound") = $UserHome AND FileExists($Patch) Then
-			Run("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
-			RunWait("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
+			Run("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+			RunWait("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
           Else
-            RunWait("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+            RunWait("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
           EndIf
         Else
-          RunWait("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+          RunWait("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
         EndIf
 
         ProcessWaitClose("VirtualBox.exe")
@@ -887,13 +887,13 @@ EndIf
         If FileExists($UserHome) Then
           Local $StartVM  = IniRead($var1, "startvm", "key", "NotFound")
           If IniRead($var1, "startvm", "key", "NotFound") = true Then
-			Run("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
-            RunWait("cmd /C set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
+			Run("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+            RunWait("cmd /C set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
           Else
-            RunWait("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+            RunWait("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
           EndIf
         Else
-          RunWait("cmd /c set VBOX_USER_HOME="& $UserHome &"& .\"& $arch &"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
+          RunWait("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
         EndIf
 
         ProcessWaitClose("VirtualBox.exe")
@@ -910,7 +910,7 @@ EndIf
       EnvSet("VBOX_USER_HOME")
 
       RunWait($arch&"\VBoxSVC.exe /unregserver", @ScriptDir, @SW_HIDE)
-      RunWait(@SystemDir&"\regsvr32.exe /S /U "& $arch &"\VBoxC.dll", @ScriptDir, @SW_HIDE)
+      RunWait(@SystemDir&"\regsvr32.exe /S /U "&$arch&"\VBoxC.dll", @ScriptDir, @SW_HIDE)
 
       If $DRV = 1 Then
         RunWait("sc stop VBoxDRV", @ScriptDir, @SW_HIDE)
@@ -965,11 +965,11 @@ EndIf
         FileDelete(@SystemDir & "\drivers\VBoxNetLwf.sys")
       EndIf
 
-      If FileExists(@ScriptDir&"\"& $arch &"\") AND FileExists(@ScriptDir&"\vboxadditions\") Then
-        DirMove(@ScriptDir&"\"& $arch &"\doc", @ScriptDir&"\vboxadditions\", 1)
-        DirMove(@ScriptDir&"\"& $arch &"\ExtensionPacks", @ScriptDir&"\vboxadditions\", 1)
-        DirMove(@ScriptDir&"\"& $arch &"\nls", @ScriptDir&"\vboxadditions\", 1)
-        FileMove(@ScriptDir&"\"& $arch &"\*.iso", @ScriptDir&"\vboxadditions\guestadditions\", 9)
+      If FileExists(@ScriptDir&"\"&$arch&"\") AND FileExists(@ScriptDir&"\vboxadditions\") Then
+        DirMove(@ScriptDir&"\"&$arch&"\doc", @ScriptDir&"\vboxadditions\", 1)
+        DirMove(@ScriptDir&"\"&$arch&"\ExtensionPacks", @ScriptDir&"\vboxadditions\", 1)
+        DirMove(@ScriptDir&"\"&$arch&"\nls", @ScriptDir&"\vboxadditions\", 1)
+        FileMove(@ScriptDir&"\"&$arch&"\*.iso", @ScriptDir&"\vboxadditions\guestadditions\", 9)
       EndIf
 
       If $msv = 1 Then
@@ -1044,7 +1044,7 @@ Func _FileListToArray($sFilePath, $sFilter = "*", $iFlag = $FLTA_FILESFOLDERS, $
 
 	If Not FileExists($sFilePath) Then Return SetError(1, 0, 0)
 	If StringRegExp($sFilter, "[\\/:><\|]|(?s)^\s*$") Then Return SetError(2, 0, 0)
-	If Not($iFlag = 0 Or $iFlag = 1 Or $iFlag = 2) Then Return SetError(3, 0, 0)
+	If NOT ($iFlag = 0 Or $iFlag = 1 Or $iFlag = 2) Then Return SetError(3, 0, 0)
 	Local $hSearch = FileFindFirstFile($sFilePath & $sFilter)
 	If @error Then Return SetError(4, 0, 0)
 	While 1
@@ -1777,12 +1777,12 @@ Func UseSettings()
     Local $SourceFile = GUICtrlRead($Input100)
   EndIf
 
-  If NOT(FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED)) Then
+  If NOT (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile) AND (GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED)) Then
     Break(1)
     Exit
   EndIf
 
-  If (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
+  If (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND (GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
     GUICtrlSetData($Input200, @LF & IniRead($var2 & $lng &".ini", "status", "04", "NotFound"))
     If FileExists(@ScriptDir&"\virtualbox.exe") Then
       Run(@ScriptDir & "\virtualbox.exe -x -p temp", @ScriptDir, @SW_HIDE)
@@ -1862,7 +1862,7 @@ Func UseSettings()
     IniWrite(@ScriptDir&"\data\settings\vboxinstall.ini", "startvbox", "key", "0")
   EndIf
 
-  if (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND(GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
+  if (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND (GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
     GUICtrlSetData($Input200, @LF & IniRead($var2 & $lng &".ini", "status", "08", "NotFound"))
     Sleep(2000)
   EndIf
