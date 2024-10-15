@@ -1,5 +1,3 @@
-Low speed network NAT problems in 7.1.0 rollback to version 7.0.20 anyone who wants can watch can change download url<br>
-On VirtualBox versions ver. 7 and above<br>
 Disable message center notifications and screen capture messages VirtualBoxVM.exe default settings directory:<br>
 Portable-VirtualBox\\.VirtualBox\VirtualBox.xml<br>
 Change or add before launch <ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/> sample:<br><br>
@@ -26,34 +24,21 @@ Please see here for information on how to build from source: [BUILDING](BUILDING
 
 ### Changelog for VirtualBox ###
 
-<strong>VirtualBox 7.1.0</strong> (released 11.09.2024)
-
-This is a major update. The following new features were added:
-
-<ul><li>GUI: Modernized look and feel, offering a selection between Basic and Experienced user level with reduced or full UI functionality
-</li><li>OCI Integration: Performance dashboard now shows resource usage for cloud VMs
-</li><li>OCI Integration: Clone compute instances
-</li><li>OCI Integration: Reset compute instances
-</li><li>Oracle VirtualBox Extension Pack: Update to the PUEL license, removing the evaluation option. For evaluation use of the Extension Pack, please download it from the Oracle Software Delivery Cloud
-</li><li>VRDE: If user does not set up TLS with custom certificates, enable it with self-signed certificate, including issuing a new one before the old one expires
-</li><li>NAT: New engine with IPv6 support
-</li><li>macOS/Arm host: Arm virtualization for Linux and BSD VMs
-</li><li>Linux host and guest: Added Wayland support for Clipboard sharing (bug <a class="new ticket" href="https://www.virtualbox.org/ticket/20808" title="#20808: defect: shared clipboard does not work with Wayland (new)">#20808</a>)
-</li><li>Shared Clipboard: Added initial support for transferring files on Linux and Windows hosts / guests. This requires the 7.1 Guest Additions to be installed. See User Guide for known limitations
-</li><li>Screen Recording: Significant performance improvements for the encoding pipeline, resulting in less CPU usage while recording is active. This requires 7.1 Guest Additions to be installed on Windows guests
-</li></ul><br>
-In addition, the following items were fixed and/or added:
-
-<ul><li>VMM: Fixed EFLAGS.TF handling for CPUID instructions when Hyper-V is being used (bug <a class="closed ticket" href="https://www.virtualbox.org/ticket/17961" title="#17961: defect: VMM missing rflags.TF handling when advance rip that abused by virtual ... (closed: fixed)">#17961</a>)
-</li><li>virtio-net: Follow up fixes for FreeBSD 12.3 and pfSense 2.6.0 (bug <a class="closed ticket" href="https://www.virtualbox.org/ticket/21201" title="#21201: defect: FreeBSD 12.3 and pfSense 2.6.0 networking no longer works with upgrade ... (closed: fixed)">#21201</a>)
-</li><li>EFI: Ability to add new Microsoft DB/KEX certificates to newly created VMs
-</li><li>Oracle Extension Pack: Fixed shipping the cryptographic support module for full VM encryption
-</li><li>GUI: Improved overall accessibility
-</li><li>GUI: Update the version of Qt used
-</li><li>Unattended Installation: Added support for subiquity- / cloud-init-based installers; this enables installing more modern Linux-based guest OSes in Unattended mode
-</li><li>Unattended Installation: Added support for specifying separate passwords for the user and admin / root accounts
-</li><li>VBoxManage: Added ability to show and (re-)attach to a (video) recording progress of a VM
-</li><li>VBoxManage: Added the ability to query the guest's mount points via a new "mount" Guest Control sub command. Requires at least 7.1 Guest Additions
-</li><li>Python: Our API bindings for Python 2.x is now marked as being deprecated and will be removed in a future version. Please upgrade your code to use Python 3
-</li><li>VBoxShell: Lots of smaller and bigger bugfixes + Python 3.x compatibility
+<strong>VirtualBox 7.0.22</strong> (released October 15 2024)<br /><br />
+This is a maintenance release. The following items were fixed and/or added:
+</p>
+<ul><li>GUI: Fixed deletion of VMs with unattended install related files, no longer leave them behind causing trouble with creating a new VM with the same name (bug <a class="closed ticket" href="https://www.virtualbox.org/ticket/21331" title="#21331: defect: Delete of a VM does not delete unattended files, so can't recreate VM (closed: fixed)">#21331</a>)
+</li><li>GUI: Updated Italian, Greek, Georgian, Turkish and Indonesian translations
+</li><li>VMSVGA: Improved flickering, black screen and other screen update issues with recent Linux kernels (bug <a class="accepted ticket" href="https://www.virtualbox.org/ticket/21955" title="#21955: defect: Heavy screen flickering VirtualBox 6.1.48 / 7.0.12 Ubuntu Wayland ... (accepted)">#21955</a>)
+</li><li>TPM: Fixed multiple issues with TPM deployment with Windows 10/11 VMs
+</li><li>3D: Improve accuracy of 3D capability reporting, limit it to what the host can handle
+</li><li>API: Suppress logging of "Screenshot is not possible" errors when the VGA config is invalid, avoiding user confusion
+</li><li>API: Fixed NVRAM file handling when taking snapshots
+</li><li>API: Fixed NVRAM file deletion for VMs using BIOS firmware
+</li><li>API: Fixed rare hangs when API objects are uninitialized concurrently
+</li><li>Windows host: Fixed system DLL size checking which failed with Windows 11 24H2 and recent Insider Preview builds (bug <a class="closed ticket" href="https://www.virtualbox.org/ticket/22162" title="#22162: defect: WIndows hosts based on W11 24H2 cannot start headless or detachable ... (closed: fixed)">#22162</a>)
+</li><li>Linux host: Fixed a bug in RPM packaging which misplaced the QHelp file, breaking the built-in help viewer
+</li><li>Guest OSes: Added OS type for Ubuntu 24.04
+</li><li>Linux Guest Additions: Fixed vboxvideo kernel module build with RHEL 9.5 kernel
+</li><li>Linux Guest Additions: Introduce initial support for kernel 6.12 (NOTE: In kernel 6.12, KVM initializes virtualization on module loading by default. This prevents <a class="wiki" href="https://www.virtualbox.org/wiki/VirtualBox">VirtualBox</a> VMs from starting. In order to avoid this, either add "kvm.enable_virt_at_load=0" parameter into kernel command line or unload corresponding kvm_XXX module)
 </li></ul>
