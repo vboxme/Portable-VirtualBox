@@ -488,21 +488,23 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 		If Not StringRegExp($aArray[$i], ".bin") Then
 		  $line = FileRead(FileOpen($aArray[$i], 128))
 		  If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
-		  $values2 = _StringBetween($line, '<HardDisks>', '</HardDisks>')
-		  If $values2 = 0 Then
-		    $values3 = 0
-		  Else
+			$values2 = _StringBetween($line, '<Machine', '>')
+			If $values2<>0 Then
 		    $values3 = _StringBetween($line, 'uuid="', '"')
-		  EndIf
-		  If FileExists($aArray[$i]) Then
+			EndIf
+		  If $values3<>0 and FileExists($aArray[$i]) Then
 		  $values4 &= "<MachineEntry uuid="""&$values3[0]&""" src="""&$aArray[$i]&"""/>" & @LF
 		  EndIf
 		  EndIf
 		EndIf
      Next
+	 FileClose($line)
      EndIf
 
 	FileDelete(@ScriptDir&"\Portable-VirtualBox.error.txt")
+	$file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
+	FileWrite($file, "List of duplicate machines with the same uuid:" &@LF)
+	FileClose($file)
 	$values4 = StringTrimRight($values4, 1)
 	$a = stringsplit($values4, @LF, 2)
 	local $b = 0
@@ -512,14 +514,17 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 			$uuid2 = _StringBetween($a[$x], 'uuid="', '"')
 			If $uuid1[0] = $uuid2[0] Then
 			$b += 1
-			MsgBox(16+262144, "Duplicate machine with the same uuid "&$b, $a[$x] &@LF& $a[$i] &@LF)
+			$values4 = StringReplace($values4, $a[$i]&@LF, "")
             $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
-            FileWrite($file, $a[$x] &@LF& $a[$i] &@LF&@LF)
+			FileWrite($file, $a[$x] &@LF& $a[$i] &@LF&@LF)
             FileClose($file)
 			$x = 0
 			EndIf
 		Next
     Next
+      $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
+      FileWrite($file, "To eliminate errors, only one of the duplicates was added to VirtualBox.xml"&@LF& $values4 &@LF&@LF)
+      FileClose($file)
 
       $content = FileRead(FileOpen($UserHome&"\VirtualBox.xml", 128))
       $values6 = _StringBetween($content, "</ExtraData>", "<NetserviceRegistry>")
