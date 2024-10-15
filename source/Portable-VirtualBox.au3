@@ -444,8 +444,10 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
   EndIf
 
   Global $Manager = StringSplit(IniRead($var2 & $lng &".ini", "startvm-settings", "01", "NotFound"), "-")
-  if ($Manager[2]) then
+  if $Manager[0]>1 then
 	$Manager = $Manager[2]
+	Else
+	$Manager = "Manager"
   EndIf
 
     Local $sFileVer = StringRegExpReplace(FileGetVersion(@ScriptDir&"\VirtualBox.exe"), "^(\d+\.\d+.\d+)?.*", "\1")
