@@ -37,8 +37,4 @@ This is a maintenance release. The following items were fixed and/or added:
 </li><li>API: Fixed NVRAM file deletion for VMs using BIOS firmware
 </li><li>API: Fixed rare hangs when API objects are uninitialized concurrently
 </li><li>Windows host: Fixed system DLL size checking which failed with Windows 11 24H2 and recent Insider Preview builds (bug <a class="closed ticket" href="https://www.virtualbox.org/ticket/22162" title="#22162: defect: WIndows hosts based on W11 24H2 cannot start headless or detachable ... (closed: fixed)">#22162</a>)
-</li><li>Linux host: Fixed a bug in RPM packaging which misplaced the QHelp file, breaking the built-in help viewer
-</li><li>Guest OSes: Added OS type for Ubuntu 24.04
-</li><li>Linux Guest Additions: Fixed vboxvideo kernel module build with RHEL 9.5 kernel
-</li><li>Linux Guest Additions: Introduce initial support for kernel 6.12 (NOTE: In kernel 6.12, KVM initializes virtualization on module loading by default. This prevents <a class="wiki" href="https://www.virtualbox.org/wiki/VirtualBox">VirtualBox</a> VMs from starting. In order to avoid this, either add "kvm.enable_virt_at_load=0" parameter into kernel command line or unload corresponding kvm_XXX module)
 </li></ul>
