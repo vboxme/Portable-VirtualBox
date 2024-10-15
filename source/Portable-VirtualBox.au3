@@ -96,8 +96,8 @@ EndIf
 If NOT FileExists($var3) Then
 DirCreate(@ScriptDir&"\data\settings")
 FileInstall("i_data\settings\SplashScreen.jpg", "data\settings\SplashScreen.jpg")
-IniWrite($var3, "download", "key1", "http://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe")
-IniWrite($var3, "download", "key2", "http://download.virtualbox.org/virtualbox/7.0.20/Oracle_VM_VirtualBox_Extension_Pack-7.0.20.vbox-extpack")
+IniWrite($var3, "download", "key1", "http://download.virtualbox.org/virtualbox/7.0.22/VirtualBox-7.0.22-165102-Win.exe")
+IniWrite($var3, "download", "key2", "http://download.virtualbox.org/virtualbox/7.0.22/Oracle_VM_VirtualBox_Extension_Pack-7.0.22.vbox-extpack")
 IniWrite($var3, "download", "update", "http://www.vbox.me/update/")
 IniWrite($var3, "startvbox", "key", "1")
 EndIf
@@ -450,7 +450,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 	$Manager = "Manager"
   EndIf
 
-    Local $sFileVer = StringRegExpReplace(FileGetVersion(@ScriptDir&"\VirtualBox.exe"), "^(\d+\.\d+.\d+)?.*", "\1")
+    Local $sFileVer = StringRegExpReplace(FileGetVersion(@ScriptDir&"\"&$arch&"\VirtualBox.exe"), "^(\d+\.\d+.\d+)?.*", "\1")
   If $sFileVer>="7.1.0" Then
     Global $VMTitle = "Oracle VirtualBox"
   Else
@@ -463,6 +463,13 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 
   If FileExists($UserHome&"\VirtualBox.xml-tmp") Then
     FileDelete($UserHome&"\VirtualBox.xml-tmp")
+  EndIf
+
+  If NOT FileExists($UserHome&"\VirtualBox.xml") Then
+	$file = FileOpen($UserHome&"\VirtualBox.xml", 2)
+	FileWrite($file, "<?xml version=""1.0""?>"&@LF&"<VirtualBox xmlns=""http://www.virtualbox.org/"" version=""1.12-windows"">"&@LF&"<Global>"&@LF&"<ExtraData>"&@LF&"</ExtraData>"&@LF&"<MachineRegistry/>"&@LF&"<NetserviceRegistry>"&@LF&"</NetserviceRegistry>"&@LF&"</Global>"&@LF&"</VirtualBox>")
+	FileClose($file)
+	Run('cmd /c ""'&@ScriptDir&'\'&$arch&'\VBoxManage.exe" setproperty machinefolder "'&$UserHome&'\Machines""', @ScriptDir, @SW_HIDE)
   EndIf
 
   If FileExists($UserHome&"\VirtualBox.xml") Then
@@ -857,10 +864,6 @@ EndIf
 		Next
 		EndIf
 		Next
-      EndIf
-
-      If Not FileExists($UserHome&"\VirtualBox.xml") Then
-	  Run('cmd /c ""'&@ScriptDir&'\'&$arch&'\VBoxManage.exe" setproperty machinefolder "'&$UserHome&'\Machines""', @ScriptDir, @SW_HIDE)
       EndIf
 
       If $CmdLine[0] = 1 Then
