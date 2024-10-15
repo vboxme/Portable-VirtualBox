@@ -502,9 +502,6 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
      EndIf
 
 	FileDelete(@ScriptDir&"\Portable-VirtualBox.error.txt")
-	$file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
-	FileWrite($file, "List of duplicate machines with the same uuid:" &@LF)
-	FileClose($file)
 	$values4 = StringTrimRight($values4, 1)
 	$a = stringsplit($values4, @LF, 2)
 	local $b = 0
@@ -515,16 +512,23 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 			If $uuid1[0] = $uuid2[0] Then
 			$b += 1
 			$values4 = StringReplace($values4, $a[$i]&@LF, "")
+			if $i<>1 Then
+            $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
+            FileWrite($file, "List of duplicate machines with the same uuid:" &@LF)
+            FileClose($file)
+			EndIf
             $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
 			FileWrite($file, $a[$x] &@LF& $a[$i] &@LF&@LF)
             FileClose($file)
+			if $i<=1 Then
+			$file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
+			FileWrite($file, "To eliminate errors, only one of the duplicates was added to VirtualBox.xml"&@LF& $values4 &@LF&@LF)
+			FileClose($file)
+			EndIf
 			$x = 0
 			EndIf
 		Next
     Next
-      $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
-      FileWrite($file, "To eliminate errors, only one of the duplicates was added to VirtualBox.xml"&@LF& $values4 &@LF&@LF)
-      FileClose($file)
 
       $content = FileRead(FileOpen($UserHome&"\VirtualBox.xml", 128))
       $values6 = _StringBetween($content, "</ExtraData>", "<NetserviceRegistry>")
