@@ -178,18 +178,6 @@ EndIf
 
 Global $UserHome = IniRead($var1, "userhome", "key", "NotFound")
 
-If FileExists(StringLeft($UserHome, 2)) Then
-DirCreate($UserHome)
-EndIf
-
-If Not FileExists($UserHome) or FileExists($UserHome) Then
-IniWrite($var1, "userhome", "key", $DefaultUserHome)
-EndIf
-
-$UserHome = IniRead($var1, "userhome", "key", "NotFound")
-$UserHome = StringRegExpReplace($UserHome, "\\+$", "")
-IniWrite($var1, "userhome", "key", $UserHome)
-
 If IniRead($var1, "lang", "key", "NotFound") = 0 Then
   Global $cl = 1, $StartLng
 
@@ -456,6 +444,18 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
   Else
     Global $VMTitle = "Oracle VM VirtualBox"
   EndIf
+
+  If FileExists(StringLeft($UserHome, 2)) Then
+  DirCreate($UserHome)
+  EndIf
+
+  If Not FileExists($UserHome) Then
+  IniWrite($var1, "userhome", "key", $DefaultUserHome)
+  EndIf
+
+  $UserHome = IniRead($var1, "userhome", "key", "NotFound")
+  $UserHome = StringRegExpReplace($UserHome, "\\+$", "")
+  IniWrite($var1, "userhome", "key", $UserHome)
 
   If FileExists($UserHome&"\VirtualBox.xml-prev") Then
     FileDelete($UserHome&"\VirtualBox.xml-prev")
