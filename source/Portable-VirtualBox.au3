@@ -878,7 +878,7 @@ EndIf
 			$Patch = $aArray[$i]
 			Next
           Endif
-          If IniRead($var1, "userhome", "key", "NotFound") = $UserHome AND FileExists($Patch) Then
+		  If IniRead($var1, "userhome", "key", "NotFound") = $UserHome Then
 			Run("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VirtualBox.exe", @ScriptDir, @SW_HIDE)
 			RunWait("cmd /c set VBOX_USER_HOME="&$UserHome&"& .\"&$arch&"\VBoxManage.exe startvm """& $StartVM &"""" , @ScriptDir, @SW_HIDE)
           Else
@@ -1451,14 +1451,14 @@ Func SRCStartVM()
     $line = FileRead(FileOpen($PathVM, 128))
     If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
 		$values2 = _StringBetween($line, '<HardDisks>', '</HardDisks>')
-		If $values2 = 0 Then
-		$values3 = ""
-		Else
+		If $values2 <> 0 Then
 		$values3 = _StringBetween($line, 'uuid="', '"')
 		EndIf
     EndIf
+	If $values3 <> 0 Then
     GUICtrlSetState ($Radio4, $GUI_CHECKED)
     GUICtrlSetData ($VMStart, $values3[0])
+	EndIf
   EndIf
 EndFunc
 
