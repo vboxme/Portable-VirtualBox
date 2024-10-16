@@ -1402,8 +1402,10 @@ Func Settings()
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "about", "01", "NotFound"))
     GUICtrlCreateLabel(". : Portable-VirtualBox Launcher v"& $version &" : .", 100, 40, 448, 26)
+	GUICtrlSetOnEvent(-1, "github")
     GUICtrlSetFont(-1, 14, 800, 4, "Arial")
     GUICtrlCreateLabel("Download and Support: https://github.com/Deac2/Portable-VirtualBox", 40, 70, 500, 20)
+	GUICtrlSetOnEvent(-1, "github")
     GUICtrlSetFont(-1, 8, 800, 0, "Arial")
     GUICtrlCreateLabel("VirtualBox is a family of powerful x86 virtualization products for enterprise as well as home use. Not only is VirtualBox an extremely feature rich, high performance product for enterprise customers, it is also the only professional solution that is freely available as Open Source Software under the terms of the GNU General Public License(GPL).", 16, 94, 546, 55)
     GUICtrlSetFont(-1, 8, 400, 0, "Arial")
@@ -1878,6 +1880,10 @@ Func UseSettings()
 
   GUIDelete()
   $install = 0
+EndFunc
+
+Func github()
+ShellExecute("https://github.com/Deac2/Portable-VirtualBox")
 EndFunc
 
 Func Licence()
