@@ -520,7 +520,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
 			$uuid2 = _StringBetween($a[$x], 'uuid="', '"')
 			If $uuid1[0] = $uuid2[0] Then
 			$b += 1
-			$values4 = StringReplace($values4, $a[$i]&@LF, "")
+			$values4 = StringReplace($values4, $a[$i], "")
 			if $i>=$b Then
             $file    = FileOpen(@ScriptDir&"\Portable-VirtualBox.error.txt", 1)
             FileWrite($file, "List of duplicate machines with the same uuid:" &@LF)
