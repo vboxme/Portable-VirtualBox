@@ -908,13 +908,12 @@ EndIf
       EndIf
 
       ProcessWaitClose("VirtualBoxVM.exe")
+      ProcessWaitClose("VBoxSVC.exe")
+      ProcessWaitClose("VBoxSDS.exe")
 
       SplashTextOn("Portable-VirtualBox", IniRead($var2 & $lng &".ini", "messages", "07", "NotFound"), 220, 40, -1, -1, 1, "arial", 12)
 
       ExitScript()
-
-      ProcessWaitClose("VBoxSVC.exe")
-      ProcessWaitClose("VBoxSDS.exe")
 
       EnvSet("VBOX_USER_HOME")
 
@@ -1017,7 +1016,6 @@ EndIf
         RunWait("sc delete VBoxNetLwf", @ScriptDir, @SW_HIDE)
       EndIf
 
-      ProcessClose("VBoxSDS.exe")
       RunWait("sc delete VBoxSDS", @ScriptDir, @SW_HIDE)
       SplashOff()
     Else
