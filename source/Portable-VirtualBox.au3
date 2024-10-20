@@ -361,9 +361,8 @@ If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&
   Local $WS_POPUP
 
   GUICreate(IniRead($var2 & $lng &".ini", "download", "01", "NotFound"), 542, 380, -1, -1, $WS_POPUP)
-  GUISetFont(9, 400, 0, "Arial")
+  GUISetFont(10, 400, 0, "Arial")
   GUISetBkColor(0xFFFFFF)
-  GUISetFont(10, 500, 0, "Arial")
   GUICtrlSetFont(-1, 10, 800, 0, "Arial")
 
   GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "download", "02", "NotFound"), 32, 8, 476, 60)
