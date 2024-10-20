@@ -379,9 +379,9 @@ If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&
   GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "06", "NotFound"), 412, 122, 93, 25, 0)
   GUICtrlSetOnEvent(-1, "SearchFile")
 
-  $Checkbox100 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "07", "NotFound"), 32, 151, 460, 26)
-  $Checkbox110 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "08", "NotFound"), 32, 175, 460, 26)
-  $Checkbox120 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 26)
+  $Checkbox100 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "07", "NotFound"), 32, 151, 460, 14)
+  $Checkbox110 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "08", "NotFound"), 32, 175, 460, 14)
+  $Checkbox120 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 14)
 
   GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "download", "11", "NotFound"), 32, 223, 436, 26)
   GUICtrlSetFont(-1, 8, 800, 4,"Arial")
@@ -1106,12 +1106,12 @@ Func Settings()
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "homeroot-settings", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "homeroot-settings", "02", "NotFound"), 16, 40, 546, 105)
 
-    $Radio1 = GUICtrlCreateRadio("Radio01", 20, 153, 17, 17)
+    $Radio1 = GUICtrlCreateRadio("Radio01", 20, 154, 14, 14)
     If IniRead($var1, "userhome", "key", "NotFound") = $DefaultUserHome Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio2 = GUICtrlCreateRadio("Radio02", 20, 185, 17, 17)
+    $Radio2 = GUICtrlCreateRadio("Radio02", 20, 186, 14, 14)
     If IniRead($var1, "userhome", "key", "NotFound") <> $DefaultUserHome Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
@@ -1120,28 +1120,28 @@ Func Settings()
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "homeroot-settings", "04", "NotFound"), 36, 185, 180, 21)
 
     If IniRead($var1, "userhome", "key", "NotFound") = $DefaultUserHome Then
-      $HomeRoot = GUICtrlCreateInput(IniRead($var2 & $lng &".ini", "homeroot-settings", "05", "NotFound"), 220, 185, 249, 21)
+      $HomeRoot = GUICtrlCreateInput(IniRead($var2 & $lng &".ini", "homeroot-settings", "05", "NotFound"), 220, 182, 249, 21)
     Else
       $User_Home = IniRead($var1, "userhome", "key", "NotFound")
-      $HomeRoot  = GUICtrlCreateInput($User_Home, 220, 185, 249, 21)
+      $HomeRoot  = GUICtrlCreateInput($User_Home, 220, 182, 249, 21)
     EndIf
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "homeroot-settings", "06", "NotFound"), 476, 185, 81, 21, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "homeroot-settings", "06", "NotFound"), 476, 181, 81, 23, 0)
     GUICtrlSetOnEvent(-1, "SRCUserHome")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKUserHome")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "startvm-settings", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "startvm-settings", "02", "NotFound"), 16, 40, 546, 105)
 
-    $Radio3 = GUICtrlCreateRadio("Radio3", 20, 153, 17, 17)
+    $Radio3 = GUICtrlCreateRadio("Radio3", 20, 154, 14, 14)
     If IniRead($var1, "startvm", "key", "NotFound") = false Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio4 = GUICtrlCreateRadio("Radio4", 20, 185, 17, 17)
+    $Radio4 = GUICtrlCreateRadio("Radio4", 20, 186, 14, 14)
     If IniRead($var1, "startvm", "key", "NotFound") = true Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
@@ -1150,28 +1150,28 @@ Func Settings()
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "startvm-settings", "04", "NotFound"), 36, 185, 180, 21)
 
     If IniRead($var1, "startvm", "key", "NotFound") = false Then
-      $VMStart = GUICtrlCreateInput(IniRead($var2 & $lng &".ini", "startvm-settings", "05", "NotFound"), 220, 185, 249, 21)
+      $VMStart = GUICtrlCreateInput(IniRead($var2 & $lng &".ini", "startvm-settings", "05", "NotFound"), 220, 182, 249, 21)
     Else
       $Start_VM = IniRead($var1, "startvm", "key", "NotFound")
-      $VMStart  = GUICtrlCreateInput($Start_VM, 220, 185, 249, 21)
+      $VMStart  = GUICtrlCreateInput($Start_VM, 220, 182, 249, 21)
     EndIf
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "startvm-settings", "06", "NotFound"), 476, 185, 81, 21, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "startvm-settings", "06", "NotFound"), 476, 181, 81, 23, 0)
     GUICtrlSetOnEvent(-1, "SRCStartVM")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKStartVM")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "hotkeys", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "hotkeys", "02", "NotFound"), 16, 40, 546, 105)
 
-    $Radio5 = GUICtrlCreateRadio("Radio5", 20, 153, 17, 17)
+    $Radio5 = GUICtrlCreateRadio("Radio5", 20, 154, 14, 14)
     If IniRead($var1, "hotkeys", "key", "NotFound") = 1 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio6 = GUICtrlCreateRadio("Radio6", 20, 185, 17, 17)
+    $Radio6 = GUICtrlCreateRadio("Radio6", 20, 186, 14, 14)
     If IniRead($var1, "hotkeys", "key", "NotFound") = 0 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
@@ -1179,20 +1179,20 @@ Func Settings()
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "hotkeys", "03", "NotFound"), 36, 153, 524, 21)
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "hotkeys", "04", "NotFound"), 36, 185, 524, 21)
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKHotKeys")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "hotkey-settings", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "hotkey-settings", "02", "NotFound"), 16, 40, 546, 60)
 
-    $Radio7 = GUICtrlCreateRadio("Radio7", 20, 112, 17, 17)
+    $Radio7 = GUICtrlCreateRadio("Radio7", 20, 115, 14, 14)
     If IniRead($var1, "hotkeys", "userkey", "NotFound") = 0 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio8 = GUICtrlCreateRadio("Radio8", 154, 112, 17, 17)
+    $Radio8 = GUICtrlCreateRadio("Radio8", 154, 115, 14, 14)
     If IniRead($var1, "hotkeys", "userkey", "NotFound") = 1 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
@@ -1227,77 +1227,77 @@ Func Settings()
     GUICtrlCreateLabel("SHIFT +", 460, 193, 44, 17)
     GUICtrlCreateLabel("SHIFT +", 460, 213, 44, 17)
 
-    $Checkbox01 = GUICtrlCreateCheckbox("Checkbox01", 302, 112, 17, 17)
+    $Checkbox01 = GUICtrlCreateCheckbox("Checkbox01", 302, 112, 14, 14)
     If IniRead($var1, "hotkeys", "01", "NotFound") = "^" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox02 = GUICtrlCreateCheckbox("Checkbox02", 302, 132, 17, 17)
+    $Checkbox02 = GUICtrlCreateCheckbox("Checkbox02", 302, 132, 14, 14)
     If IniRead($var1, "hotkeys", "02", "NotFound") = "^" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox03 = GUICtrlCreateCheckbox("Checkbox03", 302, 152, 17, 17)
+    $Checkbox03 = GUICtrlCreateCheckbox("Checkbox03", 302, 152, 14, 14)
     If IniRead($var1, "hotkeys", "03", "NotFound") = "^" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox04 = GUICtrlCreateCheckbox("Checkbox04", 302, 172, 17, 17)
+    $Checkbox04 = GUICtrlCreateCheckbox("Checkbox04", 302, 172, 14, 14)
     If IniRead($var1, "hotkeys", "04", "NotFound") = "^" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox05 = GUICtrlCreateCheckbox("Checkbox05", 302, 192, 17, 17)
+    $Checkbox05 = GUICtrlCreateCheckbox("Checkbox05", 302, 192, 14, 14)
     If IniRead($var1, "hotkeys", "05", "NotFound") = "^" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox06 = GUICtrlCreateCheckbox("Checkbox06", 302, 212, 17, 17)
+    $Checkbox06 = GUICtrlCreateCheckbox("Checkbox06", 302, 212, 14, 14)
     If IniRead($var1, "hotkeys", "06", "NotFound") = "^" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Checkbox07 = GUICtrlCreateCheckbox("Checkbox07", 378, 112, 17, 17)
+    $Checkbox07 = GUICtrlCreateCheckbox("Checkbox07", 378, 112, 14, 14)
     If IniRead($var1, "hotkeys", "07", "NotFound") = "!" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox08 = GUICtrlCreateCheckbox("Checkbox08", 378, 132, 17, 17)
+    $Checkbox08 = GUICtrlCreateCheckbox("Checkbox08", 378, 132, 14, 14)
     If IniRead($var1, "hotkeys", "08", "NotFound") = "!" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox09 = GUICtrlCreateCheckbox("Checkbox09", 378, 152, 17, 17)
+    $Checkbox09 = GUICtrlCreateCheckbox("Checkbox09", 378, 152, 14, 14)
     If IniRead($var1, "hotkeys", "09", "NotFound") = "!" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox10 = GUICtrlCreateCheckbox("Checkbox10", 378, 172, 17, 17)
+    $Checkbox10 = GUICtrlCreateCheckbox("Checkbox10", 378, 172, 14, 14)
     If IniRead($var1, "hotkeys", "10", "NotFound") = "!" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox11 = GUICtrlCreateCheckbox("Checkbox11", 378, 192, 17, 17)
+    $Checkbox11 = GUICtrlCreateCheckbox("Checkbox11", 378, 192, 14, 14)
     If IniRead($var1, "hotkeys", "11", "NotFound") = "!" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox12 = GUICtrlCreateCheckbox("Checkbox12", 378, 212, 17, 17)
+    $Checkbox12 = GUICtrlCreateCheckbox("Checkbox12", 378, 212, 14, 14)
     If IniRead($var1, "hotkeys", "12", "NotFound") = "!" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Checkbox13 = GUICtrlCreateCheckbox("Checkbox13", 444, 112, 17, 17)
+    $Checkbox13 = GUICtrlCreateCheckbox("Checkbox13", 444, 112, 14, 14)
     If IniRead($var1, "hotkeys", "13", "NotFound") = "+" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox14 = GUICtrlCreateCheckbox("Checkbox14", 444, 132, 17, 17)
+    $Checkbox14 = GUICtrlCreateCheckbox("Checkbox14", 444, 132, 14, 14)
     If IniRead($var1, "hotkeys", "14", "NotFound") = "+" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox15 = GUICtrlCreateCheckbox("Checkbox15", 444, 152, 17, 17)
+    $Checkbox15 = GUICtrlCreateCheckbox("Checkbox15", 444, 152, 14, 14)
     If IniRead($var1, "hotkeys", "15", "NotFound") = "+" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox16 = GUICtrlCreateCheckbox("Checkbox16", 444, 172, 17, 17)
+    $Checkbox16 = GUICtrlCreateCheckbox("Checkbox16", 444, 172, 14, 14)
     If IniRead($var1, "hotkeys", "16", "NotFound") = "+" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox17 = GUICtrlCreateCheckbox("Checkbox17", 444, 192, 17, 17)
+    $Checkbox17 = GUICtrlCreateCheckbox("Checkbox17", 444, 192, 14, 14)
     If IniRead($var1, "hotkeys", "17", "NotFound") = "+" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
-    $Checkbox18 = GUICtrlCreateCheckbox("Checkbox18", 444, 212, 17, 17)
+    $Checkbox18 = GUICtrlCreateCheckbox("Checkbox18", 444, 212, 14, 14)
     If IniRead($var1, "hotkeys", "18", "NotFound") = "+" Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
@@ -1309,51 +1309,51 @@ Func Settings()
     $Input5 = GUICtrlCreateInput(IniRead($var1, "hotkeys", "23", "NotFound"), 524, 191, 24, 21)
     $Input6 = GUICtrlCreateInput(IniRead($var1, "hotkeys", "24", "NotFound"), 524, 211, 24, 21)
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKHotKeysSet")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "usb", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "usb", "02", "NotFound"), 16, 40, 546, 105)
 
-    $Radio9 = GUICtrlCreateRadio("$Radio9", 20, 153, 17, 17)
+    $Radio9 = GUICtrlCreateRadio("$Radio9", 20, 154, 14, 14)
     If IniRead($var1, "usb", "key", "NotFound") = 0 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio10 = GUICtrlCreateRadio("$Radio10", 20, 185, 17, 17)
+    $Radio10 = GUICtrlCreateRadio("$Radio10", 20, 186, 14, 14)
     If IniRead($var1, "usb", "key", "NotFound") = 1 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "usb", "03", "NotFound"), 40, 153, 524, 21)
-    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "usb", "04", "NotFound"), 40, 185, 524, 21)
+    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "usb", "03", "NotFound"), 36, 153, 524, 21)
+    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "usb", "04", "NotFound"), 36, 185, 524, 21)
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKUSB")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "net", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "net", "02", "NotFound"), 16, 40, 546, 105)
 
-    $Radio11 = GUICtrlCreateRadio("$Radio11", 20, 153, 17, 17)
+    $Radio11 = GUICtrlCreateRadio("$Radio11", 20, 154, 14, 14)
     If IniRead($var1, "net", "key", "NotFound") = 0 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio12 = GUICtrlCreateRadio("$Radio12", 20, 185, 17, 17)
+    $Radio12 = GUICtrlCreateRadio("$Radio12", 20, 186, 14, 14)
     If IniRead($var1, "net", "key", "NotFound") = 1 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "net", "03", "NotFound"), 40, 153, 524, 21)
-    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "net", "04", "NotFound"), 40, 185, 524, 21)
+    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "net", "03", "NotFound"), 36, 153, 524, 21)
+    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "net", "04", "NotFound"), 36, 185, 524, 21)
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKNet")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "language-settings", "01", "NotFound"))
@@ -1367,36 +1367,36 @@ Func Settings()
     Next
     $sfilelist = StringTrimRight($sfilelist, 1)
 
-    $StartLng = GUICtrlCreateCombo("", 238, 185, 100, 0, $CBS_DROPDOWNLIST)
+    $StartLng = GUICtrlCreateCombo("", 238, 182, 100, 0, $CBS_DROPDOWNLIST)
     GUICtrlSetData($StartLng, $sfilelist, IniRead($var1, "language", "key", "NotFound"))
     ;$StartLng = GUICtrlCreateInput(IniRead($var1, "language", "key", "NotFound"), 210, 185, 259, 21)
 
     ;GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "language-settings", "04", "NotFound"), 476, 185, 81, 21, 0)
     ;GUICtrlSetOnEvent(-1, "SRCLanguage")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKLanguage")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "update", "01", "NotFound"))
     GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "update", "02", "NotFound"), 16, 40, 546, 105)
 
-    $Radio13 = GUICtrlCreateRadio("$Radio13", 20, 153, 17, 17)
+    $Radio13 = GUICtrlCreateRadio("$Radio13", 20, 154, 14, 14)
     If IniRead($var1, "update", "key", "NotFound") = 0 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    $Radio14 = GUICtrlCreateRadio("$Radio14", 20, 185, 17, 17)
+    $Radio14 = GUICtrlCreateRadio("$Radio14", 20, 186, 14, 14)
     If IniRead($var1, "update", "key", "NotFound") = 1 Then
       GUICtrlSetState(-1, $GUI_CHECKED)
     EndIf
 
-    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "update", "03", "NotFound"), 40, 153, 524, 21)
-    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "update", "04", "NotFound"), 40, 185, 524, 21)
+    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "update", "03", "NotFound"), 36, 153, 524, 21)
+    GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "update", "04", "NotFound"), 36, 185, 524, 21)
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "02", "NotFound"), 112, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "OKUpdate")
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 336, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUICtrlCreateTabItem(IniRead($var2 & $lng &".ini", "about", "01", "NotFound"))
@@ -1415,7 +1415,7 @@ Func Settings()
     GUICtrlCreateLabel("VirtualBox is being actively developed with frequent releases and has an ever growing list of features, supported guest operating systems and platforms it runs on. VirtualBox is a community effort backed by a dedicated company: everyone is encouraged to contribute while Sun ensures the product always meets professional quality criteria.", 16, 192, 546, 40)
     GUICtrlSetFont(-1, 8, 400, 0, "Arial")
 
-    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 236, 240, 129, 25, 0)
+    GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "messages", "03", "NotFound"), 236, 240, 129, 27)
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUISetState()
