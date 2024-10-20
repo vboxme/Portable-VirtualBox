@@ -366,7 +366,7 @@ If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&
   GUICtrlSetFont(-1, 10, 800, 0, "Arial")
 
   GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "download", "02", "NotFound"), 32, 8, 476, 60)
-  GUICtrlSetFont(-1, 9, 400, "Arial")
+  GUICtrlSetFont(-1, 10, 400, "Arial")
 
   $Button100 = GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "03", "NotFound"), 32, 62, 473, 33)
   GUICtrlSetFont(-1, 12, 400, "Arial")
