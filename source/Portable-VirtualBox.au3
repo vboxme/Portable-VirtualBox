@@ -363,36 +363,36 @@ If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&
   GUICreate(IniRead($var2 & $lng &".ini", "download", "01", "NotFound"), 542, 380, -1, -1, $WS_POPUP)
   GUISetFont(9, 400, 0, "Arial")
   GUISetBkColor(0xFFFFFF)
+  GUISetFont(10, 500, 0, "Arial")
   GUICtrlSetFont(-1, 10, 800, 0, "Arial")
 
   GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "download", "02", "NotFound"), 32, 8, 476, 60)
-  GUICtrlSetFont(-1, 9, 800, "Arial")
+  GUICtrlSetFont(-1, 9, 400, "Arial")
 
   $Button100 = GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "03", "NotFound"), 32, 62, 473, 33)
-  GUICtrlSetFont(-1, 14, 400, "Arial")
+  GUICtrlSetFont(-1, 12, 400, "Arial")
   GUICtrlSetOnEvent(-1, "DownloadFile")
 
   GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "download", "04", "NotFound"), 250, 101, 80, 40)
-  GUICtrlSetFont(-1, 10, 800, "Arial")
+  GUICtrlSetFont(-1, 10, 400, "Arial")
 
   $Input100 = GUICtrlCreateInput(IniRead($var2 & $lng &".ini", "download", "05", "NotFound"), 32, 124, 373, 21)
   GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "06", "NotFound"), 412, 122, 93, 25, 0)
   GUICtrlSetOnEvent(-1, "SearchFile")
 
-  $Checkbox100 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "07", "NotFound"), 32, 151, 460, 14)
-  $Checkbox110 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "08", "NotFound"), 32, 175, 460, 14)
-  $Checkbox120 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 14)
+  $Checkbox100 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "07", "NotFound"), 32, 151, 460, 26)
+  $Checkbox110 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "08", "NotFound"), 32, 175, 460, 26)
+  $Checkbox120 = GUICtrlCreateCheckbox(IniRead($var2 & $lng &".ini", "download", "10", "NotFound"), 32, 199, 460, 26)
 
   GUICtrlCreateLabel(IniRead($var2 & $lng &".ini", "download", "11", "NotFound"), 32, 223, 436, 26)
-  GUICtrlSetFont(-1, 8, 800, 4,"Arial")
+  GUICtrlSetFont(-1, 9, 400, 0,"Arial")
   $Input200 = GUICtrlCreateLabel("", 32, 240, 476, 47)
-  GUICtrlSetFont(-1, 8, 400, 0,"Arial")
+  GUICtrlSetFont(-1, 9, 400, 0,"Arial")
 
   $Button200 = GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "12", "NotFound"), 52, 308, 129, 33, 0)
   GUICtrlSetState($Button200, $GUI_DISABLE)
   GUICtrlSetOnEvent(-1, "UseSettings")
   GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "13", "NotFound"), 194, 308, 149, 33, 0)
-  GUICtrlSetFont(-1, 8, 600, "Arial")
   GUICtrlSetOnEvent(-1, "Licence")
   GUICtrlCreateButton(IniRead($var2 & $lng &".ini", "download", "14", "NotFound"), 356, 308, 129, 33, 0)
   GUICtrlSetOnEvent(-1, "ExitExtraction")
@@ -1757,7 +1757,7 @@ EndFunc
 
 Func DisplayDownloadStatus($downloaded_bytes,$total_bytes)
 	if $total_bytes > 0 Then
-		Return RoundForceDecimalMB($downloaded_bytes)& "MB / "&RoundForceDecimalMB($total_bytes)&"MB("&Round(100*$downloaded_bytes/$total_bytes)&"%)"
+		Return RoundForceDecimalMB($downloaded_bytes)& "MB / "&RoundForceDecimalMB($total_bytes)&"MB ("&Round(100*$downloaded_bytes/$total_bytes)&"%)"
 	Else
 		Return RoundForceDecimalMB($downloaded_bytes)& "MB"
 	EndIf
