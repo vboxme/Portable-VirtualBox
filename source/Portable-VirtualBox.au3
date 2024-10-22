@@ -445,7 +445,7 @@ If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&
   If FileExists(@ScriptDir&"\virtualbox.exe") Then
     GUICtrlSetData($Input100, @ScriptDir&"\virtualbox.exe")
     GUICtrlSetState($Button200,$GUI_ENABLE)
-	DownloadCheckVer()
+	CheckExeFile(@ScriptDir&"\VirtualBox.exe")
   EndIf
 
   GUISetState()
@@ -1077,8 +1077,11 @@ EndIf
 Break(1)
 Exit
 
-Func DownloadCheckVer()
-	Local $sFileVer = StringRegExpReplace(FileGetVersion(@ScriptDir&"\VirtualBox.exe"), "^(\d+\.\d+.\d+)?.*", "\1")
+Func CheckExeFile($Directory)
+	If Not StringRegExp(FileRead($Directory, 180), "5669727475616C426F782065786563757461626C65") Then
+		GUICtrlSetData($Input100, IniRead($var2 & $lng &".ini", "download", "05", "NotFound"))
+	EndIf
+	Local $sFileVer = StringRegExpReplace(FileGetVersion($Directory), "^(\d+\.\d+.\d+)?.*", "\1")
 	If $sFileVer<="6.0.24" Then
 		GUICtrlSetState($Checkbox100, $GUI_ENABLE)
 		Else
@@ -1801,7 +1804,7 @@ Func DownloadFile()
   InetClose($download3)
   If FileExists(@ScriptDir&"\virtualbox.exe") Then
     GUICtrlSetData($Input100, @ScriptDir&"\virtualbox.exe")
-    DownloadCheckVer()
+    CheckExeFile(@ScriptDir&"\VirtualBox.exe")
   EndIf
   GUICtrlSetData($Input200, @LF & IniRead($var2 & $lng &".ini", "status", "02", "NotFound"))
   GUICtrlSetState($Button100, $GUI_ENABLE)
@@ -1831,6 +1834,7 @@ Func SearchFile()
   If NOT @error Then
     GUICtrlSetData($Input100, $FilePath)
     GUICtrlSetState($Button200,$GUI_ENABLE)
+	CheckExeFile($FilePath)
   EndIf
 EndFunc
 
@@ -1839,12 +1843,23 @@ Func UseSettings()
     Local $SourceFile = @ScriptDir&"\forgetit"
   Else
     Local $SourceFile = GUICtrlRead($Input100)
+	Local $SourceDir = StringRegExpReplace($SourceFile, "[^\\]+$", "")
   EndIf
 
   If NOT (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile) AND (GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED)) Then
     Break(1)
     Exit
   EndIf
+
+	Local $Patch = ""
+	$aArray = _RecFileListToArray($SourceDir, "*Extension*", 1, 1, 0, 2)
+	If IsArray($aArray) Then
+      For $i = 1 To $aArray[0]
+      $Patch = $aArray[$i]
+      Next
+	Endif
+	FileDelete($SourceDir&"Extension")
+	FileMove($Patch, "Extension")
 
   If (FileExists(@ScriptDir&"\virtualbox.exe") OR FileExists($SourceFile)) AND (GUICtrlRead($Checkbox100) = $GUI_CHECKED OR GUICtrlRead($Checkbox110) = $GUI_CHECKED) Then
     GUICtrlSetData($Input200, @LF & IniRead($var2 & $lng &".ini", "status", "04", "NotFound"))
