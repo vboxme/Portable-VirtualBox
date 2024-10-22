@@ -1,4 +1,4 @@
-22.10.2024 If you have an old language folder, Delete the data\language folder as the languages ​​have been partially changed.
+22.10.2024 If you have an old language folder, Delete the data\language folder as the languages ​​have been partially changed.<br>
 Disable message center notifications and screen capture messages VirtualBoxVM.exe default settings directory:<br>
 Portable-VirtualBox\\.VirtualBox\VirtualBox.xml<br>
 Change or add before launch <ExtraDataItem name=\"GUI/SuppressMessages\" value=\"all\"/> sample:<br><br>
