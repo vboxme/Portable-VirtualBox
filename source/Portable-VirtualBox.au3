@@ -1516,7 +1516,7 @@ Func OKStartVM()
     MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead($var2 & $lng &".ini", "messages", "05", "NotFound"))
   Else
 	Local $Patch = ""
-	$aArray = _RecFileListToArray($UserHome, "*"&GUICtrlRead($VMStart)&".vdi", 1, 1, 0, 2)
+	$aArray = _RecFileListToArray($UserHome, "*"&GUICtrlRead($VMStart)&".vbox", 1, 1, 0, 2)
     If IsArray($aArray) Then
 		For $i = 1 To $aArray[0]
 		local $Patch = $aArray[$i]
