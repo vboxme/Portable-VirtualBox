@@ -165,7 +165,7 @@ Else
   If @error Then
     IniWrite($var1, "starter", "key", "")
   EndIf
-  If Not IniRead(@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", "") Then
+  If NOT IniRead(@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", "") Then
 	 IniWrite($var1, "userhome", "sort", "1")
 	 Else
 	 $iSort = Int(IniRead(@ScriptDir&"\data\settings\settings.ini", "userhome", "sort", ""))
@@ -358,6 +358,52 @@ If NOT (FileExists(@ScriptDir&"\app32\VirtualBox.exe") OR FileExists(@ScriptDir&
   Global $Input100, $Input200, $Button100, $Button200
   Global $install = 1
 
+      If IniRead($var1, "hotkeys", "key", "NotFound") = 1 Then
+        HotKeySet(IniRead($var1, "hotkeys", "05", "NotFound") & IniRead($var1, "hotkeys", "11", "NotFound") & IniRead($var1, "hotkeys", "17", "NotFound") & IniRead($var1, "hotkeys", "23", "NotFound"), "Settings")
+        HotKeySet(IniRead($var1, "hotkeys", "06", "NotFound") & IniRead($var1, "hotkeys", "12", "NotFound") & IniRead($var1, "hotkeys", "18", "NotFound") & IniRead($var1, "hotkeys", "24", "NotFound"), "ExitExtraction")
+      EndIf
+
+        Local $ctrl5, $ctrl6
+        Local $alt5, $alt6
+        Local $shift5, $shift6
+        Local $plus11, $plus12, $plus17, $plus18
+
+        If IniRead($var1, "hotkeys", "05", "NotFound") = "^" Then
+          $ctrl5  = "CTRL"
+          $plus05 = "+"
+        EndIf
+        If IniRead($var1, "hotkeys", "06", "NotFound") = "^" Then
+          $ctrl6  = "CTRL"
+          $plus06 = "+"
+        EndIf
+
+        If IniRead($var1, "hotkeys", "11", "NotFound") = "!" Then
+          $alt5   = "ALT"
+          $plus11 = "+"
+        EndIf
+        If IniRead($var1, "hotkeys", "12", "NotFound") = "!" Then
+          $alt6   = "ALT"
+          $plus12 = "+"
+        EndIf
+
+        If IniRead($var1, "hotkeys", "17", "NotFound") = "+" Then
+          $shift5 = "SHIFT"
+          $plus17 = "+"
+        EndIf
+        If IniRead($var1, "hotkeys", "18", "NotFound") = "+" Then
+          $shift6 = "SHIFT"
+          $plus18 = "+"
+        EndIf
+
+  TrayCreateItem(IniRead($var2 & $lng &".ini", "tray", "05", "NotFound") &" (" & $ctrl5 & $plus05 & $alt5 & $plus11 & $shift5 & $plus17 & IniRead($var1, "hotkeys", "23", "NotFound") & ")")
+  TrayItemSetOnEvent(-1, "Settings")
+  TrayCreateItem("")
+  TrayCreateItem(IniRead($var2 & $lng &".ini", "tray", "06", "NotFound") &" (" & $ctrl6 & $plus06 & $alt6 & $plus12 & $shift6 & $plus18 & IniRead($var1, "hotkeys", "24", "NotFound") & ")")
+  TrayItemSetOnEvent(-1, "ExitExtraction")
+  TraySetState()
+  TraySetToolTip(IniRead($var2 & $lng &".ini", "tray", "07", "NotFound"))
+  TrayTip("", IniRead($var2 & $lng &".ini", "tray", "07", "NotFound"), 5)
+
   Local $WS_POPUP
 
   GUICreate(IniRead($var2 & $lng &".ini", "download", "01", "NotFound"), 542, 380, -1, -1, $WS_POPUP)
@@ -448,7 +494,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
   DirCreate($UserHome)
   EndIf
 
-  If Not FileExists($UserHome) Then
+  If NOT FileExists($UserHome) Then
   IniWrite($var1, "userhome", "key", $DefaultUserHome)
   EndIf
 
@@ -493,7 +539,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
      $aArray = _RecFileListToArray($UserHome, "*.vbox", 1, 1, $iSort, 2)
      If IsArray($aArray) Then
      For $i = 1 To $aArray[0]
-		If Not StringRegExp($aArray[$i], ".bin") Then
+		If NOT StringRegExp($aArray[$i], ".bin") Then
 		  $line = FileRead(FileOpen($aArray[$i], 128))
 		  If StringRegExp($line, "VirtualBox") and StringRegExp($line, "Machine") and StringRegExp($line, "HardDisks") and StringRegExp($line, "Hardware") Then
 			$values2 = _StringBetween($line, '<Machine', '>')
@@ -549,7 +595,7 @@ If (FileExists(@ScriptDir&"\app32\virtualbox.exe") OR FileExists(@ScriptDir&"\ap
       For $m = 0 To UBound($values11) - 1
         $values12 = _StringBetween($values11[$m], 'defaultMachineFolder="', '"')
         If $values12 <> 0 Then
-		  If Not FileExists(StringLeft($values12[0], 2)) or Not FileExists($values12[0]) Then
+		  If NOT FileExists(StringLeft($values12[0], 2)) or Not FileExists($values12[0]) Then
             $content = FileRead(FileOpen($UserHome&"\VirtualBox.xml", 128))
             $file    = FileOpen($UserHome&"\VirtualBox.xml", 2)
             FileWrite($file, StringReplace($content, $values12[0], $UserHome&"\Machines"))
@@ -1049,7 +1095,7 @@ Func _FileListToArray($sFilePath, $sFilter = "*", $iFlag = $FLTA_FILESFOLDERS, $
 	If $bReturnPath Then $sFullPath = $sFilePath
 	If $sFilter = Default Then $sFilter = "*"
 
-	If Not FileExists($sFilePath) Then Return SetError(1, 0, 0)
+	If NOT FileExists($sFilePath) Then Return SetError(1, 0, 0)
 	If StringRegExp($sFilter, "[\\/:><\|]|(?s)^\s*$") Then Return SetError(2, 0, 0)
 	If NOT ($iFlag = 0 Or $iFlag = 1 Or $iFlag = 2) Then Return SetError(3, 0, 0)
 	Local $hSearch = FileFindFirstFile($sFilePath & $sFilter)
@@ -1086,6 +1132,7 @@ Func HideWindows()
 EndFunc
 
 Func Settings()
+    If NOT WinExists(IniRead($var2 & $lng &".ini", "settings-label", "01", "NotFound")) Then
     Opt("GUIOnEventMode", 1)
 
     Global $Radio1, $Radio2, $Radio3, $Radio4, $Radio5, $Radio6, $Radio7, $Radio8, $Radio9, $Radio10, $Radio11, $Radio12, $Radio13, $Radio14
@@ -1418,6 +1465,7 @@ Func Settings()
     GUICtrlSetOnEvent(-1, "ExitGUI")
 
     GUISetState()
+	EndIf
 EndFunc
 
 Func SRCUserHome()
@@ -1433,11 +1481,11 @@ Func OKUserHome()
     IniWrite($var1, "userhome", "key",  $DefaultUserHome)
     MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead($var2 & $lng &".ini", "messages", "05", "NotFound"))
   Else
-    If GUICtrlRead($HomeRoot) = IniRead($var2 & $lng &".ini", "okuserhome", "01", "NotFound") Then
-      MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "01", "NotFound"), IniRead($var2 & $lng &".ini", "okuserhome", "02", "NotFound"))
-    Else
+    If FileExists(GUICtrlRead($HomeRoot)) Then
       IniWrite(@ScriptDir&"\data\settings\settings.ini", "userhome", "key", GUICtrlRead($HomeRoot))
       MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead($var2 & $lng &".ini", "messages", "05", "NotFound"))
+    Else
+	  MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "01", "NotFound"), IniRead($var2 & $lng &".ini", "okuserhome", "01", "NotFound"))
     EndIf
   EndIf
 EndFunc
@@ -1467,12 +1515,19 @@ Func OKStartVM()
     IniWrite($var1, "startvm", "key", "")
     MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead($var2 & $lng &".ini", "messages", "05", "NotFound"))
   Else
-    If GUICtrlRead($VMStart) = IniRead($var2 & $lng &".ini", "okstartvm", "01", "NotFound") Then
-      MsgBox(0, IniRead(@ScriptDir&"\data\language\"& $lng &".ini", "messages", "01", "NotFound"), IniRead($var2 & $lng &".ini", "okstartvm", "02", "NotFound"))
-    Else
+	Local $Patch = ""
+	$aArray = _RecFileListToArray($UserHome, "*"&GUICtrlRead($VMStart)&".vdi", 1, 1, 0, 2)
+    If IsArray($aArray) Then
+		For $i = 1 To $aArray[0]
+		local $Patch = $aArray[$i]
+		Next
+    Endif
+    If FileExists($Patch) or StringRegExp(GUICtrlRead($VMStart), "{[[:xdigit:]]{8}-[[:xdigit:]]{4}-[34][[:xdigit:]]{3}-[89abAB][[:xdigit:]]{3}-[[:xdigit:]]{12}}") Then
       IniWrite($var1, "startvm", "key", GUICtrlRead($VMStart))
       MsgBox(0, IniRead($var2 & $lng &".ini", "messages", "04", "NotFound"), IniRead($var2 & $lng &".ini", "messages", "05", "NotFound"))
-    EndIf
+	Else
+      MsgBox(0, IniRead(@ScriptDir&"\data\language\"& $lng &".ini", "messages", "01", "NotFound"), IniRead($var2 & $lng &".ini", "okstartvm", "01", "NotFound"))
+	EndIf
   EndIf
 EndFunc
 
@@ -1764,7 +1819,7 @@ EndFunc
 
 Func RoundForceDecimalMB($number)
 	$rounded = Round($number/1048576, 1)
-	If Not StringInStr($rounded, ".") Then
+	If NOT StringInStr($rounded, ".") Then
 		Return $rounded & ".0"
 	Else
 		Return $rounded
